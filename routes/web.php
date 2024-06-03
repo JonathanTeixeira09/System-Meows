@@ -9,3 +9,12 @@ Route::get('/', function () {
 Route::get('/cadastrarfuncionario', function () {
     return view('admin.profissional.createProfissional');
 })->name('cadastroprofissional.index');
+
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login.index');
+
+
+Route::get('/cadastrarpaciente', function () {
+    return view('admin.paciente.createPaciente');
+})->name('cadastrarpaciente.index');

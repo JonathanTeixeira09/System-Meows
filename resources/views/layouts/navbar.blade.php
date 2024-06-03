@@ -195,7 +195,7 @@
             </div>
         </li>
         <li class="nav-item d-flex align-items-center">
-            <a href="#" class="nav-link">
+            <a href="{{route('login.index')}}" class="nav-link">
                 <i class="fas fa-sign-out-alt fa-1x mr-1 text-gray-600"></i>
                 <span class="text-gray-600">Sair </span>
             </a>

@@ -37,9 +37,9 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Pacientes:</h6>
-                <a class="collapse-item" href="buttons.html">Cadastrar novo paciente</a>
-                <a class="collapse-item" href="cards.html">Listar Pacientes</a>
-                <a class="collapse-item" href="cards.html">Prontuário</a>
+                <a class="collapse-item" href="{{route('cadastrarpaciente.index')}}">Cadastrar novo paciente</a>
+                <a class="collapse-item" href="#">Listar Pacientes</a>
+                <a class="collapse-item" href="#">Prontuário</a>
             </div>
         </div>
     </li>

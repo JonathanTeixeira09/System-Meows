@@ -1,0 +1,31 @@
+html,
+body {
+    height: 100%;
+    /*background: url("./img/bg.jpg");*/
+    /*background-image: url('img/bg.jpg') !important;*/
+    background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fpt.vecteezy.com%2Farte-vetorial%2F6413046-laranja-roxo-vermelho-azul-gradiente-soft-abstrato-fundo-voce-pode-usar-este-fundo-para-seu-conteudo-como-tecnologia-video-jogos-promocao-cartao-banner-esportes-apresentacao-site-etc&psig=AOvVaw11j8MyMRFu_YlKB-SDPdTM&ust=1716869924366000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCNC8w4X9rIYDFQAAAAAdAAAAABAE') !important;
+    background-size: cover;
+    background-position: center;
+
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 1rem;
+}
+
+.form-signin .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
