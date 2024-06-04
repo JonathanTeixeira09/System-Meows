@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ParturientesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,3 +19,9 @@ Route::get('/login', function () {
 Route::get('/cadastrarpaciente', function () {
     return view('admin.paciente.createPaciente');
 })->name('cadastrarpaciente.index');
+
+
+Route::controller(ParturientesController::class)->group(function (){
+    Route::get('/incluirAnamnese','index')->name('incluirAnamenese.index');
+    Route::post('/incluirAnamnese','store')->name('incluirAnamenese.store');
+});
