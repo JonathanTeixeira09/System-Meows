@@ -26,6 +26,9 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- Incluindo css da view da Anamnese -->
+    @stack('meowsCss')
+
 </head>
 
 <body id="page-top">
@@ -86,6 +89,8 @@
 @include('layouts.logout')
 
 <!-- Bootstrap core JavaScript-->
+<!-- Js da View Anamnese -->
+@stack('scriptMeows')
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 

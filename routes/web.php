@@ -23,5 +23,6 @@ Route::get('/cadastrarpaciente', function () {
 
 Route::controller(ParturientesController::class)->group(function (){
     Route::get('/incluirAnamnese','index')->name('incluirAnamenese.index');
+    Route::get('/incluirAnamnese2','index2')->name('incluirAnamenese2.index');
     Route::post('/incluirAnamnese','store')->name('incluirAnamenese.store');
 });

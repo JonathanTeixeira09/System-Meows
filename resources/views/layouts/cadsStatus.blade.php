@@ -8,7 +8,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                             Pessoas Atendidas</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">500</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
                     </div>
                     <div class="col-auto">
                         <i class="bi bi-person-fill-check fa-2x text-gray-300"></i>
@@ -26,7 +26,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                             Pessoas deram Alta</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">100</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
                     </div>
                     <div class="col-auto">
                         <i class="bi bi-person-up fa-2x text-gray-300"></i>
@@ -47,7 +47,7 @@
                         </div>
                         <div class="row no-gutters align-items-center">
                             <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">350</div>
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">10</div>
                             </div>
                             <div class="col">
 {{--                                <div class="progress progress-sm mr-2">--}}
@@ -74,7 +74,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                             Aguardando Atendimento</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
                     </div>
                     <div class="col-auto">
                         <i class="bi bi-person-lines-fill fa-2x text-gray-300"></i>
