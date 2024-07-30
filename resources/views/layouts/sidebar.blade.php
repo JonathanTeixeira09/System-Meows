@@ -62,9 +62,10 @@
              data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Atendimentos:</h6>
+{{--                <a class="collapse-item" href="{{route('incluirAnamenese.index')}}">Incluir Anamnese</a>--}}
+                <a class="collapse-item" href="{{route('iniciarAtendimento.index')}}">Iniciar Atendimento</a>
                 <a class="collapse-item" href="{{route('incluirAnamenese.index')}}">Incluir Anamnese</a>
-                <a class="collapse-item" href="{{route('incluirAnamenese2.index')}}">Incluir Anamnese2</a>
-                <a class="collapse-item" href="utilities-border.html">Listar Atendimentos</a>
+                <a class="collapse-item" href="teste.html">Listar Atendimentos</a>
 {{--                <a class="collapse-item" href="utilities-animation.html">Animations</a>--}}
 {{--                <a class="collapse-item" href="utilities-other.html">Other</a>--}}
             </div>

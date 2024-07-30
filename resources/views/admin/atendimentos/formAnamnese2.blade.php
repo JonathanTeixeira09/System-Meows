@@ -84,49 +84,49 @@
                                         <label for="frequenciaCardiaca" class="form-label">Frequência Cardíaca:</label>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="fc"
-                                                   id="fc_1">
+                                                   id="fc_1" value="1">
                                             <label class="form-check-label" for="fc_1">
                                                 <= 30
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="fc"
-                                                   id="fc_2">
+                                                   id="fc_2" value="2">
                                             <label class="form-check-label" for="fc_2">
                                                 31 - 40
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="fc"
-                                                   id="fc_3">
+                                                   id="fc_3" value="3">
                                             <label class="form-check-label" for="fc_3">
                                                 41 - 50
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="fc"
-                                                   id="fc_4">
+                                                   id="fc_4" value="4">
                                             <label class="form-check-label" for="fc_4">
                                                 51 - 90
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="fc"
-                                                   id="fc_5">
+                                                   id="fc_5" value="5">
                                             <label class="form-check-label" for="fc_5">
                                                 91 - 100
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="fc"
-                                                   id="fc_6">
+                                                   id="fc_6" value="6">
                                             <label class="form-check-label" for="fc_6">
                                                 101 - 120
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="fc"
-                                                   id="fc_7">
+                                                   id="fc_7" value="7">
                                             <label class="form-check-label" for="fc_7">
                                                 >= 121
                                             </label>
@@ -459,109 +459,13 @@
                             </form>
 
 
-                            {{--                            <form class="row g-2" action="{{ route('incluirAnamenese.store') }}" method="POST"--}}
-                            {{--                                  name="formCadastro"--}}
-                            {{--                                  enctype="multipart/form-data">--}}
-                            {{--                                @csrf--}}
-
-                            {{--                                <div class="col-md-12">--}}
-                            {{--                                    <label for="nomeDaPaciente" class="form-label">Nome da Parturiente:</label>--}}
-                            {{--                                    <input type="text"--}}
-                            {{--                                           class="form-control @error('nomeDaPaciente') is-invalid @enderror"--}}
-                            {{--                                           name="nomeDaPaciente"--}}
-                            {{--                                           placeholder="" tabindex="1" id="nomeDaPaciente">--}}
-                            {{--                                    <div id="nomeDaPacienteFeedback" class="form-text"></div>--}}
-                            {{--                                    @error('nomeDaPaciente')--}}
-                            {{--                                    <div class="invalid-feedback">--}}
-                            {{--                                        {{ $message }}--}}
-                            {{--                                    </div>--}}
-                            {{--                                    @enderror--}}
-                            {{--                                </div>--}}
-
-                            {{--                                <div class="col-md-12">--}}
-                            {{--                                    <label for="frequenciaCardiaca" class="form-label">Frequência Cardíaca:</label>--}}
-                            {{--                                    <input type="text"--}}
-                            {{--                                           class="form-control @error('frequenciaCardiaca') is-invalid @enderror"--}}
-                            {{--                                           name="frequenciaCardiaca"--}}
-                            {{--                                           placeholder="FC(bat/min)" tabindex="1" id="frequenciaCardiaca">--}}
-                            {{--                                    <div id="frequenciaCardiacaFeedback" class="form-text"></div>--}}
-                            {{--                                    @error('frequenciaCardiaca')--}}
-                            {{--                                    <div class="invalid-feedback">--}}
-                            {{--                                        {{ $message }}--}}
-                            {{--                                    </div>--}}
-                            {{--                                    @enderror--}}
-                            {{--                                </div>--}}
-
-                            {{--                                <div class="col-md-12">--}}
-                            {{--                                    <label for="pressaoArterial" class="form-label"> Pressão Arterial:</label>--}}
-                            {{--                                    <input type="text"--}}
-                            {{--                                           class="form-control @error('pressaoArterial') is-invalid @enderror"--}}
-                            {{--                                           name="pressaoArterial"--}}
-                            {{--                                           placeholder="PA(mmHg)" tabindex="2">--}}
-                            {{--                                    @error('pressaoArterial')--}}
-                            {{--                                    <div class="invalid-feedback">--}}
-                            {{--                                        {{ $message }}--}}
-                            {{--                                    </div>--}}
-                            {{--                                    @enderror--}}
-                            {{--                                </div>--}}
-
-                            {{--                                <div class="col-md-12">--}}
-                            {{--                                    <label for="frequenciaRespiratoria" class="form-label"> Pressão Arterial:</label>--}}
-                            {{--                                    <input type="text"--}}
-                            {{--                                           class="form-control @error('frequenciaRespiratoria') is-invalid @enderror"--}}
-                            {{--                                           name="frequenciaRespiratoria"--}}
-                            {{--                                           placeholder="FR(inc/min)" tabindex="3">--}}
-                            {{--                                    @error('frequenciaRespiratoria')--}}
-                            {{--                                    <div class="invalid-feedback">--}}
-                            {{--                                        {{ $message }}--}}
-                            {{--                                    </div>--}}
-                            {{--                                    @enderror--}}
-                            {{--                                </div>--}}
-
-                            {{--                                <div class="col-md-12">--}}
-                            {{--                                    <label for="temperatura" class="form-label"> Temperatura:</label>--}}
-                            {{--                                    <input type="text" class="form-control @error('temperatura') is-invalid @enderror"--}}
-                            {{--                                           name="temperatura"--}}
-                            {{--                                           placeholder="°C" tabindex="4">--}}
-                            {{--                                    @error('temperatura')--}}
-                            {{--                                    <div class="invalid-feedback">--}}
-                            {{--                                        {{ $message }}--}}
-                            {{--                                    </div>--}}
-                            {{--                                    @enderror--}}
-                            {{--                                </div>--}}
-
-                            {{--                                <div class="col-md-12">--}}
-                            {{--                                    <label for="nivelConsciencia" class="form-label"> Nível de Consciência:</label>--}}
-                            {{--                                    <input type="text"--}}
-                            {{--                                           class="form-control @error('nivelConsciencia') is-invalid @enderror"--}}
-                            {{--                                           name="nivelConsciencia"--}}
-                            {{--                                           placeholder="Nível de Consciência" tabindex="5">--}}
-                            {{--                                    @error('nivelConsciencia')--}}
-                            {{--                                    <div class="invalid-feedback">--}}
-                            {{--                                        {{ $message }}--}}
-                            {{--                                    </div>--}}
-                            {{--                                    @enderror--}}
-                            {{--                                </div>--}}
-
-                            {{--                                <!-- Botão de Enviar -->--}}
-                            {{--                                <div class="col-md-12">--}}
-                            {{--                                    <p style="text-align: right;">--}}
-                            {{--                                        <button type="submit" class="btn btn-success text-white" value="cadastrar">--}}
-                            {{--                                                <span class="icon text-white-50">--}}
-                            {{--                                                    <i class="fas fa-check-square"></i>--}}
-                            {{--                                                </span>--}}
-                            {{--                                            <span class="text">Gravar</span>--}}
-                            {{--                                        </button>--}}
-                            {{--                                    </p>--}}
-                            {{--                                </div>--}}
-                            {{--                            </form>--}}
-                            <!-- Fim -->
-
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
+        @include('layouts.statusMeows')
     </div>
 
     @push('scriptMeows')

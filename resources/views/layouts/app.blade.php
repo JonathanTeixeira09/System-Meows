@@ -28,6 +28,7 @@
 
     <!-- Incluindo css da view da Anamnese -->
     @stack('meowsCss')
+    @stack('error404')
 
 </head>
 
