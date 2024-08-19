@@ -14,7 +14,9 @@
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
         <a class="nav-link" href="{{route('index')}}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <!-- <i class="fas fa-hospital-alt fa-fw"></i> -->
+            <i class="fa-regular fa-hospital fa-fw"></i>
             <span>Dashboard</span></a>
     </li>
 
@@ -28,10 +30,10 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-           aria-expanded="true" aria-controls="collapseTwo">
-{{--            <i class="fas fa-fw fa-cog"></i>--}}
-            <i class="bi bi-people-fill fa-fw"></i>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+            <!-- <i class="fas fa-fw fa-user-injured"></i> -->
+            <i class="fa-solid fa-person-breastfeeding fa-fw"></i>
+            <!-- <i class="bi bi-people-fill fa-fw"></i> -->
             <span>Pacientes</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -53,21 +55,21 @@
 
     <!-- Nav Item - Atendimentos Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-           aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-wrench"></i>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+            <!-- <i class="fa-solid fa-suitcase-medical"></i> -->
+            <i class="fa-solid fa-fw fa-laptop-medical"></i>
+            <!-- <i class="fas fa-fw fa-notes-medical fa-fw"></i> -->
             <span>Atendimentos</span>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-             data-parent="#accordionSidebar">
+        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Atendimentos:</h6>
-{{--                <a class="collapse-item" href="{{route('incluirAnamenese.index')}}">Incluir Anamnese</a>--}}
+                {{-- <a class="collapse-item" href="{{route('incluirAnamenese.index')}}">Incluir Anamnese</a>--}}
                 <a class="collapse-item" href="{{route('iniciarAtendimento.index')}}">Iniciar Atendimento</a>
                 <a class="collapse-item" href="{{route('incluirAnamenese.index')}}">Incluir Anamnese</a>
                 <a class="collapse-item" href="teste.html">Listar Atendimentos</a>
-{{--                <a class="collapse-item" href="utilities-animation.html">Animations</a>--}}
-{{--                <a class="collapse-item" href="utilities-other.html">Other</a>--}}
+                {{-- <a class="collapse-item" href="utilities-animation.html">Animations</a>--}}
+                {{-- <a class="collapse-item" href="utilities-other.html">Other</a>--}}
             </div>
         </div>
     </li>
@@ -82,38 +84,49 @@
 
     <!-- Nav Item - Pacientes Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-           aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Usuários / Equipe</span>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+            <!-- <i class="fas fa-fw fa-user-md"></i> -->
+            <i class="fa-solid fa-users-gear fa-fw"></i>
+            <span>Usuários</span>
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Profissional:</h6>
-                <a class="collapse-item" href="{{route('cadastroprofissional.index')}}">Cadastrar Profissional</a>
-                <a class="collapse-item" href="#">Listar Profissionais</a>
-                <a class="collapse-item" href="#">Cadastrar Função</a>
-                <div class="collapse-divider"></div>
                 <h6 class="collapse-header">Usuários:</h6>
                 <a class="collapse-item" href="#">Cadastrar Usuário</a>
                 <a class="collapse-item" href="#">Listar Usuários</a>
             </div>
         </div>
     </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEquipe" aria-expanded="true" aria-controls="collapseEquipe">
+            <i class="fas fa-fw fa-user-md"></i>
+            <span>Equipe</span>
+        </a>
+        <div id="collapseEquipe" class="collapse" aria-labelledby="headingEquipe" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Profissional:</h6>
+                <a class="collapse-item" href="{{route('cadastroprofissional.index')}}">Cadastrar Profissional</a>
+                <a class="collapse-item" href="#">Listar Profissionais</a>
+                <a class="collapse-item" href="#">Cadastrar Função</a>
+            </div>
+        </div>
+    </li>
 
-    <!-- Nav Item - Charts -->
-{{--    <li class="nav-item">--}}
-{{--        <a class="nav-link" href="charts.html">--}}
-{{--            <i class="fas fa-fw fa-chart-area"></i>--}}
-{{--            <span>Charts</span></a>--}}
-{{--    </li>--}}
+    <!-- Nav Item - Sobre Mim -->
+    <li class="nav-item">
+        <a class="nav-link" href="charts.html">
+            <!-- <i class="fas fa-pen-nib fa-fw"></i> -->
+            <i class="fas fa-fw fa-info"></i>
+            <span>Sobre Mim</span>
+        </a>
+    </li>
 
     <!-- Nav Item - Tables -->
-{{--    <li class="nav-item">--}}
-{{--        <a class="nav-link" href="tables.html">--}}
-{{--            <i class="fas fa-fw fa-table"></i>--}}
-{{--            <span>Tables</span></a>--}}
-{{--    </li>--}}
+    {{-- <li class="nav-item">--}}
+    {{-- <a class="nav-link" href="tables.html">--}}
+    {{-- <i class="fas fa-fw fa-table"></i>--}}
+    {{-- <span>Tables</span></a>--}}
+    {{-- </li>--}}
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
@@ -124,11 +137,11 @@
     </div>
 
     <!-- Sidebar Message -->
-{{--            <div class="sidebar-card d-none d-lg-flex">--}}
-{{--                <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">--}}
-{{--                <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>--}}
-{{--                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>--}}
-{{--            </div>          --}}
+    {{-- <div class="sidebar-card d-none d-lg-flex">--}}
+    {{-- <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">--}}
+    {{-- <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>--}}
+    {{-- <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>--}}
+    {{-- </div>          --}}
 
 
 </ul>

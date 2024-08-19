@@ -310,7 +310,7 @@
         <span>4</span>
     </section>
     <div class="link-container">
-        <a target="_blank" href="https://www.silocreativo.com/en/creative-examples-404-error-css/" class="more-link">Voltar
+        <a href="{{ route('index') }}" class="more-link">Voltar
             ao Inicio</a>
     </div>
 @endsection

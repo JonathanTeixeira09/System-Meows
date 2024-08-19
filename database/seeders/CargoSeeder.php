@@ -27,6 +27,7 @@ class CargoSeeder extends Seeder
             'Psicologo',
             'Psicomotricista',
             'Psicopedagogo',
+            'Recepcionista',
             'Téc. Enfermagem',
             'Téc. Radiologia',
             'Terapeuta Ocupacional',

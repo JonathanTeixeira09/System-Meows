@@ -67,7 +67,7 @@
                                 @csrf
 
                                 <div class="col-md-12">
-                                    <label for="nomeDaPaciente" class="form-label">Nome da Parturiente:</label>
+                                    <!-- <label for="nomeDaPaciente" class="form-label">Nome da Parturiente:</label>
                                     <input type="text"
                                            class="form-control @error('nomeDaPaciente') is-invalid @enderror"
                                            name="nomeDaPaciente" placeholder="" tabindex="1" id="nomeDaPaciente">
@@ -76,7 +76,16 @@
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
-                                    @enderror
+                                    @enderror -->
+                                    <label for="nomeDaPaciente" class="form-label">Nome da Parturiente:</label>
+                                    <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Informe nome da Parturiente">
+                                    <datalist id="datalistOptions">
+                                        <option value="Maria 1">
+                                        <option value="Maria 2">
+                                        <option value="Maria 3">
+                                        <option value="Maria 4">
+                                        <option value="Maria 5">
+                                    </datalist>
                                 </div>
 
                                 <div class="col-md-1 border-left-secondary">
