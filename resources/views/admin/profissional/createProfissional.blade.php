@@ -43,31 +43,46 @@
 
                                     <div class="col-md-6">
                                         <label for="nome" class="form-label">Nome<h11 class="text-danger">*</h11> </label>
-                                        <input type="text" class="form-control" id="nome" name="nome">
+                                        <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" name="nome" value="{{old('nome')}}">
+                                        <div class="invalid-feedback">
+                                            @error('nome')
+                                                {{ $message }}
+                                            @enderror
+                                        </div>
                                     </div>
                                     <div class="col-md-3">
                                         <label for="sexo" class="form-label">Sexo<h11 class="text-danger">*</h11> </label>
                                         <select class="form-select" aria-label="Default select example" name="sexo">
-                                            <option selected>Selecione</option>
-                                            <option value="Feminino">Feminino</option>
-                                            <option value="Masculino">Masculino</option>
+                                            <option selected value=""{{ old('sexo') == '' ? 'selected' : '' }}>Selecione</option>
+                                            <option value="Feminino" {{ old('sexo') == 'Feminino' ? 'selected' : '' }}>Feminino</option>
+                                            <option value="Masculino" {{ old('sexo') == 'Masculino' ? 'selected' : '' }}>Masculino</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
                                         <label for="dataNascimento" class="form-label">Data Nascimento<h11 class="text-danger">*</h11> </label>
-                                        <input type="date" class="form-control" id="dataNascimento" name="dataNascimento">
+                                        <input type="date" class="form-control" id="dataNascimento" name="dataNascimento" value="{{old('dataNascimento')}}">
+                                        <div class="invalid-feedback">
+                                            @error('dataNascimento')
+                                                {{ $message }}
+                                            @enderror
+                                        </div>
                                     </div>
 
                                     <div class="col-md-4">
                                         <label for="cpf" class="form-label">CPF<h11 class="text-danger">*</h11> </label>
-                                        <input type="number" class="form-control" id="cpf" name="cpf">
+                                        <input type="number" class="form-control @error('cpf') is-invalid @enderror" id="cpf" name="cpf" value="{{old('cpf')}}">
+                                        <div class="invalid-feedback">
+                                            @error('cpf')
+                                                {{ $message }}
+                                            @enderror
+                                        </div>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="formacao" class="form-label">Formação</label>
                                         <select class="form-select" name="formacao_id">
                                             <option selected>Selecione</option>
                                             @foreach($formacoes as $formacao)
-                                                <option value="{{$formacao->id}}">{{$formacao->nome}}</option>
+                                                <option value="{{ $formacao->id }}" {{ old('formacao_id') == $formacao->id ? 'selected' : '' }}>{{ $formacao->nome }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -76,7 +91,7 @@
                                         <select class="form-select" name="cargo_id">
                                             <option selected>Selecione</option>
                                             @foreach($cargos as $cargo)
-                                                <option value="{{$cargo->id}}">{{$cargo->nome}}</option>
+                                                <option value="{{$cargo->id}}" {{ old('cargo_id') == $cargo->id ? 'selected' : '' }}>{{$cargo->nome}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -99,26 +114,37 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="registro" class="form-label">Registro Profissional<h11 class="text-danger">*</h11> </label>
-                                        <input type="number" class="form-control" id="registro" name="registro">
+                                        <input type="number" class="form-control" id="registro" name="registro" value="{{old('registro')}}">
+                                        <div class="invalid-feedback">
+                                            @error('registro')
+                                                {{ $message }}
+                                            @enderror
+                                        </div>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="rqe" class="form-label">Registro de qualificação de especialista (RQE)</label>
-                                        <input type="text" class="form-control" id="rqe" name="rqe">
+                                        <input type="text" class="form-control" id="rqe" name="rqe" value="{{old('rqe')}}">
+                                        <div class="invalid-feedback">
+                                            @error('rqe')
+                                                {{ $message }}
+                                            @enderror
+                                        </div>
                                     </div>
                                     <div class="col-md-12">
                                         <p style="text-align: right;">
-                                            <button type="submit" class="btn btn-primary btn-icon-split">
-                                                <span class="icon text-white-50">
-                                                    <i class="fas fa-check-square"></i>
-                                                </span>
-                                                <span class="text">Gravar</span>
-                                            </button>
                                             <a href="{{route('index')}}" class="btn btn-warning btn-icon-split">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-arrow-left"></i>
                                                 </span>
                                                 <span class="text">Voltar</span>
                                             </a>
+                                            <button type="submit" class="btn btn-primary btn-icon-split">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-check-square"></i>
+                                                </span>
+                                                <span class="text">Gravar</span>
+                                            </button>
+                                            
                                         </p>
                                     </div> 
                                 </div>                                   

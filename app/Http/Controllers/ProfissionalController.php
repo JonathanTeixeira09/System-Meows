@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cargo;
 use App\Models\FormacaoProfissional;
 use Illuminate\Http\Request;
+use LaravelLegends\PtBrValidator\Rules\Cpf;
 
 /**
  * Controller responsável pelas operações relacionadas aos profissionais.
@@ -45,10 +46,21 @@ class ProfissionalController extends Controller
     {
         
         $request->validate([
+            'nome' => 'required',
             'conselho' => 'required',
             'registro' => 'required',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cpf' => ['required', new Cpf], 
             // Adicione outras validações necessárias
+        ],[
+            'nome.required' => 'O campo nome é obrigatório',
+            'conselho.required' => 'O campo conselho é obrigatório',
+            'registro.required' => 'O campo registro é obrigatório',
+            'thumbnail.image' => 'O arquivo deve ser uma imagem',
+            'thumbnail.mimes' => 'O arquivo deve ser uma imagem do tipo: jpeg, png, jpg ou gif',
+            'thumbnail.max' => 'O arquivo deve ter no máximo 2MB',
+            'cpf.required' => 'O campo CPF é obrigatório',
+            'cpf.cpf' => 'CPF inválido',
         ]);
         
         $data = $request->all();
