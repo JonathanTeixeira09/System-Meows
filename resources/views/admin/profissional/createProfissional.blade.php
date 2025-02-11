@@ -16,7 +16,7 @@
                 <div class="chart-area">
                 <!-- Formulario -->
                 <form class="row g-3" action="{{route('cadastroprofissional.store')}}" method="POST" name="formCadastroProfissional" enctype="multipart/form-data">
-                    @csrf    
+                    @csrf
                         <div class="row">
                             <div class="col-sm-2 form-group text-center align-self-center">
                                 <img class="img-thumbnail" src="img/logo/user-admin.jpg" width="150px" height="130px" id="foto_thumbnail">
@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <label for="dataNascimento" class="form-label">Data Nascimento<h11 class="text-danger">*</h11> </label>
-                                        <input type="date" class="form-control" id="dataNascimento" name="dataNascimento" value="{{old('dataNascimento')}}">
+                                        <input type="date" class="form-control @error('dataNascimento') is-invalid @enderror" id="dataNascimento" name="dataNascimento" value="{{old('dataNascimento')}}">
                                         <div class="invalid-feedback">
                                             @error('dataNascimento')
                                                 {{ $message }}
@@ -114,7 +114,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="registro" class="form-label">Registro Profissional<h11 class="text-danger">*</h11> </label>
-                                        <input type="number" class="form-control" id="registro" name="registro" value="{{old('registro')}}">
+                                        <input type="number" class="form-control @error('registro') is-invalid @enderror" id="registro" name="registro" value="{{old('registro')}}">
                                         <div class="invalid-feedback">
                                             @error('registro')
                                                 {{ $message }}
@@ -144,11 +144,11 @@
                                                 </span>
                                                 <span class="text">Gravar</span>
                                             </button>
-                                            
+
                                         </p>
-                                    </div> 
-                                </div>                                   
-                            </div>                        
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                 </form>
             </div>

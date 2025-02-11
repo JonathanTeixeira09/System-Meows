@@ -9,6 +9,11 @@ class Profissional extends Model
 {
     use HasFactory;
 
+    /**
+     * Os atributos que são atribuíveis em massa.
+     *
+     * @var array
+     */
     protected $fillable = [
         'nome',
         'sexo',
@@ -22,4 +27,23 @@ class Profissional extends Model
         'thumbnail',
         'rqe',
     ];
+
+    /**
+     * Obtenha o cargo que possui o Profissional
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function Cargo(){
+        return$this->belongsTo(Cargo::class);
+    }
+
+
+    /**
+     * Obtenha a formação que possui o Profissional
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function Formacao(){
+        return$this->belongsTo(FormacaoProfissional::class);
+    }
 }

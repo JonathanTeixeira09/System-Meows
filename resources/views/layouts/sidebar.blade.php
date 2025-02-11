@@ -105,9 +105,9 @@
         <div id="collapseEquipe" class="collapse" aria-labelledby="headingEquipe" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Profissional:</h6>
+                <a class="collapse-item" href="#">Cadastrar Cargo</a>
                 <a class="collapse-item" href="{{route('cadastroprofissional.index')}}">Cadastrar Profissional</a>
-                <a class="collapse-item" href="#">Listar Profissionais</a>
-                <a class="collapse-item" href="#">Cadastrar Função</a>
+                <a class="collapse-item" href="{{route('listarprofissional.index')}}">Listar Profissionais</a>
             </div>
         </div>
     </li>

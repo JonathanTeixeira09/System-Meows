@@ -66,138 +66,513 @@
                                   name="formCadastro" enctype="multipart/form-data">
                                 @csrf
 
-                                <div class="col-md-12">
+                                <div class="col-md-12 mb-3">
                                     <label for="nomeDaPaciente" class="form-label">Nome da Parturiente:</label>
-                                    <input type="text"
-                                           class="form-control @error('nomeDaPaciente') is-invalid @enderror"
-                                           name="nomeDaPaciente" placeholder="" tabindex="1" id="nomeDaPaciente">
-                                    <div id="nomeDaPacienteFeedback" class="form-text"></div>
+                                    <input class="form-control @error('nomeDaPaciente') is-invalid @enderror" list="datalistOptions" name="nomeDaPaciente" placeholder="Informe nome da Parturiente" value="{{ old('nomeDaPaciente') }}">
+                                    <datalist id="datalistOptions" >
+                                        <option value="Maria 1">
+                                        <option value="Maria 2">
+                                        <option value="Maria 3">
+                                        <option value="Maria 4">
+                                        <option value="Maria 5">
+                                    </datalist>
                                     @error('nomeDaPaciente')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
                                     @enderror
                                 </div>
 
-                                <div class="col-md-12">
-                                    <label for="frequenciaCardiaca" class="form-label">Frequência Cardíaca:</label>
-                                    <input type="text"
-                                           class="form-control @error('frequenciaCardiaca') is-invalid @enderror"
-                                           name="frequenciaCardiaca" placeholder="FC(bat/min)" tabindex="2"
-                                           id="frequenciaCardiaca">
-                                    <div id="frequenciaCardiacaFeedback" class="form-text"></div>
-                                    @error('frequenciaCardiaca')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+                                <!-- <div class="col-md-2 border-left 
+                                            @error('fc') border-left-danger 
+                                            @elseif(old('fc')) border-left-success 
+                                            @else border-left-secondary 
+                                            @enderror">
+                                    <div class="form-group">
+                                        <label for="frequenciaCardiaca" class="form-label">Frequência Cardíaca:</label>
+                                        
+                                        @php $oldFc = old('fc'); @endphp
+                                        
+                                        <div class="form-check">
+                                            <input class="form-check-input @error('fc') is-invalid @enderror" type="radio" name="fc"
+                                                id="fc_1" value="1" {{ $oldFc == '1' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fc_1">
+                                                &lt; 50
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input @error('fc') is-invalid @enderror" type="radio" name="fc"
+                                                id="fc_2" value="2" {{ $oldFc == '2' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fc_2">
+                                                50 - 59
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input @error('fc') is-invalid @enderror" type="radio" name="fc"
+                                                id="fc_3" value="3" {{ $oldFc == '3' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fc_3">
+                                                60 - 99
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input @error('fc') is-invalid @enderror" type="radio" name="fc"
+                                                id="fc_4" value="4" {{ $oldFc == '4' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fc_4">
+                                                100 - 109
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input @error('fc') is-invalid @enderror" type="radio" name="fc"
+                                                id="fc_5" value="5" {{ $oldFc == '5' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fc_5">
+                                                110 - 129
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input @error('fc') is-invalid @enderror" type="radio" name="fc"
+                                                id="fc_6" value="6" {{ $oldFc == '6' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fc_6">
+                                                &gt;= 130
+                                            </label>
+                                        </div>
+
+                                        @error('fc')
+                                            <div class="invalid-feedback d-block">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
-                                    @enderror
                                 </div>
 
-                                <div class="col-md-12">
+
+                                <div class="col-md-2 border-left 
+                                            @error('fr') border-left-danger 
+                                            @elseif(old('fr')) border-left-success 
+                                            @else border-left-secondary 
+                                            @enderror">
                                     <label for="frequenciaRespiratoria" class="form-label">Frequência
                                         Respiratória:</label>
-                                    <input type="text"
-                                           class="form-control @error('frequenciaRespiratoria') is-invalid @enderror"
-                                           name="frequenciaRespiratoria" placeholder="FR(inc/min)" tabindex="3"
-                                           id="frequenciaRespiratoria">
-                                    <div id="frequenciaRespiratoriaFeedback" class="form-text"></div>
-                                    @error('frequenciaRespiratoria')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+
+                                        @php $oldFr = old('fr'); @endphp
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="fr"
+                                               id="fr_1" value="1" {{ $oldFr == '1' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="fr_1" value="1">
+                                            <= 12
+                                        </label>
                                     </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="fr"
+                                               id="fr_2" value="2" {{ $oldFr == '2' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="fr_2">
+                                            13 - 15
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="fr"
+                                               id="fr_3" value="3" {{ $oldFr == '3' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="fr_3">
+                                            16 - 20
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="fr"
+                                               id="fr_4" value="4" {{ $oldFr == '4' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="fr_4">
+                                            21 - 24
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="fr"
+                                               id="fr_5" value="5" {{ $oldFr == '5' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="fr_5">
+                                            25 - 30
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="fr"
+                                               id="fr_6" value="6" {{ $oldFr == '6' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="fr_6">
+                                            >= 31
+                                        </label>
+                                    </div>
+                                    @error('fr')
+                                            <div class="invalid-feedback d-block">
+                                                {{ $message }}
+                                            </div>
                                     @enderror
+                                </div> -->
+                                <div class="col-md-2 border-left 
+                                            @if ($errors->has('fc')) border-left-danger 
+                                            @elseif (old('fc')) border-left-success 
+                                            @else border-left-secondary 
+                                            @endif">
+                                    <div class="form-group">
+                                        <label for="frequenciaCardiaca" class="form-label">Frequência Cardíaca:</label>
+
+                                        @php $oldFc = old('fc'); @endphp
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="fc"
+                                                id="fc_1" value="1" {{ $oldFc == '1' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fc_1">&lt; 50</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="fc"
+                                                id="fc_2" value="2" {{ $oldFc == '2' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fc_2">50 - 59</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="fc"
+                                                id="fc_3" value="3" {{ $oldFc == '3' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fc_3">60 - 99</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="fc"
+                                                id="fc_4" value="4" {{ $oldFc == '4' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fc_4">100 - 109</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="fc"
+                                                id="fc_5" value="5" {{ $oldFc == '5' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fc_5">110 - 129</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="fc"
+                                                id="fc_6" value="6" {{ $oldFc == '6' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fc_6">&gt;= 130</label>
+                                        </div>
+
+                                        @error('fc')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
 
-                                <div class="col-md-12">
+                                <!-- FREQUÊNCIA RESPIRATÓRIA -->
+                                <div class="col-md-2 border-left 
+                                            @if ($errors->has('fr')) border-left-danger 
+                                            @elseif (old('fr')) border-left-success 
+                                            @else border-left-secondary 
+                                            @endif">
+                                    <div class="form-group">
+                                        <label for="frequenciaRespiratoria" class="form-label">Frequência Respiratória:</label>
+
+                                        @php $oldFr = old('fr'); @endphp
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="fr"
+                                                id="fr_1" value="1" {{ $oldFr == '1' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fr_1">&lt;= 12</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="fr"
+                                                id="fr_2" value="2" {{ $oldFr == '2' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fr_2">13 - 15</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="fr"
+                                                id="fr_3" value="3" {{ $oldFr == '3' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fr_3">16 - 20</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="fr"
+                                                id="fr_4" value="4" {{ $oldFr == '4' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fr_4">21 - 24</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="fr"
+                                                id="fr_5" value="5" {{ $oldFr == '5' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fr_5">25 - 30</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="fr"
+                                                id="fr_6" value="6" {{ $oldFr == '6' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="fr_6">&gt;= 31</label>
+                                        </div>
+
+                                        @error('fr')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- PRESSÃO ARTERIAL SISTÓLICA -->
+                                <div class="col-md-2 border-left 
+                                            @if ($errors->has('PA')) border-left-danger 
+                                            @elseif (old('PA')) border-left-success 
+                                            @else border-left-secondary 
+                                            @endif">
                                     <label for="pressaoArterialSistolica" class="form-label">Pressão Arterial
                                         Sistólica:</label>
-                                    <input type="text"
-                                           class="form-control @error('pressaoArterialSistolica') is-invalid @enderror"
-                                           name="pressaoArterialSistolica" placeholder="PAS(mmHg)" tabindex="4"
-                                           id="pressaoArterialSistolica">
-                                    <div id="pressaoArterialSistolicaFeedback" class="form-text"></div>
-                                    @error('pressaoArterialSistolica')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+
+                                    @php $oldPa = old('PA'); @endphp
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="PA"
+                                               id="Pas_1" value="1" {{ $oldPa == '1' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Pas_1">
+                                            < 70
+                                        </label>
                                     </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="PA"
+                                               id="Pas_2" value="2" {{ $oldPa == '2' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Pas_2">
+                                            70 - 89
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="PA"
+                                               id="Pas_3" value="3" {{ $oldPa == '3' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Pas_3">
+                                            90 - 139
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="PA"
+                                               id="Pas_4" value="4" {{ $oldPa == '4' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Pas_4">
+                                            140 - 149
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="PA"
+                                               id="Pas_5" value="5" {{ $oldPa == '5' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Pas_5">
+                                            150 - 159
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="PA"
+                                               id="Pas_6" value="6" {{ $oldPa == '6' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Pas_6">
+                                            >= 160
+                                        </label>
+                                    </div>
+
+                                    @error('PA')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
 
-                                <div class="col-md-12">
+                                <!-- PRESSÃO ARTERIAL DIASTÓLICA -->
+                                <div class="col-md-2 border-left 
+                                            @if ($errors->has('PAD')) border-left-danger 
+                                            @elseif (old('PAD')) border-left-success 
+                                            @else border-left-secondary 
+                                            @endif">
                                     <label for="pressaoArterialDiastolica" class="form-label">Pressão Arterial
                                         Diastólica:</label>
-                                    <input type="text"
-                                           class="form-control @error('pressaoArterialDiastolica') is-invalid @enderror"
-                                           name="pressaoArterialDiastolica" placeholder="PAD(mmHg)" tabindex="5"
-                                           id="pressaoArterialDiastolica">
-                                    <div id="pressaoArterialDiastolicaFeedback" class="form-text"></div>
-                                    @error('pressaoArterialDiastolica')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+
+                                    @php $oldPad = old('PAD'); @endphp
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="PAD"
+                                               id="Pad_1" value="1" {{ $oldPad == '1' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Pad_1">
+                                            < 45
+                                        </label>
                                     </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="PAD"
+                                               id="Pad_2" value="2" {{ $oldPad == '2' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Pad_2">
+                                            45 - 89
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="PAD"
+                                               id="Pad_3" value="3" {{ $oldPad == '3' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Pad_3">
+                                            90 - 99
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="PAD"
+                                               id="Pad_4" value="4" {{ $oldPad == '4' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Pad_4">
+                                            100 - 109
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="PAD"
+                                               id="Pad_5" value="5" {{ $oldPad == '5' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Pad_5">
+                                            >= 110
+                                        </label>
+                                    </div>
+                                    @error('PAD')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
 
-                                <div class="col-md-12">
+                                <!-- TEMPERATURA -->
+                                <div class="col-md-2 border-left 
+                                            @if ($errors->has('Temp')) border-left-danger 
+                                            @elseif (old('Temp')) border-left-success 
+                                            @else border-left-secondary 
+                                            @endif">
                                     <label for="temperatura" class="form-label">Temperatura:</label>
-                                    <input type="text" class="form-control @error('temperatura') is-invalid @enderror"
-                                           name="temperatura" placeholder="°C" tabindex="6" id="temperatura">
-                                    <div id="temperaturaFeedback" class="form-text"></div>
-                                    @error('temperatura')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+
+                                    @php $oldTemp = old('Temp'); @endphp
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Temp"
+                                               id="Temp_1" value="1" {{ $oldTemp == '1' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Temp_1">
+                                            < 35.0
+                                        </label>
                                     </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Temp"
+                                               id="Temp_2" value="2" {{ $oldTemp == '2' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Temp_2">
+                                            35.0 - 37.4
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Temp"
+                                               id="Temp_3" value="3" {{ $oldTemp == '3' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Temp_3">
+                                            37.5 - 37.9
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Temp"
+                                               id="Temp_4" value="4" {{ $oldTemp == '4' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Temp_4">
+                                            38.0 - 38.9
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Temp"
+                                               id="Temp_5" value="5" {{ $oldTemp == '5' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="Temp_5">
+                                            >= 39.0
+                                        </label>
+                                    </div>
+                                    @error('Temp')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
 
-                                <div class="col-md-12">
+                                <!-- <div class="col-md-2 border-left-secondary">
                                     <label for="condicaoNeurologica" class="form-label">Condição Neurológica
                                         (AVPU):</label>
-                                    <input type="text"
-                                           class="form-control @error('condicaoNeurologica') is-invalid @enderror"
-                                           name="condicaoNeurologica" placeholder="Nível de Consciência" tabindex="7"
-                                           id="condicaoNeurologica">
-                                    <div id="condicaoNeurologicaFeedback" class="form-text"></div>
-                                    @error('condicaoNeurologica')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="CN"
+                                               id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Alerta (A)
+                                        </label>
                                     </div>
-                                    @enderror
-                                </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="CN"
+                                               id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Responde a voz (V)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="CN"
+                                               id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Responde à dor (P)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="CN"
+                                               id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Inconsciente (U)
+                                        </label>
+                                    </div>
 
-                                <div class="col-md-12">
+                                </div> -->
+
+                                <div class="col-md-2 border-left 
+                                            @if ($errors->has('SO')) border-left-danger 
+                                            @elseif (old('SO')) border-left-success 
+                                            @else border-left-secondary 
+                                            @endif">
                                     <label for="saturacaoOxigenio" class="form-label">Saturação de Oxigênio:</label>
-                                    <input type="text"
-                                           class="form-control @error('saturacaoOxigenio') is-invalid @enderror"
-                                           name="saturacaoOxigenio" placeholder="SpO2(%)" tabindex="8"
-                                           id="saturacaoOxigenio">
-                                    <div id="saturacaoOxigenioFeedback" class="form-text"></div>
-                                    @error('saturacaoOxigenio')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+
+                                    @php $oldSo = old('SO'); @endphp
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="SO"
+                                               id="So_1" value="1" {{ $oldSo == '1' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="So_1">
+                                            < 92
+                                        </label>
                                     </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="SO"
+                                               id="So_2" value="2" {{ $oldSo == '2' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="So_2">
+                                            92 - 95
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="SO"
+                                               id="So_3" value="3" {{ $oldSo == '3' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="So_3">
+                                            >= 96
+                                        </label>
+                                    </div>
+
+                                    @error('SO')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
 
-                                <div class="col-md-12">
+                                <!-- <div class="col-md-1 border-left-secondary">
                                     <label for="diurese" class="form-label">Diurese:</label>
-                                    <input type="text" class="form-control @error('diurese') is-invalid @enderror"
-                                           name="diurese" placeholder="ml/h" tabindex="9" id="diurese">
-                                    <div id="diureseFeedback" class="form-text"></div>
-                                    @error('diurese')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Di"
+                                               id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            <= 10
+                                        </label>
                                     </div>
-                                    @enderror
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Di"
+                                               id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            11 - 20
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Di"
+                                               id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            21 - 29
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="Di"
+                                               id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            >= 30
+                                        </label>
+                                    </div>
+
+                                </div> -->
+
+                                <div class="col-md-12 mb-3">
+                                    <label for="obs" class="form-label">Observações:</label>
+                                    <input class="form-control" placeholder="Descreva observações caso exista" name="obs">
                                 </div>
 
                                 <!-- Botão de Enviar -->
                                 <div class="col-md-12">
                                     <p style="text-align: right;">
                                         <button type="submit" class="btn btn-success text-white" value="cadastrar">
-                <span class="icon text-white-50">
-                    <i class="fas fa-check-square"></i>
-                </span>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-check-square"></i>
+                                            </span>
                                             <span class="text">Gravar</span>
                                         </button>
                                     </p>
@@ -205,193 +580,17 @@
                             </form>
 
 
-                            {{--                            <form class="row g-2" action="{{ route('incluirAnamenese.store') }}" method="POST"--}}
-                            {{--                                  name="formCadastro"--}}
-                            {{--                                  enctype="multipart/form-data">--}}
-                            {{--                                @csrf--}}
-
-                            {{--                                <div class="col-md-12">--}}
-                            {{--                                    <label for="nomeDaPaciente" class="form-label">Nome da Parturiente:</label>--}}
-                            {{--                                    <input type="text"--}}
-                            {{--                                           class="form-control @error('nomeDaPaciente') is-invalid @enderror"--}}
-                            {{--                                           name="nomeDaPaciente"--}}
-                            {{--                                           placeholder="" tabindex="1" id="nomeDaPaciente">--}}
-                            {{--                                    <div id="nomeDaPacienteFeedback" class="form-text"></div>--}}
-                            {{--                                    @error('nomeDaPaciente')--}}
-                            {{--                                    <div class="invalid-feedback">--}}
-                            {{--                                        {{ $message }}--}}
-                            {{--                                    </div>--}}
-                            {{--                                    @enderror--}}
-                            {{--                                </div>--}}
-
-                            {{--                                <div class="col-md-12">--}}
-                            {{--                                    <label for="frequenciaCardiaca" class="form-label">Frequência Cardíaca:</label>--}}
-                            {{--                                    <input type="text"--}}
-                            {{--                                           class="form-control @error('frequenciaCardiaca') is-invalid @enderror"--}}
-                            {{--                                           name="frequenciaCardiaca"--}}
-                            {{--                                           placeholder="FC(bat/min)" tabindex="1" id="frequenciaCardiaca">--}}
-                            {{--                                    <div id="frequenciaCardiacaFeedback" class="form-text"></div>--}}
-                            {{--                                    @error('frequenciaCardiaca')--}}
-                            {{--                                    <div class="invalid-feedback">--}}
-                            {{--                                        {{ $message }}--}}
-                            {{--                                    </div>--}}
-                            {{--                                    @enderror--}}
-                            {{--                                </div>--}}
-
-                            {{--                                <div class="col-md-12">--}}
-                            {{--                                    <label for="pressaoArterial" class="form-label"> Pressão Arterial:</label>--}}
-                            {{--                                    <input type="text"--}}
-                            {{--                                           class="form-control @error('pressaoArterial') is-invalid @enderror"--}}
-                            {{--                                           name="pressaoArterial"--}}
-                            {{--                                           placeholder="PA(mmHg)" tabindex="2">--}}
-                            {{--                                    @error('pressaoArterial')--}}
-                            {{--                                    <div class="invalid-feedback">--}}
-                            {{--                                        {{ $message }}--}}
-                            {{--                                    </div>--}}
-                            {{--                                    @enderror--}}
-                            {{--                                </div>--}}
-
-                            {{--                                <div class="col-md-12">--}}
-                            {{--                                    <label for="frequenciaRespiratoria" class="form-label"> Pressão Arterial:</label>--}}
-                            {{--                                    <input type="text"--}}
-                            {{--                                           class="form-control @error('frequenciaRespiratoria') is-invalid @enderror"--}}
-                            {{--                                           name="frequenciaRespiratoria"--}}
-                            {{--                                           placeholder="FR(inc/min)" tabindex="3">--}}
-                            {{--                                    @error('frequenciaRespiratoria')--}}
-                            {{--                                    <div class="invalid-feedback">--}}
-                            {{--                                        {{ $message }}--}}
-                            {{--                                    </div>--}}
-                            {{--                                    @enderror--}}
-                            {{--                                </div>--}}
-
-                            {{--                                <div class="col-md-12">--}}
-                            {{--                                    <label for="temperatura" class="form-label"> Temperatura:</label>--}}
-                            {{--                                    <input type="text" class="form-control @error('temperatura') is-invalid @enderror"--}}
-                            {{--                                           name="temperatura"--}}
-                            {{--                                           placeholder="°C" tabindex="4">--}}
-                            {{--                                    @error('temperatura')--}}
-                            {{--                                    <div class="invalid-feedback">--}}
-                            {{--                                        {{ $message }}--}}
-                            {{--                                    </div>--}}
-                            {{--                                    @enderror--}}
-                            {{--                                </div>--}}
-
-                            {{--                                <div class="col-md-12">--}}
-                            {{--                                    <label for="nivelConsciencia" class="form-label"> Nível de Consciência:</label>--}}
-                            {{--                                    <input type="text"--}}
-                            {{--                                           class="form-control @error('nivelConsciencia') is-invalid @enderror"--}}
-                            {{--                                           name="nivelConsciencia"--}}
-                            {{--                                           placeholder="Nível de Consciência" tabindex="5">--}}
-                            {{--                                    @error('nivelConsciencia')--}}
-                            {{--                                    <div class="invalid-feedback">--}}
-                            {{--                                        {{ $message }}--}}
-                            {{--                                    </div>--}}
-                            {{--                                    @enderror--}}
-                            {{--                                </div>--}}
-
-                            {{--                                <!-- Botão de Enviar -->--}}
-                            {{--                                <div class="col-md-12">--}}
-                            {{--                                    <p style="text-align: right;">--}}
-                            {{--                                        <button type="submit" class="btn btn-success text-white" value="cadastrar">--}}
-                            {{--                                                <span class="icon text-white-50">--}}
-                            {{--                                                    <i class="fas fa-check-square"></i>--}}
-                            {{--                                                </span>--}}
-                            {{--                                            <span class="text">Gravar</span>--}}
-                            {{--                                        </button>--}}
-                            {{--                                    </p>--}}
-                            {{--                                </div>--}}
-                            {{--                            </form>--}}
-                            <!-- Fim -->
-
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
+        @include('layouts.statusMeows')
     </div>
 
     @push('scriptMeows')
-        <script>
-            $(document).ready(function () {
-                // Função para lidar com a resposta AJAX
-                function handleResponse(response, inputId, feedbackId) {
-                    var input = $(inputId);
-                    var feedback = $(feedbackId);
-
-                    // Remove as classes de cor anteriores
-                    input.removeClass('green yellow orange red');
-                    feedback.removeClass('green-text yellow-text orange-text red-text');
-
-                    // Adiciona as classes de cor novas
-                    input.addClass(response.status);
-                    feedback.addClass(response.status + '-text');
-
-                    // Atualiza a mensagem de feedback
-                    feedback.text(response.message);
-                }
-
-                // Função para enviar os dados AJAX
-                function sendAjaxRequest() {
-                    $.ajax({
-                        url: '{{ route("incluirAnamenese.store") }}',
-                        method: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            frequenciaCardiaca: $('#frequenciaCardiaca').val(),
-                            frequenciaRespiratoria: $('#frequenciaRespiratoria').val(),
-                            pressaoArterialSistolica: $('#pressaoArterialSistolica').val(),
-                            pressaoArterialDiastolica: $('#pressaoArterialDiastolica').val(),
-                            temperatura: $('#temperatura').val(),
-                            condicaoNeurologica: $('#condicaoNeurologica').val(),
-                            saturacaoOxigenio: $('#saturacaoOxigenio').val(),
-                            diurese: $('#diurese').val()
-                        },
-                        success: function (response) {
-                            handleResponse({
-                                status: response.scores.frequenciaCardiaca,
-                                message: response.messages.frequenciaCardiaca
-                            }, '#frequenciaCardiaca', '#frequenciaCardiacaFeedback');
-                            handleResponse({
-                                status: response.scores.frequenciaRespiratoria,
-                                message: response.messages.frequenciaRespiratoria
-                            }, '#frequenciaRespiratoria', '#frequenciaRespiratoriaFeedback');
-                            handleResponse({
-                                status: response.scores.pressaoArterialSistolica,
-                                message: response.messages.pressaoArterialSistolica
-                            }, '#pressaoArterialSistolica', '#pressaoArterialSistolicaFeedback');
-                            handleResponse({
-                                status: response.scores.pressaoArterialDiastolica,
-                                message: response.messages.pressaoArterialDiastolica
-                            }, '#pressaoArterialDiastolica', '#pressaoArterialDiastolicaFeedback');
-                            handleResponse({
-                                status: response.scores.temperatura,
-                                message: response.messages.temperatura
-                            }, '#temperatura', '#temperaturaFeedback');
-                            handleResponse({
-                                status: response.scores.condicaoNeurologica,
-                                message: response.messages.condicaoNeurologica
-                            }, '#condicaoNeurologica', '#condicaoNeurologicaFeedback');
-                            handleResponse({
-                                status: response.scores.saturacaoOxigenio,
-                                message: response.messages.saturacaoOxigenio
-                            }, '#saturacaoOxigenio', '#saturacaoOxigenioFeedback');
-                            handleResponse({
-                                status: response.scores.diurese,
-                                message: response.messages.diurese
-                            }, '#diurese', '#diureseFeedback');
-                        },
-                        error: function (xhr) {
-                            console.log(xhr.responseText);
-                        }
-                    });
-                }
-
-                // Adiciona evento blur para todos os campos
-                $('#frequenciaCardiaca, #frequenciaRespiratoria, #pressaoArterialSistolica, #pressaoArterialDiastolica, #temperatura, #condicaoNeurologica, #saturacaoOxigenio, #diurese').blur(function () {
-                    sendAjaxRequest();
-                });
-            });
-        </script>
+        
 
     @endpush
 

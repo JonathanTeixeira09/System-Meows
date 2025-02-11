@@ -17,13 +17,13 @@ class ProfissionalSeeder extends Seeder
             'nome' => 'Jonathan Teixeira',
             'sexo' => 'Masculino',
             'dataNascimento' => '1980-01-01',
-            'cpf' => '123.456.789-00',
+            'cpf' => '12345678900',
             'status' => 'Ativo',
             'formacao_id' => 1, // Supondo que a formação com ID 1 existe
             'cargo_id' => 1, // Supondo que o cargo de Administrador tem ID 2
             'conselho' => 'CRM',
             'registro' => '123456',
-            'thumbnail' => 'logo/user-admin.jpg',
+            'thumbnail' => 'user-admin.jpg',
             'rqe' => '123456',
         ]);
     }

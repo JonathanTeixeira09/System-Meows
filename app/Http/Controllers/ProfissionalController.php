@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cargo;
 use App\Models\FormacaoProfissional;
+use App\Models\Profissional;
 use Illuminate\Http\Request;
 use LaravelLegends\PtBrValidator\Rules\Cpf;
 
@@ -43,15 +44,14 @@ class ProfissionalController extends Controller
      * @return void
      */
     public function store(Request $request)
-    {
-        
+    {       
         $request->validate([
             'nome' => 'required',
             'conselho' => 'required',
             'registro' => 'required',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'cpf' => ['required', new Cpf], 
-            // Adicione outras validações necessárias
+            'cpf' => ['required', new Cpf],
+            'dataNascimento' => 'required',
         ],[
             'nome.required' => 'O campo nome é obrigatório',
             'conselho.required' => 'O campo conselho é obrigatório',
@@ -61,26 +61,42 @@ class ProfissionalController extends Controller
             'thumbnail.max' => 'O arquivo deve ter no máximo 2MB',
             'cpf.required' => 'O campo CPF é obrigatório',
             'cpf.cpf' => 'CPF inválido',
+            'dataNascimento.required' => 'O campo data de nascimento é obrigatório',
         ]);
-        
-        $data = $request->all();
-        dd($data);
-    
+              
         // Verifica se a opção de excluir a foto foi marcada
         if ($request->has('deletar_foto') && $request->deletar_foto) {
-            $data['thumbnail'] = 'img/logo/user-admin.jpg'; // Caminho da imagem padrão
+            $data['thumbnail'] = 'user-admin.jpg'; // Caminho da imagem padrão
         } else {
             if ($request->hasFile('thumbnail')) {
                 $file = $request->file('thumbnail');
-                $path = $file->store('thumbnails', 'public');
+                $path = $file->store('profissionais', 'public');
                 $data['thumbnail'] = $path;
+            } else {
+                // Se não foi enviada nenhuma imagem, usa a imagem padrão
+                $data['thumbnail'] = 'user-admin.jpg'; // Caminho da imagem padrão
             }
         }
 
-        $profissional->save();
+        $status = 'Ativo';
 
-        return redirect()->route('profissional.index')->with('success', 'Profissional cadastrado com sucesso!');
-    
+        $data = [
+            'nome' => $request->input('nome'),
+            'sexo' => $request->input('sexo'),
+            'dataNascimento' => $request->input('dataNascimento'),
+            'cpf' => $request->input('cpf'),
+            'status' => $status,
+            'formacao_id' => $request->input('formacao_id'),
+            'cargo_id' => $request->input('cargo_id'),
+            'conselho' => $request->input('conselho'),
+            'registro' => $request->input('registro'),
+            'thumbnail' => $data['thumbnail'],
+            'rqe' => $request->input('rqe'),
+        ];
+
+        Profissional::create($data);
+        flash('Professional cadastrado com sucesso')->success();
+        return redirect()->route('listarprofissional.index');    
     }
 
     /**
@@ -91,17 +107,18 @@ class ProfissionalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function listarFuncionarios()
+    public function listarProfissional()
+    {
+        $profissional = Profissional::orderBy('nome')->get();
+        return view('admin.profissional.listProfissional', ['profissionals' => $profissional]);
+    }
+
+    public function editarProfissional()
     {
         //
     }
 
-    public function editarFuncionario()
-    {
-        //
-    }
-
-    public function excluirFuncionario()
+    public function excluirProfissional()
     {
         //
     }

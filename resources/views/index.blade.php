@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Seja Bem-vindo ao MEOWS Digital')
+@section('title', 'Seja Bem-vindo ao sistema MEOWS - Jonathan Teixeira')
 @section('conteudo')
 
     <!-- Content Row -->
