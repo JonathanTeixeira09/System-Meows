@@ -41,7 +41,7 @@ class ParturientesController extends Controller
             'PAD' => 'required',
             'Temp' => 'required',
             'SO' => 'required',
-            'obs' => 'nullable|string|max:1000',
+            'obs' => 'nullable|string|max:10000',
         ], [
             // Mensagens de erro personalizadas
             'nomeDaPaciente.required' => 'O nome da parturiente é obrigatório.',
@@ -53,35 +53,159 @@ class ParturientesController extends Controller
             'SO.required' => 'Selecione uma opção para a saturação de oxigênio.',
         ]);
 
-        dd($request);
+        // dd($request);
+
+        // Recebe os dados do formulário
+        $fc = $request->input('fc');
+        $fr = $request->input('fr');
+        $pas = $request->input('PA');
+        $pad = $request->input('PAD');
+        $temp = $request->input('Temp');
+        // $avpu = $request->input('condicaoNeurologica');
+        $so = $request->input('SO');
+        // $diurese = $request->input('diurese');
+
+        $scores = [
+            'fc' => 0,
+            'fr' => 0,
+            'pas' => 0,
+            'pad' => 0,
+            'temp' => 0,
+            // 'condicaoNeurologica' => 0,
+            'so' => 0,
+            // 'diurese' => 0,
+        ];
+
         
         // Inicializa a pontuação total
         $pontuacaoTotal = 0;
 
+        // Calcula a pontuação total
+        // Frequência Cardíaca
+        if ($fc == 1){
+            $scores['fc'] = 3;
+            $fc = '< 50';
+        } elseif ($fc == 2){
+            $scores['fc'] = 1;
+            $fc = '50 - 59';
+        } elseif ($fc == 3){
+            $scores['fc'] = 0;
+            $fc = '60 - 99';
+        } elseif ($fc == 4){
+            $scores['fc'] = 1;
+            $fc = '100 - 109';
+        } elseif ($fc == 5){
+            $scores['fc'] = 2;
+            $fc = '110 - 129';
+        } elseif ($fc == 6){
+            $scores['fc'] = 3;
+            $fc = '> 130';
+        }
         
+        // Frequência Respiratória
+        if ($fr == 1){
+            $scores['fr'] = 3;
+            $fr = '<= 12';
+        } elseif ($fr == 2){
+            $scores['fr'] = 2;
+            $fr = '13 - 15';
+        } elseif ($fr == 3){
+            $scores['fr'] = 0;
+            $fr = '16 - 20';
+        } elseif ($fr == 4){
+            $scores['fr'] = 1;
+            $fr = '21 - 24';
+        } elseif ($fr == 5){
+            $scores['fr'] = 2;
+            $fr = '25 - 30';
+        } elseif ($fr == 6){
+            $scores['fr'] = 3;
+            $fr = '>= 31';
+        }
 
+        // Pressão Arterial Sistólica
+        if ($pas == 1){
+            $scores['pas'] = 3;
+            $pas = '< 70';
+        } elseif ($pas == 2){
+            $scores['pas'] = 2;
+            $pas = '70 - 89';
+        } elseif ($pas == 3){
+            $scores['pas'] = 0;
+            $pas = '90 - 139';
+        } elseif ($pas == 4){
+            $scores['pas'] = 1;
+            $pas = '140 - 149';
+        } elseif ($pas == 5){
+            $scores['pas'] = 2;
+            $pas = '150 - 159';
+        } elseif ($pas == 6){
+            $scores['pas'] = 3;
+            $pas = '>= 160';
+        } 
 
+        // Pressão Arterial Diastólica
+        if ($pad == 1){
+            $scores['pad'] = 2;
+            $pad = '< 45';
+        } elseif ($pad == 2){
+            $scores['pad'] = 0;
+            $pad = '45 - 89';
+        } elseif ($pad == 3){
+            $scores['pad'] = 1;
+            $pad = '90 - 99';
+        } elseif ($pad == 4){
+            $scores['pad'] = 2;
+            $pad = '100 - 109';
+        } elseif ($pad == 5){
+            $scores['pad'] = 3;
+            $pad = '>= 110';
+        }
+
+        // Temperatura
+        if ($temp == 1){
+            $scores['temp'] = 2;
+            $temp = '< 35';
+        } elseif ($temp == 2){
+            $scores['temp'] = 0;
+            $temp = '35 - 37.4';
+        } elseif ($temp == 3){
+            $scores['temp'] = 1;
+            $temp = '37.5 - 37.9';
+        } elseif ($temp == 4){
+            $scores['temp'] = 2;
+            $temp = '38 - 38.9';
+        } elseif ($temp == 5){
+            $scores['temp'] = 3;
+            $temp = '>= 39.0';
+        }
+
+        // Saturação de Oxigênio
+        if ($so == 1){
+            $scores['so'] = 3;
+            $so = '< 92';
+        } elseif ($so == 2){
+            $scores['so'] = 2;
+            $so = '92 - 95';
+        } elseif ($so == 3){
+            $scores['so'] = 0;
+            $so = '>= 96';
+        } 
         
+        $scoresTotal = $scores['fc'] + $scores['fr'] + $scores['pas'] + $scores['pad'] + $scores['temp'] + $scores['so'];
+               
+        if ($scoresTotal == 0){
+            $avaliacao = 'Não há risco de deterioração';
+        } elseif ($scoresTotal >= 1 && $scoresTotal <= 3){
+            $avaliacao = 'Baixo risco de deterioração';
+        } elseif ($scoresTotal >= 4 && $scoresTotal <= 5){
+            $avaliacao = 'Risco moderado de deterioração';
+        } elseif ($scoresTotal >= 6){
+            $avaliacao = 'Risco alto de deterioração';
+        }
 
-        // $fc = $request->input('frequenciaCardiaca');
-        // $fr = $request->input('frequenciaRespiratoria');
-        // $pas = $request->input('pressaoArterialSistolica');
-        // $pad = $request->input('pressaoArterialDiastolica');
-        // $temp = $request->input('temperatura');
-        // $avpu = $request->input('condicaoNeurologica');
-        // $spo2 = $request->input('saturacaoOxigenio');
-        // $diurese = $request->input('diurese');
+        dd($avaliacao, $scoresTotal);
 
-        // $scores = [
-        //     'frequenciaCardiaca' => 0,
-        //     'frequenciaRespiratoria' => 0,
-        //     'pressaoArterialSistolica' => 0,
-        //     'pressaoArterialDiastolica' => 0,
-        //     'temperatura' => 0,
-        //     'condicaoNeurologica' => 0,
-        //     'saturacaoOxigenio' => 0,
-        //     'diurese' => 0,
-        // ];
 
         // $messages = [
         //     'frequenciaCardiaca' => 'Não existe Mensagem',
@@ -96,9 +220,7 @@ class ParturientesController extends Controller
 
         
         return redirect()->route('incluirAnamenese.index')->with('success', 'Anamnese cadastrada com sucesso!');
-        // if ($request->ajax()) {
-        //     return response()->json(['scores' => $scores, 'messages' => $messages]);
-        // }
+
     }
 
     /**

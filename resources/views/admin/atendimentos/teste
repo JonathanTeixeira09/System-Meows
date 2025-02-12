@@ -1,4 +1,4 @@
-// Frequência Cardíaca
+        // Frequência Cardíaca
         if ($fc >= 51 && $fc <= 100) {
             $scores['frequenciaCardiaca'] = 0;
             $messages['frequenciaCardiaca'] = 'REAVALIAR A CADA 6 HORAS';
@@ -117,3 +117,40 @@
             $scores['diurese'] = 3;
             $messages['diurese'] = 'REAVALIAR A CADA 2 HORAS E COMUNICAR AO ENFERMEIRO';
         }
+
+
+
+
+<!-- <div class="col-md-2 border-left-secondary">
+                                    <label for="condicaoNeurologica" class="form-label">Condição Neurológica
+                                        (AVPU):</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="CN"
+                                               id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Alerta (A)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="CN"
+                                               id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Responde a voz (V)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="CN"
+                                               id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Responde à dor (P)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="CN"
+                                               id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Inconsciente (U)
+                                        </label>
+                                    </div>
+
+                                </div> -->
