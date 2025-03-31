@@ -28,14 +28,31 @@
                                 @csrf
                                 <div class="col-md-12">
                                     <label for="nomeDaPaciente" class="form-label">Nome da Parturiente:</label>
-                                    <input type="text" class="form-control @error('nomeDaPaciente') is-invalid @enderror"
-                                           name="nomeDaPaciente" placeholder="" tabindex="1" id="nomeDaPaciente">
-                                    <div id="nomeDaPacienteFeedback" class="form-text"></div>
-                                    @error('nomeDaPaciente')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
+                                    <div class="input-group">
+                                    <input 
+                                        list="pacientes-list" 
+                                        class="form-control @error('paciente_id') is-invalid @enderror" 
+                                        name="paciente_nome" 
+                                        id="pacienteInput" 
+                                        placeholder="Digite o nome" 
+                                        autocomplete="off"
+                                        value="{{ old('paciente_nome') }}"
+                                    >
+                                    <datalist id="pacientes-list">
+                                        @foreach($pacientes as $paciente)
+                                            <option value="{{ $paciente->nome }}" data-id="{{ $paciente->id }}">
+                                        @endforeach
+                                    </datalist>
+                                    <!-- Botão condicional (inicialmente oculto) -->
+                                    <button type="button" id="btnRedirecionarCadastro" class="btn btn-primary d-none" onclick="redirecionarParaCadastro()"                                    >
+                                        <i class="fas fa-plus"></i> Cadastrar Nova
+                                    </button>
+                                </div>
+                                <!-- Campo oculto para enviar o ID (se existir) -->
+                                <input type="hidden" name="paciente_id" id="pacienteId" value="{{ old('paciente_id') }}">
+                                @error('paciente_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                                 </div>
 
                                 <!-- Botão de Enviar -->
@@ -57,3 +74,35 @@
     </div>
 
 @endsection
+@push('iniciarAtendimentoJs')
+<script>
+document.getElementById('pacienteInput').addEventListener('input', function() {
+    const nomeDigitado = this.value.trim();
+    const btnCadastrar = document.getElementById('btnRedirecionarCadastro');
+    const pacientesList = document.getElementById('pacientes-list').options;
+    let pacienteExiste = false;
+
+    // Verifica se o nome existe no datalist
+    for (let i = 0; i < pacientesList.length; i++) {
+        if (pacientesList[i].value === nomeDigitado) {
+            pacienteExiste = true;
+            document.getElementById('pacienteId').value = pacientesList[i].dataset.id;
+            break;
+        }
+    }
+
+    // Mostra/oculta o botão de cadastro
+    if (nomeDigitado && !pacienteExiste) {
+        btnCadastrar.classList.remove('d-none');
+    } else {
+        btnCadastrar.classList.add('d-none');
+    }
+});
+
+function redirecionarParaCadastro() {
+    const nomePaciente = document.getElementById('pacienteInput').value;
+    // Redireciona para a view de cadastro com o nome pré-preenchido
+    window.location.href = `{{ route('cadastrarpaciente.index') }}`;
+}
+</script>
+@endpush

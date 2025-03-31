@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Paciente;
 
 class ParturientesController extends Controller
 {
@@ -16,7 +17,8 @@ class ParturientesController extends Controller
 
     public function indexAtendimento()
     {
-        return view('admin.atendimentos.formIniciarAtendimento');
+        $paciente = Paciente::orderBy('nome')->get();
+        return view(('admin.atendimentos.formIniciarAtendimento'), ['pacientes' => $paciente]);
     }
 
     /**
@@ -205,19 +207,6 @@ class ParturientesController extends Controller
         }
 
         dd($avaliacao, $scoresTotal);
-
-
-        // $messages = [
-        //     'frequenciaCardiaca' => 'Não existe Mensagem',
-        //     'frequenciaRespiratoria' => 'Não existe Mensagem',
-        //     'pressaoArterialSistolica' => 'Não existe Mensagem',
-        //     'pressaoArterialDiastolica' => 'Não existe Mensagem',
-        //     'temperatura' => 'Não existe Mensagem',
-        //     'condicaoNeurologica' => 'Não existe Mensagem',
-        //     'saturacaoOxigenio' => 'Não existe Mensagem',
-        //     'diurese' => 'Não existe Mensagem',
-        // ];
-
         
         return redirect()->route('incluirAnamenese.index')->with('success', 'Anamnese cadastrada com sucesso!');
 

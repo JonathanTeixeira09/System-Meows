@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class Profissional extends Model
 {
@@ -45,5 +47,16 @@ class Profissional extends Model
      */
     public function Formacao(){
         return$this->belongsTo(FormacaoProfissional::class);
+    }
+
+    /**
+     * Obtenha o usuário que possui o Profissional
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function user()
+    {
+        return $this->hasOne(User::class, 'profissionals_id');
+        // Relacionamento inverso
     }
 }

@@ -51,26 +51,26 @@
 <body class="d-flex align-items-center py-4 bg-body-tertiary">
 
 <main class="form-signin w-100 m-auto">
-    <form action="{{--route('login.store')--}}" method="post">
+    <form action="{{route('login.store')}}" method="post">
         @csrf
         <center><img class="mb-2" src="img/logo/logo.png" alt="logo" width="230" height="230"></center>
         <h1 class="h4 mb-2 fw-normal"><center>MEOWS DIGITAL</center></h1>
 
-{{--        @if ($errors->any())--}}
-{{--            @foreach ($errors->all() as $error)--}}
-{{--                <div class="alert alert-danger messageBox" role="alert">--}}
-{{--                    {{$error}}--}}
-{{--                </div>--}}
-{{--            @endforeach--}}
-{{--        @endif--}}
+        <!-- Mensagem de erro de login -->
+        @if(session('error') || $errors->has('errorLogin'))
+            <div class="alert alert-danger messageBox" role="alert">
+                {{ session('error') ?? $errors->first('errorLogin') }}
+            </div>
+        @endif       
+
         <div class="form-floating">
             <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email"
                    placeholder="name@example.com" value="{{ old('email') }}">
             <label for="floatingInput">Email</label>
             <div class="invalid-feedback">
-{{--                @error('email')--}}
-{{--                {{ $message }}--}}
-{{--                @enderror--}}
+                @error('email')
+                {{ $message }}
+                @enderror
             </div>
         </div>
 
@@ -79,13 +79,13 @@
                    name="password" placeholder="Password">
             <label for="floatingPassword">Password</label>
             <div class="invalid-feedback">
-{{--                @error('password')--}}
-{{--                {{ $message }}--}}
-{{--                @enderror--}}
+                @error('password')
+                {{ $message }}
+                @enderror
             </div>
         </div>
-        <button class="btn btn-primary w-100 py-2" type="submit">Logar</button>
-        <p class="mb-3 text-muted"><center> &copy; 2024 - Sistema MEOWS DIGITAL</center></p>
+        <button class="btn btn-primary w-100 py-2" type="submit">Acessar</button>
+        <p class="mb-3 text-muted"><center> &copy; 2025 - Sistema MEOWS DIGITAL</center></p>
 
     </form>
 </main>

@@ -48,12 +48,13 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the profissional that owns the user.
+     * Obtenha o Profissional que possui o Usuário
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function Profissional()
+    public function profissional()
     {
-        return $this->belongsTo(Profissional::class);
+        return $this->belongsTo(Profissional::class, 'profissionals_id');
+        // Especificamos o nome personalizado da FK
     }
 }

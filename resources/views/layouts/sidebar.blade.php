@@ -92,8 +92,8 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Usuários:</h6>
-                <a class="collapse-item" href="#">Cadastrar Usuário</a>
-                <a class="collapse-item" href="#">Listar Usuários</a>
+                <a class="collapse-item" href="{{route('register.index')}}">Cadastrar Usuário</a>
+                <a class="collapse-item" href="{{route('listarusuarios.index')}}">Listar Usuários</a>
             </div>
         </div>
     </li>
