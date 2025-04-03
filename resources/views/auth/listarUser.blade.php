@@ -32,7 +32,7 @@
         }
     </style>
 
-    <div class="col-xl-12 col-lg-7">
+    <div class="col-xl-12 col-lg-12">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div
@@ -47,6 +47,7 @@
                         <div class="table-responsive">
                             <thead>
                             <tr style='text-align:center;'>
+                                <th>Thumbnail</th>
                                 <th>Nome</th>
                                 <th>Permissão</th>
                                 <th>Status</th>
@@ -56,6 +57,7 @@
                             <tbody style='text-align:center;'>
                             @foreach ($users as $user)
                                 <tr>
+                                    <td data-title='Foto'><img class="img-profile rounded-circle" src="storage/{{ $user->profissional->thumbnail }}" style="width: 60px; height: 60px; object-fit: cover; object-position: center center;"></td>
                                     <td class='fw-bold'>{{ $user->profissional->nome }}</td>
                                     <td data-title='Cargo'>{{ $user->role }}</td>
                                     <td data-title='Status'>{{ $user->status }}</td>

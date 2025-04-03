@@ -54,9 +54,14 @@ class Profissional extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
+//    public function user()
+//    {
+//        return $this->hasOne(User::class, 'profissionals_id');
+//        // Relacionamento inverso
+//    }
     public function user()
     {
         return $this->hasOne(User::class, 'profissionals_id');
-        // Relacionamento inverso
+        // Um profissional tem um user através de users.profissionals_id
     }
 }

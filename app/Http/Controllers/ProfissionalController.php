@@ -44,7 +44,7 @@ class ProfissionalController extends Controller
      * @return void
      */
     public function store(Request $request)
-    {       
+    {
         $request->validate([
             'nome' => 'required',
             'conselho' => 'required',
@@ -63,10 +63,10 @@ class ProfissionalController extends Controller
             'cpf.cpf' => 'CPF inválido',
             'dataNascimento.required' => 'O campo data de nascimento é obrigatório',
         ]);
-              
+
         // Verifica se a opção de excluir a foto foi marcada
         if ($request->has('deletar_foto') && $request->deletar_foto) {
-            $data['thumbnail'] = 'user-admin.jpg'; // Caminho da imagem padrão
+            $data['thumbnail'] = 'profissionais/user-admin.jpg'; // Caminho da imagem padrão
         } else {
             if ($request->hasFile('thumbnail')) {
                 $file = $request->file('thumbnail');
@@ -96,7 +96,7 @@ class ProfissionalController extends Controller
 
         Profissional::create($data);
         flash('Professional cadastrado com sucesso')->success();
-        return redirect()->route('listarprofissional.index');    
+        return redirect()->route('listarprofissional.index');
     }
 
     /**

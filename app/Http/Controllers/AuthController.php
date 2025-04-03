@@ -40,8 +40,7 @@ class AuthController extends Controller
              // Armazena o caminho da thumbnail do usuário na sessão
             session([
                 'user_thumbnail' => Auth::user()->profissional->thumbnail,
-                // 'user_name' => Auth::profissional()->nome,
-                // 'user_admin' => Auth::user()->is_admin
+                'user_name' => Auth::user()->profissional->nome,
             ]);
 
             return redirect()->intended('/');

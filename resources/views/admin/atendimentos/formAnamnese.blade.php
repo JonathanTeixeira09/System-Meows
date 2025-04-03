@@ -39,7 +39,7 @@
         </style>
     @endpush
 
-    <div class="col-xl-12 col-lg-7">
+    <div class="col-xl-12 col-lg-12">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div
@@ -84,10 +84,10 @@
                                 </div>
 
                                 <!-- FREQUÊNCIA CARDÍACA -->
-                                <div class="col-md-2 border-left 
-                                            @if ($errors->has('fc')) border-left-danger 
-                                            @elseif (old('fc')) border-left-success 
-                                            @else border-left-secondary 
+                                <div class="col-md-2 border-left
+                                            @if ($errors->has('fc')) border-left-danger
+                                            @elseif (old('fc')) border-left-success
+                                            @else border-left-secondary
                                             @endif">
                                     <div class="form-group">
                                         <label for="frequenciaCardiaca" class="form-label">Frequência Cardíaca:</label>
@@ -132,10 +132,10 @@
                                 </div>
 
                                 <!-- FREQUÊNCIA RESPIRATÓRIA -->
-                                <div class="col-md-2 border-left 
-                                            @if ($errors->has('fr')) border-left-danger 
-                                            @elseif (old('fr')) border-left-success 
-                                            @else border-left-secondary 
+                                <div class="col-md-2 border-left
+                                            @if ($errors->has('fr')) border-left-danger
+                                            @elseif (old('fr')) border-left-success
+                                            @else border-left-secondary
                                             @endif">
                                     <div class="form-group">
                                         <label for="frequenciaRespiratoria" class="form-label">Frequência Respiratória:</label>
@@ -180,10 +180,10 @@
                                 </div>
 
                                 <!-- PRESSÃO ARTERIAL SISTÓLICA -->
-                                <div class="col-md-2 border-left 
-                                            @if ($errors->has('PA')) border-left-danger 
-                                            @elseif (old('PA')) border-left-success 
-                                            @else border-left-secondary 
+                                <div class="col-md-2 border-left
+                                            @if ($errors->has('PA')) border-left-danger
+                                            @elseif (old('PA')) border-left-success
+                                            @else border-left-secondary
                                             @endif">
                                     <label for="pressaoArterialSistolica" class="form-label">Pressão Arterial
                                         Sistólica:</label>
@@ -239,10 +239,10 @@
                                 </div>
 
                                 <!-- PRESSÃO ARTERIAL DIASTÓLICA -->
-                                <div class="col-md-2 border-left 
-                                            @if ($errors->has('PAD')) border-left-danger 
-                                            @elseif (old('PAD')) border-left-success 
-                                            @else border-left-secondary 
+                                <div class="col-md-2 border-left
+                                            @if ($errors->has('PAD')) border-left-danger
+                                            @elseif (old('PAD')) border-left-success
+                                            @else border-left-secondary
                                             @endif">
                                     <label for="pressaoArterialDiastolica" class="form-label">Pressão Arterial
                                         Diastólica:</label>
@@ -290,10 +290,10 @@
                                 </div>
 
                                 <!-- TEMPERATURA -->
-                                <div class="col-md-2 border-left 
-                                            @if ($errors->has('Temp')) border-left-danger 
-                                            @elseif (old('Temp')) border-left-success 
-                                            @else border-left-secondary 
+                                <div class="col-md-2 border-left
+                                            @if ($errors->has('Temp')) border-left-danger
+                                            @elseif (old('Temp')) border-left-success
+                                            @else border-left-secondary
                                             @endif">
                                     <label for="temperatura" class="form-label">Temperatura:</label>
 
@@ -340,10 +340,10 @@
                                 </div>
 
                                 <!-- SATURAÇÃO DE OXIGÊNIO -->
-                                <div class="col-md-2 border-left 
-                                            @if ($errors->has('SO')) border-left-danger 
-                                            @elseif (old('SO')) border-left-success 
-                                            @else border-left-secondary 
+                                <div class="col-md-2 border-left
+                                            @if ($errors->has('SO')) border-left-danger
+                                            @elseif (old('SO')) border-left-success
+                                            @else border-left-secondary
                                             @endif">
                                     <label for="saturacaoOxigenio" class="form-label">Saturação de Oxigênio:</label>
 
@@ -438,7 +438,7 @@
     </div>
 
     @push('scriptMeows')
-        
+
 
     @endpush
 

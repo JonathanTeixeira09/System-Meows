@@ -47,14 +47,40 @@ class User extends Authenticatable
         ];
     }
 
+
+    protected $appends = ['profissional_data'];
+
     /**
      * Obtenha o Profissional que possui o Usuário
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+//    public function profissional()
+//    {
+//        return $this->belongsTo(Profissional::class, 'profissionals_id');
+//        // Especificamos o nome personalizado da FK
+//    }
     public function profissional()
     {
         return $this->belongsTo(Profissional::class, 'profissionals_id');
-        // Especificamos o nome personalizado da FK
+        // Indica que users.profissionals_id aponta para um profissional
+    }
+
+    /**
+     * Obtenha o nome do usuário
+     *
+     * @return string
+     */
+    public function getProfissionalDataAttribute()
+    {
+        return cache()->remember("user_{$this->id}_profissional_data", 3600, function() {
+            $this->loadMissing('profissional');
+
+            return [
+                'id' => $this->profissional->id ?? null,
+                'nome' => $this->profissional->nome ?? $this->name,
+                'thumbnail' => $this->profissional->thumbnail ? asset($this->profissional->thumbnail) : null,
+            ];
+        });
     }
 }

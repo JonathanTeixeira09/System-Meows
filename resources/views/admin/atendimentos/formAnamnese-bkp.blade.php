@@ -39,7 +39,7 @@
         </style>
     @endpush
 
-    <div class="col-xl-12 col-lg-7">
+    <div class="col-xl-12 col-lg-12">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div

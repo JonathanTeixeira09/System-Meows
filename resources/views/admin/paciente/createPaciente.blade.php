@@ -3,7 +3,7 @@
 @section('title', 'Cadastro Paciente')
 @section('conteudo')
     <!-- Area Chart -->
-    <div class="col-xl-12 col-lg-7">
+    <div class="col-xl-12 col-lg-12">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div
@@ -41,7 +41,7 @@
                                     <div class="col-md-12">
                                         <p class="help-block" style="text-align: right;"><h11 class="text-danger">*</h11> Campo Obrigatório </p>
                                     </div>
-                                    
+
                                     <div class="col-md-6">
                                         <label for="nome" class="form-label">Nome
                                             <h11 class="text-danger">*</h11>
@@ -218,7 +218,7 @@
                                     </div>
 
 
-                                    
+
                                     <div class="col-md-12">
                                         <p style="text-align: right;">
                                             <a href="{{route('index')}}" class="btn btn-warning btn-icon-split">
@@ -237,7 +237,7 @@
                                         </p>
                                     </div>
                                 </div>
-                            </div>                             
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -266,19 +266,19 @@
         }
     }
 </script>
-<script> 
+<script>
    function formatarCEP(input) {
     // Mantém posição do cursor
     const cursorPos = input.selectionStart;
-    
+
     // Remove não-dígitos e aplica máscara
     let cep = input.value.replace(/\D/g, '');
     if (cep.length > 5) cep = cep.substring(0, 5) + '-' + cep.substring(5, 8);
-    
+
     // Atualiza valor
     input.value = cep;
     input.setSelectionRange(cursorPos, cursorPos);
-    
+
     // Busca automática se completo
     if (cep.replace(/\D/g, '').length === 8) {
         buscarEndereco();
@@ -287,14 +287,14 @@
 
 async function buscarEndereco(event) {
     if (event) event.preventDefault();
-    
+
     const cep = document.getElementById('cep').value.replace(/\D/g, '');
     if (cep.length !== 8) return;
-    
+
     try {
         const response = await fetch(`/buscar-cep/${cep}`);
         const data = await response.json();
-        
+
         if (data.found) {
             // Preenche campos MAS mantém editáveis
             document.getElementById('uf').value = data.uf;
@@ -303,7 +303,7 @@ async function buscarEndereco(event) {
             document.getElementById('logradouro').value = data.logradouro;
         }
         // Se não encontrou, simplesmente não faz nada (campos permanecem editáveis)
-        
+
     } catch (error) {
         console.log("Busca de CEP opcional - não encontrado");
     }

@@ -3,7 +3,7 @@
 {{--@section('title', $title)--}}
 @section('title', 'Iniciar Atendimento')
 @section('conteudo')
-    <div class="col-xl-12 col-lg-7">
+    <div class="col-xl-12 col-lg-12">
         <div class="card shadow mb-4">
             <!-- Card Header -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -29,12 +29,12 @@
                                 <div class="col-md-12">
                                     <label for="nomeDaPaciente" class="form-label">Nome da Parturiente:</label>
                                     <div class="input-group">
-                                    <input 
-                                        list="pacientes-list" 
-                                        class="form-control @error('paciente_id') is-invalid @enderror" 
-                                        name="paciente_nome" 
-                                        id="pacienteInput" 
-                                        placeholder="Digite o nome" 
+                                    <input
+                                        list="pacientes-list"
+                                        class="form-control @error('paciente_id') is-invalid @enderror"
+                                        name="paciente_nome"
+                                        id="pacienteInput"
+                                        placeholder="Digite o nome"
                                         autocomplete="off"
                                         value="{{ old('paciente_nome') }}"
                                     >
