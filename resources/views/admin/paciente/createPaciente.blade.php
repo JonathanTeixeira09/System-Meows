@@ -4,7 +4,7 @@
 @section('conteudo')
     <!-- Area Chart -->
     <div class="col-xl-12 col-lg-12">
-        <div class="card shadow mb-4">
+        <div class="card shadow mb-3">
             <!-- Card Header - Dropdown -->
             <div
                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -65,9 +65,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <label for="data_nascimento" class="form-label">Data Nascimento
-                                            <h11 class="text-danger">*</h11>
-                                        </label>
+                                        <label for="data_nascimento" class="form-label">Data Nascimento<h11 class="text-danger">*</h11></label>
                                         <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror " id="dtNasc" name="data_nascimento" value="{{ old('data_nascimento') }}">
                                         <div class="invalid-feedback">
                                             @error('data_nascimento')
@@ -157,7 +155,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label for="bairro" class="form-label">Bairro</label>
-                                            <input type="text" class="form-control" id="bairro" name="bairro" value="{{ old('bairro') }}">''
+                                            <input type="text" class="form-control" id="bairro" name="bairro" value="{{ old('bairro') }}">
                                         </div>
 
                                         <div class="col-md-6">

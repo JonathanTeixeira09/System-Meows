@@ -46,8 +46,8 @@
                     <table class="table table-striped table-md">
                         <div class="table-responsive">
                             <thead>
-                                <tr style='text-align:center;'>
-                                    <th>Foto</th>
+                                <tr style='text-align:left;'>
+                                    <th>Thumbnail</th>
                                     <th>Nome</th>
                                     <th>Cargo</th>
                                     <th>Data de Nascimento</th>
@@ -55,15 +55,27 @@
                                     <th style='text-align:right;'>Ações</th>
                                 </tr>
                                 </thead>
-                                <tbody style='text-align:center;'>
+                                <tbody style='text-align:left;'>
                                 @foreach ($profissionals as $profissional)
                                     <tr>
-                                        <td data-title='Foto'><img class="img-profile rounded-circle" src="storage/{{ $profissional->thumbnail }}" style="width: 60px; height: 60px; object-fit: cover; object-position: center center; /* Foco no centro */"></td>
+                                        <td data-title='Thumbnail'><img class="img-profile rounded-circle" src="storage/{{ $profissional->thumbnail }}" style="width: 60px; height: 60px; object-fit: cover; object-position: center center; /* Foco no centro */"></td>
                                         <td class='fw-bold'>{{ $profissional->nome }}</td>
                                         <td data-title='Cargo'>{{ $profissional->cargo->nome }}</td>
                                         <td data-title='Data de Nascimento'>{{ date('d/m/Y', strtotime($profissional->dataNascimento)) }}</td>
                                         <td data-title='Status'>{{ $profissional->status }}</td>
                                         <td data-title="Ações" style='text-align:right;'>
+                                            <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
+                                                                                                           class='btn btn-sm btn-primary'><i class="fa-solid fa-eye"></i></button></a>
+                                            <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
+                                                                                                           class='btn btn-sm btn-warning'><i class="fa-solid fa-pen-to-square"></i></button></a>
+
+                                            <form action="{{-- route('excluirprodutoestoque', $produto->id) --}}" method="post"
+                                                  style="display:inline-block;">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit" class="btn btn-sm btn-danger" value="excluir"><i class="fa-solid fa-trash"></i></button>
+                                            </form>
+                                        </td>
                                 @endforeach
                                         </tbody>
                         </div>
@@ -72,6 +84,10 @@
                         <p style="text-align: center;"> Não existe funcionarios cadastrados no sistema</p>
                     @endif
                 </div>
+            </div>
+            <!-- Paginação -->
+            <div class="d-flex justify-content-center">
+                {{ $profissionals->links('pagination::bootstrap-5') }}
             </div>
     </div>
 </div>

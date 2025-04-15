@@ -16,10 +16,11 @@ class FormacaoProfissionalController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nome' => 'required|string|max:255',
-        ],
-        [
-            'nome.required' => 'O nome da formação é obrigatório.',
+            'nome' => 'required|string|max:255|unique:formacao_profissionals,nome',
+        ], [
+            'nome.required' => 'O campo nome da Formação é obrigatório',
+            'nome.max' => 'O nome não pode ter mais que 255 caracteres',
+            'nome.unique' => 'Este nome já está cadastrado'
         ]);
 
         FormacaoProfissional::create($request->all());

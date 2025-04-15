@@ -56,7 +56,7 @@ class PacienteController extends Controller
                 $thumbnail = $path;
             } else {
                 // Se não foi enviada nenhuma imagem, usa a imagem padrão
-                $thumbnail = 'paciente.png'; // Caminho da imagem padrão
+                $thumbnail = 'pacientes/paciente.png'; // Caminho da imagem padrão
             }
         }
 
@@ -181,7 +181,7 @@ class PacienteController extends Controller
 
     public function listarPaciente()
     {
-        $pacientes = Paciente::orderBy('nome')->get();
+        $pacientes = Paciente::orderBy('nome')->paginate(5);
 
         return view('admin.paciente.listarPaciente', ['title' => 'Listando Pacientes', 'pacientes' => $pacientes]);
     }

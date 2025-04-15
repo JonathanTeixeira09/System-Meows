@@ -111,7 +111,10 @@ class AuthController extends Controller
 
     public function listarUser()
     {
-        $users = User::all();
+        $users = User::select('users.*')
+            ->join('profissionals', 'users.profissionals_id', '=', 'profissionals.id')
+            ->orderBy('profissionals.nome')
+            ->paginate(10);
         return view('auth.listarUser', ['title' => 'Listar Usuários', 'users' => $users]);
     }
 

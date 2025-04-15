@@ -12,13 +12,8 @@ class ParturientesController extends Controller
      */
     public function index()
     {
-       return view('admin.atendimentos.formAnamnese');
-    }
-
-    public function indexAtendimento()
-    {
-        $paciente = Paciente::orderBy('nome')->get();
-        return view(('admin.atendimentos.formIniciarAtendimento'), ['pacientes' => $paciente]);
+        $atendimentos = Paciente::all();
+        return view('admin.atendimentos.formAnamnese');
     }
 
     /**
@@ -78,7 +73,7 @@ class ParturientesController extends Controller
             // 'diurese' => 0,
         ];
 
-        
+
         // Inicializa a pontuação total
         $pontuacaoTotal = 0;
 
@@ -103,7 +98,7 @@ class ParturientesController extends Controller
             $scores['fc'] = 3;
             $fc = '> 130';
         }
-        
+
         // Frequência Respiratória
         if ($fr == 1){
             $scores['fr'] = 3;
@@ -144,7 +139,7 @@ class ParturientesController extends Controller
         } elseif ($pas == 6){
             $scores['pas'] = 3;
             $pas = '>= 160';
-        } 
+        }
 
         // Pressão Arterial Diastólica
         if ($pad == 1){
@@ -192,10 +187,10 @@ class ParturientesController extends Controller
         } elseif ($so == 3){
             $scores['so'] = 0;
             $so = '>= 96';
-        } 
-        
+        }
+
         $scoresTotal = $scores['fc'] + $scores['fr'] + $scores['pas'] + $scores['pad'] + $scores['temp'] + $scores['so'];
-               
+
         if ($scoresTotal == 0){
             $avaliacao = 'Não há risco de deterioração';
         } elseif ($scoresTotal >= 1 && $scoresTotal <= 3){
@@ -207,7 +202,7 @@ class ParturientesController extends Controller
         }
 
         dd($avaliacao, $scoresTotal);
-        
+
         return redirect()->route('incluirAnamenese.index')->with('success', 'Anamnese cadastrada com sucesso!');
 
     }

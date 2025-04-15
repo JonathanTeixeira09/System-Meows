@@ -64,7 +64,7 @@
                                         <button type="submit" class="btn btn-success text-white" value="cadastrar">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-check-square"></i>
-                                </span><span class="text">Enviar</span>
+                                </span><span class="text">Cadastrar</span>
                                         </button>
                                     </p>
                                 </div>
@@ -84,6 +84,16 @@
                                         <tr>
                                             <td class='fw-bold' style="text-align: left">{{ $formacao->nome }}</td>
                                             <td data-title="Ações" style='text-align:right;'>
+                                                <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
+                                                                                                               class='btn btn-sm btn-warning'><i class="fa-solid fa-pen-to-square"></i></button></a>
+
+                                                <form action="{{-- route('excluirprodutoestoque', $produto->id) --}}" method="post"
+                                                      style="display:inline-block;">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" class="btn btn-sm btn-danger" value="excluir"><i class="fa-solid fa-trash"></i></button>
+                                                </form>
+                                            </td>
                                     @endforeach
                                     </tbody>
                                 </div>

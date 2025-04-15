@@ -46,7 +46,7 @@
                     <table class="table table-striped table-md">
                         <div class="table-responsive">
                             <thead>
-                            <tr style='text-align:center;'>
+                            <tr style='text-align:left;'>
                                 <th>Thumbnail</th>
                                 <th>Nome</th>
                                 <th>Permissão</th>
@@ -54,7 +54,7 @@
                                 <th style='text-align:right;'>Ações</th>
                             </tr>
                             </thead>
-                            <tbody style='text-align:center;'>
+                            <tbody style='text-align:left;'>
                             @foreach ($users as $user)
                                 <tr>
                                     <td data-title='Foto'><img class="img-profile rounded-circle" src="storage/{{ $user->profissional->thumbnail }}" style="width: 60px; height: 60px; object-fit: cover; object-position: center center;"></td>
@@ -62,6 +62,18 @@
                                     <td data-title='Cargo'>{{ $user->role }}</td>
                                     <td data-title='Status'>{{ $user->status }}</td>
                                     <td data-title="Ações" style='text-align:right;'>
+                                        <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
+                                                                                                       class='btn btn-sm btn-primary'><i class="fa-solid fa-eye"></i></button></a>
+                                        <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
+                                                                                                       class='btn btn-sm btn-warning'><i class="fa-solid fa-pen-to-square"></i></button></a>
+
+                                        <form action="{{-- route('excluirprodutoestoque', $produto->id) --}}" method="post"
+                                              style="display:inline-block;">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-sm btn-danger" value="excluir"><i class="fa-solid fa-trash"></i></button>
+                                        </form>
+                                    </td>
                             @endforeach
                             </tbody>
                         </div>
@@ -70,6 +82,10 @@
                         <p style="text-align: center;"> Não existe usuários cadastrados no sistema</p>
                     @endif
                 </div>
+            </div>
+            <!-- Paginação -->
+            <div class="d-flex justify-content-center">
+                {{ $users->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </div>

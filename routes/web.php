@@ -5,6 +5,8 @@ use App\Http\Controllers\ProfissionalController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CargoController;
+use App\Http\Controllers\LocalController;
+use App\Http\Controllers\AtendimentoController;
 use App\Http\Controllers\FormacaoProfissionalController;
 use App\Models\Profissional;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +46,6 @@ Route::middleware('auth')->group(function () {
     Route::controller(ParturientesController::class)->group(function (){
         Route::get('/incluirAnamnese','index')->name('incluirAnamenese.index');
         Route::post('/incluirAnamnese','store')->name('incluirAnamenese.store');
-        Route::get('/iniciarAtendimento','indexAtendimento')->name('iniciarAtendimento.index');
     });
 
     Route::controller(ProfissionalController::class)->group(function (){
@@ -70,4 +71,25 @@ Route::middleware('auth')->group(function () {
         Route::get('/editarFormacao','index')->name('editarFormacao.index');
         Route::get('/excluirFormacao','index')->name('excluirFormacao.index');
     });
+
+    Route::controller(LocalController::class)->group(function (){
+        Route::get('/cadastrarLocal','index')->name('cadastrarLocal.index');
+        Route::post('/cadastrarLocal','store')->name('cadastrarLocal.store');
+        Route::get('/listarLocal','listarLocal')->name('listarLocal.index');
+        Route::get('/editarLocal','index')->name('editarLocal.index');
+        Route::get('/excluirLocal','index')->name('excluirLocal.index');
+    });
+
+    Route::controller(AtendimentoController::class)->group(function (){
+        Route::get('/iniciarAtendimento','index')->name('iniciarAtendimento.index');
+        Route::post('/iniciarAtendimento','store')->name('iniciarAtendimento.store');
+        Route::get('/listarAtendimentos','list')->name('listarAtendimentos.index');
+    });
+    Route::resource('atendimentos', AtendimentoController::class);
 });
+
+Route::get('/debug-auth', function() {
+    dd(auth()->user()); // Deve retornar o usuário logado
+});
+
+

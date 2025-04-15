@@ -74,7 +74,7 @@ class ProfissionalController extends Controller
                 $data['thumbnail'] = $path;
             } else {
                 // Se não foi enviada nenhuma imagem, usa a imagem padrão
-                $data['thumbnail'] = 'user-admin.jpg'; // Caminho da imagem padrão
+                $data['thumbnail'] = 'profissionais/user-admin.jpg'; // Caminho da imagem padrão
             }
         }
 
@@ -109,7 +109,7 @@ class ProfissionalController extends Controller
      */
     public function listarProfissional()
     {
-        $profissional = Profissional::orderBy('nome')->get();
+        $profissional = Profissional::orderBy('nome')->paginate(8);
         return view('admin.profissional.listProfissional', ['profissionals' => $profissional]);
     }
 

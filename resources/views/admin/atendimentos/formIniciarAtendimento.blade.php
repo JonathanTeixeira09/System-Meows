@@ -23,7 +23,7 @@
                             </div>
 
                             <!-- Home Form -->
-                            <form class="row g-2" action="#" method="POST"
+                            <form class="row g-2" action="{{route('iniciarAtendimento.store')}}" method="POST"
                                   name="formCadastro" enctype="multipart/form-data">
                                 @csrf
                                 <div class="col-md-12">

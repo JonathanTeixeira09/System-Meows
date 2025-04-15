@@ -29,39 +29,40 @@
                 display: block;
                 font-weight: bold;
             }
+        }
 
-            //estilo para data gestação
+
+        //estilo para data gestação
         .gestacao-cell {
             font-family: 'Segoe UI', sans-serif;
             font-size: 0.9rem;
         }
 
-            .badge {
-                padding: 0.35em 0.65em;
-                font-weight: 500;
-                border-radius: 0.25rem;
-                white-space: nowrap;
-            }
+        .badge {
+            padding: 0.35em 0.65em;
+            font-weight: 500;
+            border-radius: 0.25rem;
+            white-space: nowrap;
+        }
 
-            .bg-primary {
-                background-color: #0d6efd;
-                color: white;
-            }
+        .bg-primary {
+            background-color: #0d6efd;
+            color: white;
+        }
 
-            .bg-success {
-                background-color: #198754;
-                color: white;
-            }
+        .bg-success {
+            background-color: #198754;
+            color: white;
+        }
 
-            .bg-danger {
-                background-color: #dc3545;
-                color: white;
-            }
+        .bg-danger {
+            background-color: #dc3545;
+            color: white;
+        }
 
-            .bg-info {
-                background-color: #0dcaf0;
-                color: #000;
-            }
+        .bg-info {
+            background-color: #0dcaf0;
+            color: #000;
         }
     </style>
 
@@ -79,7 +80,7 @@
                     <table class="table table-striped table-md">
                         <div class="table-responsive">
                             <thead>
-                            <tr style='text-align:center;'>
+                            <tr style='text-align:left;'>
                                 <th>Foto</th>
                                 <th>Nome</th>
                                 <th>Data de Nascimento</th>
@@ -88,7 +89,7 @@
                                 <th style='text-align:right;'>Ações</th>
                             </tr>
                             </thead>
-                            <tbody style='text-align:center;'>
+                            <tbody style='text-align:left;'>
                             @foreach ($pacientes as $paciente)
                                 <tr>
                                     <td data-title='Foto'><img class="img-profile rounded-circle" src="storage/{{ $paciente->thumbnail }}" style="width: 60px; height: 60px; object-fit: cover; object-position: center center; /* Foco no centro */"></td>
@@ -100,45 +101,20 @@
                                         <span class="badge {{ $gestacao['badge'] }}">
                                             {{ $gestacao['texto'] }}
                                         </span>
-{{--                                        @php--}}
-{{--                                            // Configurações iniciais--}}
-{{--                                            $dataGestacao = \Carbon\Carbon::parse($paciente->data_gestacao);--}}
-{{--                                            $dataAtual = now();--}}
-{{--                                            $diasTotal = $dataGestacao->diffInDays($dataAtual);--}}
-{{--                                            $semanas = floor($diasTotal / 7);--}}
-{{--                                            $dias = $diasTotal % 7;--}}
-
-{{--                                            // Formatação condicional--}}
-{{--                                            if ($dataGestacao->isFuture()) {--}}
-{{--                                                $diasFaltantes = $dataAtual->diffInDays($dataGestacao);--}}
-{{--                                                $semanasFaltantes = floor($diasFaltantes / 7);--}}
-{{--                                                $diasFaltantes = $diasFaltantes % 7;--}}
-
-{{--                                                echo '<span class="badge bg-info text-dark">';--}}
-{{--                                                echo 'Início em '.$dataGestacao->isoFormat('DD/MM/YYYY').' (';--}}
-{{--                                                echo $semanasFaltantes > 0 ? $semanasFaltantes.' semana'.($semanasFaltantes != 1 ? 's' : '').' e ' : '';--}}
-{{--                                                echo $diasFaltantes.' dia'.($diasFaltantes != 1 ? 's' : '').')';--}}
-{{--                                                echo '</span>';--}}
-{{--                                            } else {--}}
-{{--                                                echo '<span class="badge ';--}}
-
-{{--                                                // Cores baseadas no tempo de gestação--}}
-{{--                                                if ($semanas >= 42) {--}}
-{{--                                                    echo 'bg-danger">Pós-termo: ';--}}
-{{--                                                } elseif ($semanas >= 37) {--}}
-{{--                                                    echo 'bg-success">Termo: ';--}}
-{{--                                                } else {--}}
-{{--                                                    echo 'bg-primary">';--}}
-{{--                                                }--}}
-
-{{--                                                // Formata o texto de saída--}}
-{{--                                                echo $semanas.' semana'.($semanas != 1 ? 's' : '');--}}
-{{--                                                echo $dias > 0 ? ' e '.$dias.' dia'.($dias != 1 ? 's' : '') : '';--}}
-{{--                                                echo '</span>';--}}
-{{--                                            }--}}
-{{--                                        @endphp--}}
                                     </td>
                                     <td data-title="Ações" style='text-align:right;'>
+                                        <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
+                                                                                                      class='btn btn-sm btn-primary'><i class="fa-solid fa-eye"></i></button></a>
+                                        <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
+                                                                                                       class='btn btn-sm btn-warning'><i class="fa-solid fa-pen-to-square"></i></button></a>
+
+                                        <form action="{{-- route('excluirprodutoestoque', $produto->id) --}}" method="post"
+                                              style="display:inline-block;">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-sm btn-danger" value="excluir"><i class="fa-solid fa-trash"></i></button>
+                                        </form>
+                                    </td>
                             @endforeach
                             </tbody>
                         </div>
@@ -148,9 +124,11 @@
                     @endif
                 </div>
             </div>
+            <!-- Paginação -->
+            <div class="d-flex justify-content-center">
+                {{ $pacientes->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
-
-
 
 @endsection

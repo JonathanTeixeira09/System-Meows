@@ -23,7 +23,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         ]);
 
-//        $middleware->append(\App\Http\Middleware\InjectProfissionalData::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

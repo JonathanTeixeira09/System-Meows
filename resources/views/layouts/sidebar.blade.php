@@ -64,10 +64,9 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Atendimentos:</h6>
-                {{-- <a class="collapse-item" href="{{route('incluirAnamenese.index')}}">Incluir Anamnese</a>--}}
                 <a class="collapse-item" href="{{route('iniciarAtendimento.index')}}">Iniciar Atendimento</a>
                 <a class="collapse-item" href="{{route('incluirAnamenese.index')}}">Incluir Anamnese</a>
-                <a class="collapse-item" href="teste.html">Listar Atendimentos</a>
+                <a class="collapse-item" href="{{route('listarAtendimentos.index')}}">Listar Atendimentos</a>
                 {{-- <a class="collapse-item" href="utilities-animation.html">Animations</a>--}}
                 {{-- <a class="collapse-item" href="utilities-other.html">Other</a>--}}
             </div>
@@ -128,7 +127,7 @@
                 <h6 class="collapse-header">Administração:</h6>
                 <a class="collapse-item" href="{{route('cadastrarCargo.index')}}">Cadastrar Cargo</a>
                 <a class="collapse-item" href="{{route('cadastrarFormacao.index')}}">Cadastrar Formação</a>
-                <a class="collapse-item" href="#">Cadastrar Local</a>
+                <a class="collapse-item" href="{{route('cadastrarLocal.index')}}">Cadastrar Local</a>
             </div>
         </div>
     </li>

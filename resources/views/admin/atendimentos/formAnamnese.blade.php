@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 {{--@section('title', $title)--}}
-@section('title', 'Incluir Anamnese')
+@section('title', 'Cadastrar ficha de anamnese')
 @section('conteudo')
     @push('meowsCss')
         <style>
@@ -44,7 +44,7 @@
             <!-- Card Header - Dropdown -->
             <div
                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Incluir Anamnese da Parturiente</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Ficha de anamnese da Parturiente</h6>
             </div>
             <!-- Card Body -->
             <div class="card-body">

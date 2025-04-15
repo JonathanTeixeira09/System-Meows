@@ -21,10 +21,11 @@ class CargoController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nome' => 'required|string|max:255',
-        ],
-        [
-            'nome.required' => 'O nome do cargo é obrigatório.',
+            'nome' => 'required|string|max:255|unique:cargos,nome',
+        ], [
+            'nome.required' => 'O campo nome é obrigatório',
+            'nome.max' => 'O nome não pode ter mais que 255 caracteres',
+            'nome.unique' => 'Este cargo já está cadastrado'
         ]);
 
         Cargo::create($request->all());
