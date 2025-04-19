@@ -1,0 +1,289 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use App\Models\Evolucao;
+use App\Models\Atendimento;
+use App\Models\Local;
+
+class EvolucaoController extends Controller
+{
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function index(Atendimento $atendimento)
+    {
+        $atendimento->load('paciente'); // Carrega o relacionamento com paciente
+        $local = Local::All();
+
+        return view('admin.atendimentos.formAnamnese', [
+            'atendimento' => $atendimento,
+            'nome_paciente' => $atendimento->paciente->nome,
+            'atendimento_id' => $atendimento->id,
+            'locals' => $local,
+        ]);
+    }
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        // Validação dos dados do formulário
+        $data = $request->validate([
+            'fc' => 'required',
+            'fr' => 'required',
+            'PA' => 'required',
+            'PAD' => 'required',
+            'Temp' => 'required',
+            'SO' => 'required',
+            'obs' => 'nullable|string|max:10000',
+        ], [
+            // Mensagens de erro personalizadas
+            'fc.required' => 'Selecione uma opção para a frequência cardíaca.',
+            'fr.required' => 'Selecione uma opção para a frequência respiratória.',
+            'PA.required' => 'Selecione uma opção para a pressão arterial sistólica.',
+            'PAD.required' => 'Selecione uma opção para a pressão arterial diastólica.',
+            'Temp.required' => 'Selecione uma opção para a temperatura.',
+            'SO.required' => 'Selecione uma opção para a saturação de oxigênio.',
+        ]);
+
+        // Recebe os dados do formulário
+        $fc = $request->input('fc');
+        $fr = $request->input('fr');
+        $pas = $request->input('PA');
+        $pad = $request->input('PAD');
+        $temp = $request->input('Temp');
+        // $avpu = $request->input('condicaoNeurologica');
+        $so = $request->input('SO');
+        // $diurese = $request->input('diurese');
+        $local_id = $request->input('local_id');
+
+        $scores = [
+            'fc' => 0,
+            'fr' => 0,
+            'pas' => 0,
+            'pad' => 0,
+            'temp' => 0,
+            // 'condicaoNeurologica' => 0,
+            'so' => 0,
+            // 'diurese' => 0,
+        ];
+
+        // Inicializa a pontuação total
+        $scoresTotal = 0;
+
+        // Calcula a pontuação total
+        // Frequência Cardíaca
+        if ($fc == 1){
+            $scores['fc'] = 3;
+            $fc = '< 50';
+        } elseif ($fc == 2){
+            $scores['fc'] = 1;
+            $fc = '50 - 59';
+        } elseif ($fc == 3){
+            $scores['fc'] = 0;
+            $fc = '60 - 99';
+        } elseif ($fc == 4){
+            $scores['fc'] = 1;
+            $fc = '100 - 109';
+        } elseif ($fc == 5){
+            $scores['fc'] = 2;
+            $fc = '110 - 129';
+        } elseif ($fc == 6){
+            $scores['fc'] = 3;
+            $fc = '> 130';
+        }
+
+        // Frequência Respiratória
+        if ($fr == 1){
+            $scores['fr'] = 3;
+            $fr = '<= 12';
+        } elseif ($fr == 2){
+            $scores['fr'] = 2;
+            $fr = '13 - 15';
+        } elseif ($fr == 3){
+            $scores['fr'] = 0;
+            $fr = '16 - 20';
+        } elseif ($fr == 4){
+            $scores['fr'] = 1;
+            $fr = '21 - 24';
+        } elseif ($fr == 5){
+            $scores['fr'] = 2;
+            $fr = '25 - 30';
+        } elseif ($fr == 6){
+            $scores['fr'] = 3;
+            $fr = '>= 31';
+        }
+
+        // Pressão Arterial Sistólica
+        if ($pas == 1){
+            $scores['pas'] = 3;
+            $pas = '< 70';
+        } elseif ($pas == 2){
+            $scores['pas'] = 2;
+            $pas = '70 - 89';
+        } elseif ($pas == 3){
+            $scores['pas'] = 0;
+            $pas = '90 - 139';
+        } elseif ($pas == 4){
+            $scores['pas'] = 1;
+            $pas = '140 - 149';
+        } elseif ($pas == 5){
+            $scores['pas'] = 2;
+            $pas = '150 - 159';
+        } elseif ($pas == 6){
+            $scores['pas'] = 3;
+            $pas = '>= 160';
+        }
+
+        // Pressão Arterial Diastólica
+        if ($pad == 1){
+            $scores['pad'] = 2;
+            $pad = '< 45';
+        } elseif ($pad == 2){
+            $scores['pad'] = 0;
+            $pad = '45 - 89';
+        } elseif ($pad == 3){
+            $scores['pad'] = 1;
+            $pad = '90 - 99';
+        } elseif ($pad == 4){
+            $scores['pad'] = 2;
+            $pad = '100 - 109';
+        } elseif ($pad == 5){
+            $scores['pad'] = 3;
+            $pad = '>= 110';
+        }
+
+        // Temperatura
+        if ($temp == 1){
+            $scores['temp'] = 2;
+            $temp = '< 35';
+        } elseif ($temp == 2){
+            $scores['temp'] = 0;
+            $temp = '35 - 37.4';
+        } elseif ($temp == 3){
+            $scores['temp'] = 1;
+            $temp = '37.5 - 37.9';
+        } elseif ($temp == 4){
+            $scores['temp'] = 2;
+            $temp = '38 - 38.9';
+        } elseif ($temp == 5){
+            $scores['temp'] = 3;
+            $temp = '>= 39.0';
+        }
+
+        // Saturação de Oxigênio
+        if ($so == 1){
+            $scores['so'] = 3;
+            $so = '< 92';
+        } elseif ($so == 2){
+            $scores['so'] = 2;
+            $so = '92 - 95';
+        } elseif ($so == 3){
+            $scores['so'] = 0;
+            $so = '>= 96';
+        }
+
+        $scoresTotal = $scores['fc'] + $scores['fr'] + $scores['pas'] + $scores['pad'] + $scores['temp'] + $scores['so'];
+
+        // Avaliação do risco de deterioração
+        $evolucao = new Evolucao();
+        $evolucao->fc = $fc;
+        $evolucao->fr = $fr;
+        $evolucao->pas = $pas;
+        $evolucao->pad = $pad;
+        $evolucao->temp = $temp;
+        $evolucao->so = $so;
+        $evolucao->local_id = $local_id;
+        $evolucao->grauDeterioracao = $scoresTotal;
+        $evolucao->atendimento_id = $request->input('atendimento_id');
+        $evolucao->obs = $request->input('obs');
+        $evolucao->user_id = auth()->id();
+        $evolucao->save();
+
+//        if ($scoresTotal == 0){
+//            $avaliacao = 'Não há risco de deterioração';
+//        } elseif ($scoresTotal >= 1 && $scoresTotal <= 3){
+//            $avaliacao = 'Baixo risco de deterioração';
+//        } elseif ($scoresTotal >= 4 && $scoresTotal <= 5){
+//            $avaliacao = 'Risco moderado de deterioração';
+//        } elseif ($scoresTotal >= 6){
+//            $avaliacao = 'Risco alto de deterioração';
+//        }
+
+//        dd('fc: ' . $fc, 'fr: ' . $fr, 'pas: ' . $pas, 'pad: ' . $pad, 'temp: ' . $temp, 'so: ' . $so, 'avaliacao: ' . $avaliacao, 'pontuacaoTotal: ' . $scoresTotal, 'local: ' . $local_id);
+        // Redireciona para a página de listagem de atendimentos com uma mensagem de sucesso
+        return redirect()->route('evolucao.relatorio', $evolucao->id)->with('success', 'Anamnese da Paciente cadastrada com sucesso!');
+
+    }
+
+    public function relatorio($id)
+    {
+        $evolucao = Evolucao::with(['atendimento.paciente', 'local', 'user'])
+            ->whereHas('atendimento') // Só traz se tiver atendimento relacionado
+            ->findOrFail($id);
+        $evolucao->atendimento->paciente->idade = Carbon::parse($evolucao->atendimento->paciente->data_nascimento)->age;
+
+        // Parâmetros normais para comparação
+        $parametrosNormais = [
+            'fc' => ['min' => 60, 'max' => 99, 'label' => 'Frequência Cardíaca (bpm)'],
+            'fr' => ['min' => 16, 'max' => 20, 'label' => 'Frequência Respiratória (rpm)'],
+            'pas' => ['min' => 90, 'max' => 139, 'label' => 'Pressão Arterial Sistólica (mmHg)'],
+            'pad' => ['min' => 45, 'max' => 89, 'label' => 'Pressão Arterial Diastólica (mmHg)'],
+            'temp' => ['min' => 35, 'max' => 37.4, 'label' => 'Temperatura (°C)'],
+            'so' => ['min' => 96, 'max' => 100, 'label' => 'Saturação de Oxigênio (%)']
+        ];
+
+        return view('admin.atendimentos.relatorioScorePaciente', compact('evolucao', 'parametrosNormais'));
+    }
+
+    public function gerarPdf($id)
+    {
+        $evolucao = Evolucao::with(['atendimento.paciente', 'local', 'user'])
+            ->whereHas('atendimento') // Só traz se tiver atendimento relacionado
+            ->findOrFail($id);
+        $evolucao->atendimento->paciente->idade = Carbon::parse($evolucao->atendimento->paciente->data_nascimento)->age;
+
+        $parametrosNormais = [
+            'fc' => ['min' => 60, 'max' => 99, 'label' => 'Frequência Cardíaca (bpm)'],
+            'fr' => ['min' => 16, 'max' => 20, 'label' => 'Frequência Respiratória (rpm)'],
+            'pas' => ['min' => 90, 'max' => 139, 'label' => 'Pressão Arterial Sistólica (mmHg)'],
+            'pad' => ['min' => 45, 'max' => 89, 'label' => 'Pressão Arterial Diastólica (mmHg)'],
+            'temp' => ['min' => 35, 'max' => 37.4, 'label' => 'Temperatura (°C)'],
+            'so' => ['min' => 96, 'max' => 100, 'label' => 'Saturação de Oxigênio (%)']
+        ];
+
+        $pdf = PDF::loadView('admin.atendimentos.gerarPdfScoreParturiente', compact('evolucao', 'parametrosNormais'));
+
+        return $pdf->download('evolucao_'.$evolucao->atendimento->paciente->nome.'_'.now()->format('d-m-Y').'.pdf');
+    }
+
+    public function ultimaEvolucao($id)
+    {
+        $evolucao = Evolucao::with(['atendimento.paciente', 'local', 'user'])
+            ->where('atendimento_id', $id)  // Filtra pelo ID do atendimento
+            ->latest('created_at')  // Ordena pela data de criação (mais recente primeiro)
+            ->first();  // Pega o primeiro registro (que será o mais recente)
+        $evolucao->atendimento->paciente->idade = Carbon::parse($evolucao->atendimento->paciente->data_nascimento)->age;
+        $evolucao->grauDeterioracao;
+        if (!$evolucao) {
+            return back()->with('error', 'Nenhuma evolução encontrada para este atendimento');
+        }
+
+        $parametrosNormais = [
+            'fc' => ['min' => 60, 'max' => 99, 'label' => 'Frequência Cardíaca (bpm)'],
+            'fr' => ['min' => 16, 'max' => 20, 'label' => 'Frequência Respiratória (rpm)'],
+            'pas' => ['min' => 90, 'max' => 139, 'label' => 'Pressão Arterial Sistólica (mmHg)'],
+            'pad' => ['min' => 45, 'max' => 89, 'label' => 'Pressão Arterial Diastólica (mmHg)'],
+            'temp' => ['min' => 35, 'max' => 37.4, 'label' => 'Temperatura (°C)'],
+            'so' => ['min' => 96, 'max' => 100, 'label' => 'Saturação de Oxigênio (%)']
+        ];
+
+        return view('admin.atendimentos.relatorioScorePaciente', compact('evolucao', 'parametrosNormais'));
+    }
+
+
+}

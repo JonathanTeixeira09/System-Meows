@@ -16,5 +16,10 @@
         "rimraf": "^4.4.1",
         "startbootstrap-sb-admin-2": "^3.3.7",
         "vite": "^6.3.2"
+    },
+    "dependencies": {
+        "popper.js": "1.16.1" → "@popperjs/core": "^2.11.6",
+        "rimraf": "3.0.2" → "rimraf": "^4.0.0",
+        "glob": "7.2.3" → "glob": "^9.0.0"
     }
 }

@@ -2,69 +2,38 @@
 
 @section('title', 'Listagem de Atendimentos')
 @section('conteudo')
-    <style>
-        @media (max-width: 767px) {
-            .table thead {
-                display: none;
+    @push('listandoAtendimentosCSS')
+        <style>
+            @media (max-width: 1280px) {
+                .table thead {
+                    display: none;
+                }
+
+                .table td {
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                .table tr {
+                    display: block;
+                }
+
+                .table td:first-of-type {
+                    font-weight: bold;
+                    font-size: 1.2rem;
+                    text-align: center;
+                    display: block;
+                }
+
+                .table td:not(:first-of-type):before {
+                    content: attr(data-title);
+                    display: block;
+                    font-weight: bold;
+                }
             }
+        </style>
+    @endpush
 
-            .table td {
-                display: flex;
-                justify-content: space-between;
-            }
-
-            .table tr {
-                display: block;
-            }
-
-            .table td:first-of-type {
-                font-weight: bold;
-                font-size: 1.2rem;
-                text-align: center;
-                display: block;
-            }
-
-            .table td:not(:first-of-type):before {
-                content: attr(data-title);
-                display: block;
-                font-weight: bold;
-            }
-        }
-
-
-        //estilo para data gestação
-        .gestacao-cell {
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 0.9rem;
-        }
-
-        .badge {
-            padding: 0.35em 0.65em;
-            font-weight: 500;
-            border-radius: 0.25rem;
-            white-space: nowrap;
-        }
-
-        .bg-primary {
-            background-color: #0d6efd;
-            color: white;
-        }
-
-        .bg-success {
-            background-color: #198754;
-            color: white;
-        }
-
-        .bg-danger {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .bg-info {
-            background-color: #0dcaf0;
-            color: #000;
-        }
-    </style>
 
     <div class="col-xl-12 col-lg-12">
         <div class="card shadow mb-4">
@@ -87,6 +56,7 @@
                                 <th>Hora de Entrada</th>
                                 <th>Nome do Profissional</th>
                                 <th>Status</th>
+                                <th>Tempo de Espera</th>
                                 <th style='text-align:right;'>Ações</th>
                             </tr>
                             </thead>
@@ -107,10 +77,15 @@
                                             <span class="badge bg-danger">{{ $atendimento->status }}</span>
                                         @endif
                                     </td>
+                                    <td data-title="Tempo de Espera">
+                                        <div class="tempo-espera-container" data-registro="{{ $atendimento->created_at->format('Y-m-d H:i:s') }}">
+                                            <h5 class="tempo-espera text-danger display-6">00:00:00</h5>
+                                        </div>
+                                    </td>
                                     <td data-title="Ações" style='text-align:right;'>
-                                        <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
+                                        <a href='{{route('incluirEvolucao', $atendimento->id) }}'><button type='button'
                                                                                                        class='btn btn-sm btn-warning' title="Incluir Anamnese"><i class="fa-solid fa-pen-to-square"></i></button></a>
-                                        <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
+                                        <a href='{{ route('evolucao.ultima', $atendimento->id) }}'><button type='button'
                                                                                                        class='btn btn-sm btn-primary' title="Visualizar evolução"><i class="fa-solid fa-eye"></i></button></a>
 
                                         <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
@@ -135,3 +110,32 @@
     </div>
 
 @endsection
+@push('listAtendimentosJs')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const containers = document.querySelectorAll('.tempo-espera-container');
+
+            function atualizarTodosTempos() {
+                const agora = new Date();
+
+                containers.forEach(container => {
+                    const dataRegistroStr = container.getAttribute('data-registro');
+                    const dataRegistro = new Date(dataRegistroStr);
+                    const tempoElement = container.querySelector('.tempo-espera');
+
+                    const diff = Math.floor((agora - dataRegistro) / 1000);
+                    const horas = Math.floor(diff / 3600);
+                    const minutos = Math.floor((diff % 3600) / 60);
+                    const segundos = diff % 60;
+
+                    tempoElement.textContent =
+                        `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+                });
+            }
+
+            // Iniciar imediatamente e atualizar a cada segundo
+            atualizarTodosTempos();
+            setInterval(atualizarTodosTempos, 1000);
+        });
+    </script>
+@endpush

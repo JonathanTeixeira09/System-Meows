@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ParturientesController;
 use App\Http\Controllers\ProfissionalController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\AuthController;
@@ -8,9 +7,9 @@ use App\Http\Controllers\CargoController;
 use App\Http\Controllers\LocalController;
 use App\Http\Controllers\AtendimentoController;
 use App\Http\Controllers\FormacaoProfissionalController;
-use App\Models\Profissional;
+use App\Http\Controllers\EvolucaoController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
+
 
 
 
@@ -43,9 +42,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/buscar-cep/{cep}', 'buscarCep')->name('buscar.cep');
     });
 
-    Route::controller(ParturientesController::class)->group(function (){
-        Route::get('/incluirAnamnese','index')->name('incluirAnamenese.index');
-        Route::post('/incluirAnamnese','store')->name('incluirAnamenese.store');
+
+    Route::controller(EvolucaoController::class)->group(function (){
+        Route::get('/incluirevolucao/{atendimento}','index')->name('incluirEvolucao');
+        Route::post('/incluirEvolucao','store')->name('incluirEvolucao.store');
+        Route::get('/evolucao/{id}/relatorio', 'relatorio')->name('evolucao.relatorio');
+        route::get('/evolucao/{id}/pdf', 'gerarPdf')->name('evolucao.pdf');
+        route::get('/evolucao/{id}/ultima-evolucao', 'ultimaEvolucao')->name('evolucao.ultima');
     });
 
     Route::controller(ProfissionalController::class)->group(function (){
@@ -85,7 +88,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/iniciarAtendimento','store')->name('iniciarAtendimento.store');
         Route::get('/listarAtendimentos','list')->name('listarAtendimentos.index');
     });
-    Route::resource('atendimentos', AtendimentoController::class);
+//    Route::resource('atendimentos', AtendimentoController::class);
 });
 
 Route::get('/debug-auth', function() {

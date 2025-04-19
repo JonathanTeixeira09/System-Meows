@@ -25,10 +25,27 @@
                                     <input type="file" id="upload_foto" name="thumbnail" accept="image/*" style="display:none" onchange="loadFile(event)">
 
                                     <!-- Botão para selecionar arquivo da galeria ou capturar foto -->
-                                    <button type="button" class="btn btn-sm btn-primary mt-2 mb-0 w-100" onclick="document.getElementById('upload_foto').click();">
-                                        <i class="fa fa-upload"></i>
-                                        <span>Carregar Foto</span>
-                                    </button>
+                                    <div class="btn-group w-100">
+                                        <!-- Botão principal que também funciona para seleção de arquivo -->
+                                        <button type="button" class="btn btn-sm btn-primary mt-2 mb-0 w-100" onclick="document.getElementById('upload_foto').click()">
+                                            <i class="fa fa-upload"></i>
+                                            <span>Carregar Foto</span>
+                                        </button>
+
+                                        <!-- Botão dropdown apenas para a setinha -->
+                                        <button type="button" class="btn btn-sm btn-primary mt-2 mb-0 dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="sr-only">Mais opções</span>
+                                        </button>
+
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href="#" onclick="document.getElementById('upload_foto').click(); return false;">
+                                                <i class="fas fa-folder-open mr-2"></i> Selecionar arquivo
+                                            </a>
+                                            <a class="dropdown-item" href="#" onclick="showWebcamModal(); return false;">
+                                                <i class="fas fa-camera mr-2"></i> Tirar foto com a webcam
+                                            </a>
+                                        </div>
+                                    </div>
 
                                     <div class="checkbox clip-check check-primary mt-2">
                                         <input type="checkbox" id="deletar_foto" name="deletar_foto" title="Deletar foto" onclick="deletePhoto()">
@@ -243,10 +260,159 @@
         </div>
     </div>
 
+
+    <!-- Modal para captura de foto pela webcam -->
+    <div class="modal fade" id="webcamModal" tabindex="-1" role="dialog" aria-labelledby="webcamModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="webcamModalLabel">Tirar Foto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="mb-3">
+                        <video id="video" width="100%" height="auto" autoplay playsinline style="background-color: #f8f9fa;"></video>
+                    </div>
+                    <canvas id="canvas" style="display:none;"></canvas>
+                    <div id="photoPreview" class="mb-3"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="takePhotoBtn">Tirar Foto</button>
+                    <button type="button" class="btn btn-success" id="usePhotoBtn" style="display:none;">Usar Foto</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('photoPacienteJs')
+{{--<script>--}}
+{{--    function loadFile(event) {--}}
+{{--        var output = document.getElementById('foto_thumbnail');--}}
+{{--        output.src = URL.createObjectURL(event.target.files[0]);--}}
+{{--        output.onload = function() {--}}
+{{--            URL.revokeObjectURL(output.src) // free memory--}}
+{{--        }--}}
+{{--    }--}}
+
+{{--    function deletePhoto() {--}}
+{{--        var checkbox = document.getElementById('deletar_foto');--}}
+{{--        var output = document.getElementById('foto_thumbnail');--}}
+{{--        if (checkbox.checked) {--}}
+{{--            output.src = '{{ asset('img/logo/paciente.png') }}'; // Imagem padrão--}}
+{{--            document.getElementById('upload_foto').value = ''; // Limpa o campo de upload--}}
+{{--        }--}}
+{{--    }--}}
+{{--</script>--}}
+
 <script>
+    // Variáveis globais para a webcam
+    let stream = null;
+
+    // Função para mostrar o modal da webcam
+    function showWebcamModal() {
+        $('#webcamModal').modal('show');
+
+        // Iniciar a webcam quando o modal é aberto
+        startWebcam();
+    }
+
+    // Função para iniciar a webcam
+    async function startWebcam() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    width: { ideal: 640 },
+                    height: { ideal: 480 },
+                    facingMode: 'user'
+                },
+                audio: false
+            });
+            const video = document.getElementById('video');
+            video.srcObject = stream;
+        } catch (err) {
+            console.error("Erro ao acessar a webcam: ", err);
+            alert("Não foi possível acessar a webcam. Verifique as permissões.");
+            $('#webcamModal').modal('hide');
+        }
+    }
+
+    // Função para parar a webcam
+    function stopWebcam() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+        }
+    }
+
+    // Função para tirar foto
+    function takePhoto() {
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const photoPreview = document.getElementById('photoPreview');
+
+        // Configurar canvas com as mesmas dimensões do vídeo
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Mostrar preview da foto
+        const photoUrl = canvas.toDataURL('image/png');
+        photoPreview.innerHTML = `<img src="${photoUrl}" class="img-thumbnail" style="max-width: 100%;">`;
+
+        // Mostrar botão para usar a foto
+        document.getElementById('usePhotoBtn').style.display = 'inline-block';
+        document.getElementById('takePhotoBtn').style.display = 'none';
+    }
+
+    // Função para usar a foto capturada
+    function usePhoto() {
+        const canvas = document.getElementById('canvas');
+        const output = document.getElementById('foto_thumbnail');
+
+        // Converter canvas para blob
+        canvas.toBlob(function(blob) {
+            // Criar um arquivo a partir do blob
+            const file = new File([blob], 'foto_paciente.png', { type: 'image/png' });
+
+            // Criar um DataTransfer para simular um input file
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+
+            // Atribuir ao input file
+            const inputFile = document.getElementById('upload_foto');
+            inputFile.files = dataTransfer.files;
+
+            // Atualizar a thumbnail
+            output.src = URL.createObjectURL(file);
+
+            // Fechar o modal e parar a webcam
+            $('#webcamModal').modal('hide');
+            stopWebcam();
+        }, 'image/png');
+    }
+
+    // Eventos
+    document.addEventListener('DOMContentLoaded', function() {
+        // Eventos do modal da webcam
+        document.getElementById('takePhotoBtn').addEventListener('click', takePhoto);
+        document.getElementById('usePhotoBtn').addEventListener('click', usePhoto);
+
+        // Parar webcam quando o modal é fechado
+        $('#webcamModal').on('hidden.bs.modal', function () {
+            stopWebcam();
+            // Resetar o modal
+            document.getElementById('photoPreview').innerHTML = '';
+            document.getElementById('usePhotoBtn').style.display = 'none';
+            document.getElementById('takePhotoBtn').style.display = 'inline-block';
+        });
+    });
+
+    // Funções existentes (mantidas)
     function loadFile(event) {
         var output = document.getElementById('foto_thumbnail');
         output.src = URL.createObjectURL(event.target.files[0]);
@@ -264,6 +430,7 @@
         }
     }
 </script>
+
 <script>
    function formatarCEP(input) {
     // Mantém posição do cursor

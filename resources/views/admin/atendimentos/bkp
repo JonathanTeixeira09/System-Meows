@@ -2,22 +2,42 @@
 
 @section('title', 'Cadastrar Anamnese da Parturiente')
 @section('conteudo')
-    @push('scoreMeowsCSS')
-        <style>
-            /* Cores das bordas */
-            .border-left-primary { border-left-color: #007bff !important; } /* Azul */
-            .border-left-success { border-left-color: #28a745 !important; } /* Verde */
-            .border-left-warning { border-left-color: #ffc107 !important; } /* Amarelo */
-            .border-left-danger { border-left-color: #dc3545 !important; } /* Vermelho */
-            .border-left-secondary { border-left-color: #6c757d !important; } /* Cinza */
+{{--    @push('meowsCss')--}}
+{{--        <style>--}}
+{{--            .green {--}}
+{{--                border-color: green !important;--}}
+{{--            }--}}
 
-            /* Espessura e transição */
-            .border-left {
-                border-left-width: 4px !important;
-                transition: border-left-color 0.3s ease;
-            }
-        </style>
-    @endpush
+{{--            .yellow {--}}
+{{--                border-color: yellow !important;--}}
+{{--            }--}}
+
+{{--            .orange {--}}
+{{--                border-color: orange !important;--}}
+{{--            }--}}
+
+{{--            .red {--}}
+{{--                border-color: red !important;--}}
+{{--            }--}}
+
+{{--            .green-text {--}}
+{{--                color: green !important;--}}
+{{--            }--}}
+
+{{--            .yellow-text {--}}
+{{--                color: yellow !important;--}}
+{{--            }--}}
+
+{{--            .orange-text {--}}
+{{--                color: orange !important;--}}
+{{--            }--}}
+
+{{--            .red-text {--}}
+{{--                color: red !important;--}}
+{{--            }--}}
+{{--        </style>--}}
+{{--    @endpush--}}
+
     <div class="col-xl-12 col-lg-12">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
@@ -33,23 +53,18 @@
                             <form class="row g-2" action="{{ route('incluirEvolucao.store') }}" method="POST"
                                   name="formCadastro" enctype="multipart/form-data">
                                 @csrf
-                                <input type="hidden" name="atendimento_id" value="{{ $atendimento_id }}">
-                                <div class="col-md-8 mb-3">
+
+                                <div class="col-md-12 mb-3">
                                     <label for="nomeDaPaciente" class="form-label">Nome da Parturiente:</label>
-                                    <input class="form-control" name="nomeDaPaciente" value="{{ $nome_paciente }}" disabled>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="local" class="form-label">Local:</label>
-                                    <select class="form-select" name="local_id">
-                                        <option selected>Selecione</option>
-                                        @foreach($locals as $local)
-                                            <option value="{{ $local->id }}" {{ old('$local_id') == $local->id ? 'selected' : '' }}>{{ $local->nome }}</option>
-                                        @endforeach
-                                    </select>
+                                    <input class="form-control" name="nomeDaPaciente" value="{{ $nome_paciente }}">
                                 </div>
 
                                 <!-- FREQUÊNCIA CARDÍACA -->
-                                <div class="col-md-2 border-left border-left-secondary" id="fc-container">
+                                <div class="col-md-2 border-left
+                                            @if ($errors->has('fc')) border-left-danger
+                                            @elseif (old('fc')) border-left-success
+                                            @else border-left-secondary
+                                            @endif">
                                     <div class="form-group">
                                         <label for="frequenciaCardiaca" class="form-label">Frequência Cardíaca:</label>
 
@@ -93,7 +108,11 @@
                                 </div>
 
                                 <!-- FREQUÊNCIA RESPIRATÓRIA -->
-                                <div class="col-md-2 border-left border-left-secondary" id="fc-container">
+                                <div class="col-md-2 border-left
+                                            @if ($errors->has('fr')) border-left-danger
+                                            @elseif (old('fr')) border-left-success
+                                            @else border-left-secondary
+                                            @endif">
                                     <div class="form-group">
                                         <label for="frequenciaRespiratoria" class="form-label">Frequência
                                             Respiratória:</label>
@@ -138,7 +157,11 @@
                                 </div>
 
                                 <!-- PRESSÃO ARTERIAL SISTÓLICA -->
-                                <div class="col-md-2 border-left border-left-secondary" id="fc-container">
+                                <div class="col-md-2 border-left
+                                            @if ($errors->has('PA')) border-left-danger
+                                            @elseif (old('PA')) border-left-success
+                                            @else border-left-secondary
+                                            @endif">
                                     <label for="pressaoArterialSistolica" class="form-label">Pressão Arterial
                                         Sistólica:</label>
 
@@ -193,7 +216,11 @@
                                 </div>
 
                                 <!-- PRESSÃO ARTERIAL DIASTÓLICA -->
-                                <div class="col-md-2 border-left border-left-secondary" id="fc-container">
+                                <div class="col-md-2 border-left
+                                            @if ($errors->has('PAD')) border-left-danger
+                                            @elseif (old('PAD')) border-left-success
+                                            @else border-left-secondary
+                                            @endif">
                                     <label for="pressaoArterialDiastolica" class="form-label">Pressão Arterial
                                         Diastólica:</label>
 
@@ -240,7 +267,11 @@
                                 </div>
 
                                 <!-- TEMPERATURA -->
-                                <div class="col-md-2 border-left border-left-secondary" id="fc-container">
+                                <div class="col-md-2 border-left
+                                            @if ($errors->has('Temp')) border-left-danger
+                                            @elseif (old('Temp')) border-left-success
+                                            @else border-left-secondary
+                                            @endif">
                                     <label for="temperatura" class="form-label">Temperatura:</label>
 
                                     @php $oldTemp = old('Temp'); @endphp
@@ -286,7 +317,11 @@
                                 </div>
 
                                 <!-- SATURAÇÃO DE OXIGÊNIO -->
-                                <div class="col-md-2 border-left border-left-secondary" id="fc-container">
+                                <div class="col-md-2 border-left
+                                            @if ($errors->has('SO')) border-left-danger
+                                            @elseif (old('SO')) border-left-success
+                                            @else border-left-secondary
+                                            @endif">
                                     <label for="saturacaoOxigenio" class="form-label">Saturação de Oxigênio:</label>
 
                                     @php $oldSo = old('SO'); @endphp
@@ -376,61 +411,10 @@
         </div>
         @include('layouts.statusMeows')
     </div>
-    @push('scoresJS')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Mapeamento de scores (igual ao seu controller)
-                const scoreMap = {
-                    'fc': { 1:3, 2:1, 3:0, 4:1, 5:2, 6:3 },
-                    'fr': { 1:3, 2:2, 3:0, 4:1, 5:2, 6:3 },
-                    'PA': { 1:3, 2:2, 3:0, 4:1, 5:2, 6:3 },
-                    'PAD': { 1:2, 2:0, 3:1, 4:2, 5:3 },
-                    'Temp': { 1:2, 2:0, 3:1, 4:2, 5:3 },
-                    'SO': { 1:3, 2:2, 3:0 }
-                };
 
-                // Função para atualizar a borda
-                function updateBorder(radio) {
-                    const container = radio.closest('.border-left');
-                    const param = radio.name;
-                    const value = radio.value;
+    @push('scriptMeows')
 
-                    // Remove todas as classes de cor
-                    container.classList.remove(
-                        'border-left-primary',
-                        'border-left-success',
-                        'border-left-warning',
-                        'border-left-danger',
-                        'border-left-secondary'
-                    );
 
-                    // Se estiver marcado, aplica a cor correspondente
-                    if (radio.checked) {
-                        const score = scoreMap[param][value];
-
-                        switch(score) {
-                            case 0: container.classList.add('border-left-primary'); break; // Azul
-                            case 1: container.classList.add('border-left-success'); break; // Verde
-                            case 2: container.classList.add('border-left-warning'); break; // Amarelo
-                            case 3: container.classList.add('border-left-danger'); break;  // Vermelho
-                            default: container.classList.add('border-left-secondary');
-                        }
-                    } else {
-                        container.classList.add('border-left-secondary');
-                    }
-                }
-
-                // Adiciona eventos a todos os radios
-                document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                    // Atualiza quando muda
-                    radio.addEventListener('change', function() {
-                        updateBorder(this);
-                    });
-
-                    // Atualiza estado inicial
-                    updateBorder(radio);
-                });
-            });
-        </script>
     @endpush
+
 @endsection

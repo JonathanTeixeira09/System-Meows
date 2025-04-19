@@ -73,7 +73,6 @@ class ParturientesController extends Controller
             // 'diurese' => 0,
         ];
 
-
         // Inicializa a pontuação total
         $pontuacaoTotal = 0;
 
@@ -202,6 +201,7 @@ class ParturientesController extends Controller
         }
 
         dd($avaliacao, $scoresTotal);
+        dd('fc: ' . $fc, 'fr: ' . $fr, 'pas: ' . $pas, 'pad: ' . $pad, 'temp: ' . $temp, 'so: ' . $so);
 
         return redirect()->route('incluirAnamenese.index')->with('success', 'Anamnese cadastrada com sucesso!');
 
