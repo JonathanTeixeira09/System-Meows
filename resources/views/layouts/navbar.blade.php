@@ -20,7 +20,8 @@
                         $nome = optional($user->profissional)->nome ?? $user->name;
                     @endphp
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{$nome}}</span>
-                <img class="img-profile rounded-circle" src="storage/{{ Auth::user()->profissional->thumbnail }}" style="object-fit: cover; object-position: center center; /* Foco no centro */">
+{{--                <img class="img-profile rounded-circle" src="Authstorage/{{ Auth::user()->profissional->thumbnail }}" style="object-fit: cover; object-position: center center; /* Foco no centro */">--}}
+                <img class="img-profile rounded-circle" src="{{ asset('storage/' . Auth::user()->profissional->thumbnail) }}" style="object-fit: cover; object-position: center center; /* Foco no centro */">
                 @endauth
             </a>
             <!-- Dropdown - User Information -->

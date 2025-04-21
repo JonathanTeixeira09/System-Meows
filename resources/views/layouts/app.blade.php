@@ -35,6 +35,7 @@
     @stack('error404')
     @stack('scoreMeowsCSS')
     @stack('listandoAtendimentosCSS')
+    @stack('chartsCSS')
 
 </head>
 
@@ -104,6 +105,9 @@
 @stack('createUserJS')
 @stack('listAtendimentosJs')
 @stack('scoresJS')
+@stack('chartsEvolucoesJS')
+@stack('listandoEvolucoesJS')
+@stack('chartsIndexJS')
 
 <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
 <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
@@ -118,7 +122,7 @@
 <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script>
 
 <!-- Page level custom scripts -->
-{{--<script src="{{asset('js/demo/chart-area-demo.js')}}"></script>--}}
+<script src="{{asset('js/demo/chart-area-demo.js')}}"></script>
 {{--<script src="{{asset('js/demo/chart-pie-demo.js')}}"></script>--}}
 
 </body>

@@ -7,16 +7,16 @@
         body {
             font-family: Arial, sans-serif;
             color: #333;
-            line-height: 1.3;
+            line-height: 1.4;
             margin: 0;
             padding: 20px;
         }
 
         .header {
             width: 100%;
-            margin-bottom: 5px;
+            margin-bottom: 20px;
             border-bottom: 2px solid #3498db;
-            padding-bottom: 5px;
+            padding-bottom: 10px;
         }
 
         .header-table {
@@ -102,7 +102,7 @@
         }
 
         .signature-area {
-            margin-top: 20px;
+            margin-top: 40px;
         }
 
         .signature-line {

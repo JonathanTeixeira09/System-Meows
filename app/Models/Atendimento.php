@@ -34,4 +34,14 @@ class Atendimento extends Model
     {
         return $this->belongsTo(User::class, 'alta_user_id');
     }
+    public function evolucoes()
+    {
+        return $this->hasMany(Evolucao::class, 'atendimento_id');
+    }
+
+    public function ultimaEvolucao()
+    {
+        return $this->hasOne(Evolucao::class, 'atendimento_id')
+            ->latestOfMany();
+    }
 }

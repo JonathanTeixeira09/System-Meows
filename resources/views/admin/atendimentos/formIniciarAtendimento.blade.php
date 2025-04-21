@@ -29,24 +29,29 @@
                                 <div class="col-md-12">
                                     <label for="nomeDaPaciente" class="form-label">Nome da Parturiente:</label>
                                     <div class="input-group">
-                                    <input
-                                        list="pacientes-list"
-                                        class="form-control @error('paciente_id') is-invalid @enderror"
-                                        name="paciente_nome"
-                                        id="pacienteInput"
-                                        placeholder="Digite o nome"
-                                        autocomplete="off"
-                                        value="{{ old('paciente_nome') }}"
-                                    >
-                                    <datalist id="pacientes-list">
-                                        @foreach($pacientes as $paciente)
-                                            <option value="{{ $paciente->nome }}" data-id="{{ $paciente->id }}">
-                                        @endforeach
-                                    </datalist>
-                                    <!-- Botão condicional (inicialmente oculto) -->
-                                    <button type="button" id="btnRedirecionarCadastro" class="btn btn-primary d-none" onclick="redirecionarParaCadastro()"                                    >
-                                        <i class="fas fa-plus"></i> Cadastrar Nova
-                                    </button>
+                                        <input
+                                            list="pacientes-list"
+                                            class="form-control @error('paciente_id') is-invalid @enderror"
+                                            name="paciente_nome"
+                                            id="pacienteInput"
+                                            placeholder="Digite o nome"
+                                            autocomplete="off"
+                                            value="{{-- old('paciente_nome') --}}"
+                                        >
+                                        <datalist id="pacientes-list">
+                                            @foreach($pacientes as $paciente)
+                                                <option value="{{ $paciente->nome }}" data-id="{{ $paciente->id }}">
+                                            @endforeach
+                                        </datalist>
+                                        <!-- Botão condicional (inicialmente oculto) -->
+                                        <button type="button" id="btnRedirecionarCadastro" class="btn btn-primary d-none" onclick="redirecionarParaCadastro()"                                    >
+                                            <i class="fas fa-plus"></i> Cadastrar Nova
+                                        </button>
+                                        <div class="invalid-feedback">
+                                            @error('paciente_id')
+                                            {{ $message }}
+                                            @enderror
+                                        </div>
                                 </div>
                                 <!-- Campo oculto para enviar o ID (se existir) -->
                                 <input type="hidden" name="paciente_id" id="pacienteId" value="{{ old('paciente_id') }}">

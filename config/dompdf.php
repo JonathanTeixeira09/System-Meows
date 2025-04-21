@@ -214,6 +214,8 @@ return [
          *
          * @var int
          */
+        'defaultPaperSize' => 'A4',
+        'defaultFont' => 'sans-serif',
         'dpi' => 96,
 
         /**

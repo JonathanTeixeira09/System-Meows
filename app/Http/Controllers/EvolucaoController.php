@@ -256,9 +256,15 @@ class EvolucaoController extends Controller
             'so' => ['min' => 96, 'max' => 100, 'label' => 'Saturação de Oxigênio (%)']
         ];
 
-        $pdf = PDF::loadView('admin.atendimentos.gerarPdfScoreParturiente', compact('evolucao', 'parametrosNormais'));
+        $pdf = PDF::loadView('admin.atendimentos.gerarPdfScoreParturiente', compact('evolucao', 'parametrosNormais'))
+            ->setPaper('a4', 'portrait')
+            ->setOption('margin-top', '5mm')
+            ->setOption('margin-bottom', '5mm')
+            ->setOption('margin-left', '20mm')
+            ->setOption('margin-right', '20mm');
 
-        return $pdf->download('evolucao_'.$evolucao->atendimento->paciente->nome.'_'.now()->format('d-m-Y').'.pdf');
+//        return $pdf->download('evolucao_'.$evolucao->atendimento->paciente->nome.'_'.now()->format('d-m-Y').'.pdf');
+        return $pdf->stream('evolucao_'.$evolucao->atendimento->paciente->nome.'_'.now()->format('d-m-Y').'.pdf');
     }
 
     public function ultimaEvolucao($id)
@@ -285,5 +291,195 @@ class EvolucaoController extends Controller
         return view('admin.atendimentos.relatorioScorePaciente', compact('evolucao', 'parametrosNormais'));
     }
 
+    public function listarEvolucoes($id)
+    {
+        $evolucoes = Evolucao::with(['atendimento.paciente', 'local', 'user'])
+            ->where('atendimento_id', $id)  // Filtra pelo ID do atendimento
+            ->latest('created_at')  // Ordena pela data de criação (mais recente primeiro)
+            ->get();  // Pega todos os registros
+
+        return view('admin.atendimentos.listarEvolucoes', compact('evolucoes'));
+    }
+
+    // Mostra a view com o gráfico
+    public function mostrarGrafico($atendimento_id)
+    {
+//        $evolucoes = Evolucao::where('atendimento_id', $atendimento_id, 'atendimento.paciente')
+//            ->orderBy('created_at')
+//            ->get();
+        // Busca as evoluções + nome do paciente (com eager loading)
+        $evolucoes = Evolucao::with(['atendimento.paciente'])
+            ->where('atendimento_id', $atendimento_id)
+            ->orderBy('created_at')
+            ->get();
+
+        // Nome do paciente (acessível via relacionamento)
+        $nomePaciente = $evolucoes->first()->atendimento->paciente->nome ?? 'Paciente não encontrado';
+
+        // Garanta que $labels seja gerado corretamente
+        $labels = $evolucoes->map(function ($evolucao) {
+            return $evolucao->created_at->format('d/m H:i');
+        });
+
+        // Processamento dos dados para o gráfico (métodos auxiliares)
+        $fr = $this->extractNumbers($evolucoes->pluck('fr'));
+        $fc = $this->extractFirstNumbers($evolucoes->pluck('fc'));
+        $pas = $this->extractNumbers($evolucoes->pluck('pas'));
+        $pad = $this->extractNumbers($evolucoes->pluck('pad'));
+        $temp = $this->extractNumbers($evolucoes->pluck('temp'));
+        $so = $this->extractNumbers($evolucoes->pluck('so'));
+
+        // Debug: Verifique se $labels está populado
+//         dd($labels); // Descomente para testar
+
+        return view('admin.atendimentos.listarEvolucoes', [
+            'evolucoes' => $evolucoes,
+            'labels'    => $labels, // Certifique-se de que está sendo passado
+            'fr'        => $fr,
+            'fc'        => $fc,
+            'pas'       => $pas,
+            'pad'       => $pad,
+            'temp'      => $temp,
+            'so'        => $so,
+            'nomePaciente' => $nomePaciente,
+        ]);
+    }
+
+    // Extrai o primeiro número de cada valor (ex: "100-109" → 100)
+    private function extractFirstNumbers($values)
+    {
+        return $values->map(function ($value) {
+            if (is_numeric($value)) return (float) $value;
+            preg_match('/\d+/', $value, $matches); // Pega o primeiro número
+            return isset($matches[0]) ? (float) $matches[0] : null;
+        });
+    }
+
+    // Extrai números (incluindo decimais) de cada valor (ex: "36.5-37" → 36.5)
+    private function extractNumbers($values)
+    {
+        return $values->map(function ($value) {
+            if (is_numeric($value)) return (float) $value;
+            preg_match('/\d+\.?\d*/', $value, $matches); // Pega números com ou sem decimal
+            return isset($matches[0]) ? (float) $matches[0] : null;
+        });
+    }
+
+    public function viewPrincipal()
+    {
+//        // Dados para os cards
+//        $totalAtendimentos = Atendimento::count();
+//        $totalAltas = Atendimento::whereNotNull('data_alta')->count();
+//        $totalInternados = Atendimento::whereNull('data_alta')
+//                            ->whereHas('evolucoes')
+//                            ->count();
+//        $pacientesNaoAtendidos = Atendimento::whereDoesntHave('evolucoes')
+//                                ->whereNull('data_alta')
+//                                ->count();
+//
+//        // Dados para o gráfico de status
+//        $statusAtendimentos = [
+//            'Com Alta' => $totalAltas,
+//            'Internados' => $totalInternados,
+//            'Não Atendidos' => $pacientesNaoAtendidos
+//        ];
+//
+//        // Consulta corrigida para o gráfico por mês
+//        $evolucoesPorMes = Evolucao::selectRaw('MONTH(created_at) as mes, COUNT(*) as total')
+//            ->groupBy('mes')
+//            ->orderBy('mes')
+//            ->get()
+//            ->pluck('total', 'mes');
+//
+//        // Preenche os meses faltantes com zero
+//        $dadosCompletos = [];
+//        for ($mes = 1; $mes <= 12; $mes++) {
+//            $dadosCompletos[$mes] = $evolucoesPorMes->has($mes) ? $evolucoesPorMes[$mes] : 0;
+//        }
+//
+//        // Nomes dos meses para os rótulos
+//        $nomesMeses = [
+//            1 => 'Jan', 2 => 'Fev', 3 => 'Mar', 4 => 'Abr',
+//            5 => 'Mai', 6 => 'Jun', 7 => 'Jul', 8 => 'Ago',
+//            9 => 'Set', 10 => 'Out', 11 => 'Nov', 12 => 'Dez'
+//        ];
+        // Dados existentes
+        $totalAtendimentos = Atendimento::count();
+        $totalAltas = Atendimento::whereNotNull('data_alta')->count();
+        $totalInternados = Atendimento::whereNull('data_alta')->count();
+        $pacientesNaoAtendidos = Atendimento::whereDoesntHave('evolucoes')
+            ->whereNull('data_alta')
+            ->count();
+
+        // Gráfico por mês (existente)
+        $evolucoesPorMes = Evolucao::selectRaw('MONTH(created_at) as mes, COUNT(*) as total')
+            ->groupBy('mes')
+            ->orderBy('mes')
+            ->get()
+            ->pluck('total', 'mes');
+
+        // Preenche meses faltantes
+        $dadosCompletos = [];
+        for ($mes = 1; $mes <= 12; $mes++) {
+            $dadosCompletos[$mes] = $evolucoesPorMes->has($mes) ? $evolucoesPorMes[$mes] : 0;
+        }
+
+        // Novo gráfico de deterioração
+        $deterioracaoData = Atendimento::with('ultimaEvolucao')
+            ->selectRaw('
+        CASE
+            WHEN evolucaos.grauDeterioracao IS NULL THEN "Sem avaliação"
+            WHEN evolucaos.grauDeterioracao BETWEEN 0 AND 2 THEN "Sem risco"
+            WHEN evolucaos.grauDeterioracao BETWEEN 3 AND 4 THEN "Baixo risco"
+            WHEN evolucaos.grauDeterioracao BETWEEN 5 AND 6 THEN "Risco moderado"
+            ELSE "Risco alto"
+        END as status,
+        COUNT(*) as total
+    ')
+            ->leftJoin('evolucaos', function($join) {
+                $join->on('atendimentos.id', '=', 'evolucaos.atendimento_id')
+                    ->whereRaw('evolucaos.id = (
+                 SELECT id FROM evolucaos
+                 WHERE atendimento_id = atendimentos.id
+                 ORDER BY created_at DESC
+                 LIMIT 1
+             )');
+            })
+            ->groupBy('status')
+            ->orderByRaw('
+        CASE status
+            WHEN "Risco alto" THEN 1
+            WHEN "Risco moderado" THEN 2
+            WHEN "Baixo risco" THEN 3
+            WHEN "Sem risco" THEN 4
+            ELSE 5
+        END
+    ')
+            ->get();
+
+        $chartDeterioracao = [
+            'labels' => $deterioracaoData->pluck('status'),
+            'data' => $deterioracaoData->pluck('total'),
+            'cores' => ['#e74a3b', '#f6c23e',  '#4e73df', '#1cc88a', '#e0e0e0']
+        ];
+        return view('index', compact(
+            'totalAtendimentos',
+            'totalAltas',
+            'totalInternados',
+            'pacientesNaoAtendidos',
+            'dadosCompletos',
+            'chartDeterioracao'
+        ));
+//        return view('index', [
+//            'totalAtendimentos' => $totalAtendimentos,
+//            'totalAltas' => $totalAltas,
+//            'totalInternados' => $totalInternados,
+//            'pacientesNaoAtendidos' => $pacientesNaoAtendidos,
+//            'dadosGrafico' => $dadosCompletos,
+//            'statusAtendimentos' => $statusAtendimentos,
+//            'nomesMeses' => $nomesMeses
+//        ]);
+
+    }
 
 }

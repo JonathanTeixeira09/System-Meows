@@ -10,24 +10,28 @@ class AtendimentoController extends Controller
 {
     public function index()
     {
-        // Carrega atendimentos com relacionamentos
+//        // Carrega atendimentos com relacionamentos
         $atendimentos = Atendimento::with(['paciente', 'entradaUser', 'altaUser'])
             ->latest() // Opcional: ordena do mais recente para o mais antigo
             ->get();
 
         // Carrega todos os pacientes ordenados por nome para o campo de busca
         $pacientes = Paciente::orderBy('nome')->get();
+
+        // Retorna a view com inicio dos atendimentos a pacientes
         return view(('admin.atendimentos.formIniciarAtendimento'), ['pacientes' => $pacientes, 'atendimentos' => $atendimentos]);
+
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'paciente_id' => 'required|exists:pacientes,id',
+            'paciente_id' => 'required|exists:pacientes,id|unique:atendimentos,paciente_id,NULL,id,data_alta,NULL',
         ],
         [
             'paciente_id.required' => 'Obrigatório selecionar uma paciente.',
             'paciente_id.exists' => 'O paciente selecionado não existe.',
+            'paciente_id.unique' => 'O paciente já está em atendimento.',
         ]);
 
 
@@ -47,14 +51,21 @@ class AtendimentoController extends Controller
 
     public function list()
     {
-        // Atendimentos em aberto (sem data de alta) com relacionamentos
-        $atendimentos = Atendimento::with(['paciente', 'entradaUser'])
-            ->whereNull('data_alta')
-            ->orderBy('data_entrada', 'desc')
-            ->orderBy('hora_entrada', 'desc')
-            ->get();
+        $atendimentos = Atendimento::with(['paciente', 'entradaUser.profissional', 'evolucoes' => function($query) {
+            $query->latest()->limit(1); // Pega apenas a última evolução
+        }])->get();
+//        dd($atendimentos);
+
+//        // Atendimentos em aberto (sem data de alta) com relacionamentos
+//        $atendimentos = Atendimento::with(['paciente', 'entradaUser'])
+//            ->whereNull('data_alta')
+//            ->orderBy('data_entrada', 'desc')
+//            ->orderBy('hora_entrada', 'desc')
+//            ->get();
         return view('admin.atendimentos.listarAtendimentos', [
             'atendimentos' => $atendimentos,
         ]);
     }
+
+
 }

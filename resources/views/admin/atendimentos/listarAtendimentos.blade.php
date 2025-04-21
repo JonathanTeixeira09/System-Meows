@@ -4,33 +4,221 @@
 @section('conteudo')
     @push('listandoAtendimentosCSS')
         <style>
+            /*@media (max-width: 1000px) {*/
+            /*    .table thead {*/
+            /*        display: none;*/
+            /*    }*/
+
+            /*    .table td {*/
+            /*        display: flex;*/
+            /*        justify-content: space-between;*/
+            /*    }*/
+
+            /*    .table tr {*/
+            /*        display: block;*/
+            /*    }*/
+
+            /*    .table td:first-of-type {*/
+            /*        font-weight: bold;*/
+            /*        font-size: 1.2rem;*/
+            /*        text-align: center;*/
+            /*        display: block;*/
+            /*    }*/
+
+            /*    .table td:not(:first-of-type):before {*/
+            /*        content: attr(data-title);*/
+            /*        display: block;*/
+            /*        font-weight: bold;*/
+            /*    }*/
+            /*}*/
+            /*.bg-light td {*/
+            /*    background-color: #f8f9fa !important;*/
+            /*}*/
+            /*.bg-primary td {*/
+            /*    background-color: #4e73df !important;*/
+            /*}*/
+            /*.bg-success td {*/
+            /*    background-color: #1cc88a !important;*/
+            /*}*/
+            /*.bg-warning td {*/
+            /*    background-color: #f6c23e !important;*/
+            /*}*/
+            /*.bg-danger td {*/
+            /*    background-color: #e74a3b !important;*/
+            /*}*/
+            /*.img-profile {*/
+            /*    border: 2px solid #fff;*/
+            /*    box-shadow: 0 0 5px rgba(0,0,0,0.2);*/
+            /*}*/
+            /*.display-6 {*/
+            /*    font-size: 1.2rem;*/
+            /*    margin-bottom: 0.2rem;*/
+            /*}*/
+            /*.coluna-acoes {*/
+            /*    background-color: #f8f9fa !important; !* Cinza claro *!*/
+            /*    position: relative;*/
+            /*}*/
+
+            /*!* Manter a cor original quando a linha tiver classes de status *!*/
+            /*tr.bg-primary .coluna-acoes,*/
+            /*tr.bg-success .coluna-acoes,*/
+            /*tr.bg-warning .coluna-acoes,*/
+            /*tr.bg-danger .coluna-acoes {*/
+            /*    background-color: inherit !important;*/
+            /*}*/
+            /*!* Estilo para os botões *!*/
+            /*.coluna-acoes .btn {*/
+            /*    margin: 2px;*/
+            /*    box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
+            /*}*/
+
+            /* Estilos gerais para a tabela */
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Estilos para desktop */
+            .table td, .table th {
+                vertical-align: middle;
+                padding: 12px 8px;
+            }
+
+            .img-profile {
+                border: 2px solid #fff;
+                box-shadow: 0 0 5px rgba(0,0,0,0.2);
+                width: 60px;
+                height: 60px;
+                object-fit: cover;
+            }
+
+            /* Cores das linhas */
+            .bg-light td {
+                background-color: #f8f9fa !important;
+            }
+            .bg-primary td {
+                background-color: #4e73df !important;
+                color: white;
+            }
+            .bg-success td {
+                background-color: #1cc88a !important;
+                color: white;
+            }
+            .bg-warning td {
+                background-color: #f6c23e !important;
+            }
+            .bg-danger td {
+                background-color: #e74a3b !important;
+                color: white;
+            }
+
+            /* Coluna de ações */
+            .coluna-acoes {
+                background-color: #f8f9fa !important;
+            }
+            .coluna-acoes .btn {
+                margin: 2px;
+                min-width: 36px;
+            }
+
+            /* Responsividade - Versão mobile */
             @media (max-width: 1280px) {
                 .table thead {
                     display: none;
                 }
 
-                .table td {
-                    display: flex;
-                    justify-content: space-between;
+                .table, .table tbody, .table tr, .table td {
+                    display: block;
+                    width: 100%;
                 }
 
                 .table tr {
-                    display: block;
+                    margin-bottom: 20px;
+                    border: 1px solid #dee2e6;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    position: relative;
                 }
 
-                .table td:first-of-type {
-                    font-weight: bold;
-                    font-size: 1.2rem;
-                    text-align: center;
-                    display: block;
+                .table td {
+                    padding: 10px 15px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    border-top: 1px solid #e9ecef;
                 }
 
-                .table td:not(:first-of-type):before {
+                /* Foto do paciente em destaque */
+                .table td:first-child {
+                    background-color: rgba(0,0,0,0.03);
+                    justify-content: center;
+                    padding: 15px;
+                    border-top: none;
+                }
+
+                /* Rótulos dos campos */
+                .table td:not(:first-child):before {
                     content: attr(data-title);
-                    display: block;
                     font-weight: bold;
+                    width: 45%;
+                    padding-right: 15px;
+                    text-align: left;
+                }
+
+                /* Conteúdo dos campos */
+                .table td:not(:first-child) {
+                    text-align: right;
+                    width: 100%;
+                    flex: 1;
+                }
+
+                /* Ajustes específicos para colunas */
+                .table .coluna-acoes {
+                    flex-direction: row;
+                    gap: 8px;
+                    padding: 15px;
+                }
+
+                .table .coluna-acoes:before {
+                    display: none;
+                }
+
+                .table .coluna-acoes .btn {
+                    width: 100%;
+                    justify-content: center;
+                }
+
+                /* Ajuste para o status */
+                .table td[data-title="Status"] .badge {
+                    display: block;
+                    text-align: center;
+                    width: 100%;
+                }
+
+                /* Ajuste para o tempo de espera */
+                .table td[data-title="Tempo de Espera"] {
+                    flex-direction: column;
+                    text-align: center !important;
+                }
+
+                .table td[data-title="Tempo de Espera"]:before {
+                    width: 100%;
+                    text-align: center;
+                    margin-bottom: 5px;
                 }
             }
+
+            /* Melhorias para telas médias */
+            @media (min-width: 768px) and (max-width: 1000px) {
+                .table td:not(:first-child):before {
+                    width: 30%;
+                }
+
+                .table td:not(:first-child) {
+                    width: 100%;
+                }
+            }
+
         </style>
     @endpush
 
@@ -45,7 +233,7 @@
             <!-- Card Body -->
             <div class="card-body">
                 <div class="chart-area">
-
+                    <!-- Tabela de Atendimentos -->
                     <table class="table table-striped table-md">
                         <div class="table-responsive">
                             <thead>
@@ -56,47 +244,144 @@
                                 <th>Hora de Entrada</th>
                                 <th>Nome do Profissional</th>
                                 <th>Status</th>
-                                <th>Tempo de Espera</th>
+                                <th>Tempo</th>
                                 <th style='text-align:right;'>Ações</th>
                             </tr>
                             </thead>
                             <tbody style='text-align:left;'>
                             @foreach ($atendimentos as $atendimento)
-                                <tr>
-                                    <td data-title='Foto'><img class="img-profile rounded-circle" src="storage/{{ $atendimento->paciente->thumbnail }}" style="width: 60px; height: 60px; object-fit: cover; object-position: center center; /* Foco no centro */"></td>
-                                    <td data-title='Nome '>{{ $atendimento->paciente->nome }}</td>
+                                @php
+                                    // Determina o grau de deterioração
+                                    $ultimaEvolucao = $atendimento->evolucoes->first();
+                                    $grauDeterioracao = $ultimaEvolucao->grauDeterioracao ?? null;
+
+                                    // Define a classe CSS baseada no grau
+                                    $rowClass = '';
+                                    $statusText = 'Aguardando atendimento';
+                                    $tempoProximaVerificacao = null;
+
+                                    if (is_null($grauDeterioracao)) {
+                                        $rowClass = 'bg-light';
+                                    } elseif ($grauDeterioracao >= 0 && $grauDeterioracao <= 2) {
+                                        $rowClass = 'bg-primary text-white';
+                                        $statusText = 'Sem risco';
+                                        $tempoProximaVerificacao = 4 * 60 * 60 * 1000; // 4 horas em milissegundos
+                                    } elseif ($grauDeterioracao >= 3 && $grauDeterioracao <= 4) {
+                                        $rowClass = 'bg-success text-white';
+                                        $statusText = 'Baixo risco';
+                                        $tempoProximaVerificacao = 1 * 60 * 60 * 1000; // 1 hora em milissegundos
+                                    } elseif ($grauDeterioracao >= 5 && $grauDeterioracao <= 6) {
+                                        $rowClass = 'bg-warning';
+                                        $statusText = 'Risco moderado';
+                                        $tempoProximaVerificacao = 30 * 60 * 1000; // 30 minutos em milissegundos
+                                    } elseif ($grauDeterioracao >= 7) {
+                                        $rowClass = 'bg-danger text-white';
+                                        $statusText = 'Risco alto';
+                                    }
+                                @endphp
+
+                                <tr class="{{ $rowClass }}">
+                                    <td data-title='Foto'>
+                                        <img class="img-profile rounded-circle" src="storage/{{ $atendimento->paciente->thumbnail }}" style="width: 60px; height: 60px; object-fit: cover;">
+                                    </td>
+                                    <td data-title='Nome'>{{ $atendimento->paciente->nome }}</td>
                                     <td data-title='Data de Entrada'>{{ date('d/m/Y', strtotime($atendimento->data_entrada)) }}</td>
                                     <td data-title='Hora de Entrada'>{{ $atendimento->hora_entrada }}</td>
                                     <td data-title='Nome do Profissional'>{{ $atendimento->entradaUser->profissional->nome }}</td>
-                                    <td data-title='Status'><span class="badge bg-danger text-white">Aguardando Atendimento</span>
-                                        @if ($atendimento->status == 'Em Atendimento')
-                                            <span class="badge bg-primary">{{ $atendimento->status }}</span>
-                                        @elseif ($atendimento->status == 'Finalizado')
-                                            <span class="badge bg-success">{{ $atendimento->status }}</span>
+                                    <td data-title='Status'>
+                        <span class="badge {{ $grauDeterioracao === null ? 'bg-secondary' : ($grauDeterioracao >= 7 ? 'bg-danger' : ($grauDeterioracao >= 5 ? 'bg-warning' : ($grauDeterioracao >= 3 ? 'bg-success' : 'bg-primary'))) }}">
+                            {{ $statusText }}
+                        </span>
+                                    </td>
+                                    <td data-title="Tempo">
+                                        @if($grauDeterioracao === null)
+                                            <div class="tempo-espera-container" data-registro="{{ $atendimento->created_at->format('Y-m-d H:i:s') }}">
+                                                <h5 class="tempo-espera text-danger display-6">00:00:00</h5>
+                                            </div>
+                                        @elseif($grauDeterioracao >= 7)
+                                            <span class="text-white"><strong>INTERVENÇÃO IMEDIATA</strong></span>
                                         @else
-                                            <span class="badge bg-danger">{{ $atendimento->status }}</span>
+                                            <div class="proxima-verificacao-container"
+                                                 data-tempo="{{ $tempoProximaVerificacao }}"
+                                                 data-registro="{{ $ultimaEvolucao->created_at->format('Y-m-d H:i:s') }}">
+                                                <h5 class="tempo-restante display-6">00:00:00</h5>
+                                                <small>Próxima verificação</small>
+                                            </div>
                                         @endif
                                     </td>
-                                    <td data-title="Tempo de Espera">
-                                        <div class="tempo-espera-container" data-registro="{{ $atendimento->created_at->format('Y-m-d H:i:s') }}">
-                                            <h5 class="tempo-espera text-danger display-6">00:00:00</h5>
-                                        </div>
-                                    </td>
-                                    <td data-title="Ações" style='text-align:right;'>
-                                        <a href='{{route('incluirEvolucao', $atendimento->id) }}'><button type='button'
-                                                                                                       class='btn btn-sm btn-warning' title="Incluir Anamnese"><i class="fa-solid fa-pen-to-square"></i></button></a>
+                                    <td data-title="Ações" class="coluna-acoes" style='text-align:right; background: #FFFFFF'>
+                                        <!-- Seus botões de ação aqui -->
+                                        <a href='{{route('incluirEvolucao', $atendimento->id) }}'><button type='button' class='btn btn-sm btn-warning' title="Incluir Anamnese"><i class="fa-solid fa-pen-to-square"></i></button></a>
                                         <a href='{{ route('evolucao.ultima', $atendimento->id) }}'><button type='button'
-                                                                                                       class='btn btn-sm btn-primary' title="Visualizar evolução"><i class="fa-solid fa-eye"></i></button></a>
+                                                                                                           class='btn btn-sm btn-primary' title="Visualizar evolução"><i class="fa-solid fa-eye"></i></button></a>
 
-                                        <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
-                                                                                                       class='btn btn-sm btn-info' title="Evoluções"><i class="fa-solid fa-list"></i></button></a>
-                                        <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
-                                                                                                      class='btn btn-sm btn-success' title="Dar Alta"><i class="fa-solid fa-circle-up"></i></button></a>
+{{--                                        <a href='{{ route('evolucao.listar', $atendimento->id) }}'><button type='button'--}}
+{{--                                                                                                           class='btn btn-sm btn-info' title="Evoluções"><i class="fa-solid fa-list"></i></button></a>--}}
+                                        <a href='{{ route('evolucoes.grafico', $atendimento->id) }}'><button type='button'
+                                                                                                             class='btn btn-sm btn-info' title="Gráficos"><i class="fa-solid fa-chart-simple"></i></button></a>
+                                        <a href='{{--route('editproduto', $produto->id) --}}'><button type='button'
+                                                                                               class='btn btn-sm btn-success' title="Dar Alta"><i class="fa-solid fa-circle-up"></i></button></a>
                                     </td>
+                                </tr>
                             @endforeach
                             </tbody>
                         </div>
                     </table>
+{{--                    <table class="table table-striped table-md">--}}
+{{--                        <div class="table-responsive">--}}
+{{--                            <thead>--}}
+{{--                            <tr style='text-align:left;'>--}}
+{{--                                <th>Foto</th>--}}
+{{--                                <th>Nome</th>--}}
+{{--                                <th>Data de Entrada</th>--}}
+{{--                                <th>Hora de Entrada</th>--}}
+{{--                                <th>Nome do Profissional</th>--}}
+{{--                                <th>Status</th>--}}
+{{--                                <th>Tempo de Espera</th>--}}
+{{--                                <th style='text-align:right;'>Ações</th>--}}
+{{--                            </tr>--}}
+{{--                            </thead>--}}
+{{--                            <tbody style='text-align:left;'>--}}
+{{--                            @foreach ($atendimentos as $atendimento)--}}
+{{--                                <tr>--}}
+{{--                                    <td data-title='Foto'><img class="img-profile rounded-circle" src="storage/{{ $atendimento->paciente->thumbnail }}" style="width: 60px; height: 60px; object-fit: cover; object-position: center center; /* Foco no centro */"></td>--}}
+{{--                                    <td data-title='Nome '>{{ $atendimento->paciente->nome }}</td>--}}
+{{--                                    <td data-title='Data de Entrada'>{{ date('d/m/Y', strtotime($atendimento->data_entrada)) }}</td>--}}
+{{--                                    <td data-title='Hora de Entrada'>{{ $atendimento->hora_entrada }}</td>--}}
+{{--                                    <td data-title='Nome do Profissional'>{{ $atendimento->entradaUser->profissional->nome }}</td>--}}
+{{--                                    <td data-title='Status'><span class="badge bg-danger text-white">Aguardando Atendimento</span>--}}
+{{--                                        @if ($atendimento->status == 'Em Atendimento')--}}
+{{--                                            <span class="badge bg-primary">{{ $atendimento->status }}</span>--}}
+{{--                                        @elseif ($atendimento->status == 'Finalizado')--}}
+{{--                                            <span class="badge bg-success">{{ $atendimento->status }}</span>--}}
+{{--                                        @else--}}
+{{--                                            <span class="badge bg-danger">{{ $atendimento->status }}</span>--}}
+{{--                                        @endif--}}
+{{--                                    </td>--}}
+{{--                                    <td data-title="Tempo de Espera">--}}
+{{--                                        <div class="tempo-espera-container" data-registro="{{ $atendimento->created_at->format('Y-m-d H:i:s') }}">--}}
+{{--                                            <h5 class="tempo-espera text-danger display-6">00:00:00</h5>--}}
+{{--                                        </div>--}}
+{{--                                    </td>--}}
+{{--                                    <td data-title="Ações" style='text-align:right;'>--}}
+{{--                                        <a href='{{route('incluirEvolucao', $atendimento->id) }}'><button type='button'--}}
+{{--                                                                                                       class='btn btn-sm btn-warning' title="Incluir Anamnese"><i class="fa-solid fa-pen-to-square"></i></button></a>--}}
+{{--                                        <a href='{{ route('evolucao.ultima', $atendimento->id) }}'><button type='button'--}}
+{{--                                                                                                       class='btn btn-sm btn-primary' title="Visualizar evolução"><i class="fa-solid fa-eye"></i></button></a>--}}
+
+{{--                                        <a href='{{ route('evolucao.listar', $atendimento->id) }}'><button type='button'--}}
+{{--                                                                                                       class='btn btn-sm btn-info' title="Evoluções"><i class="fa-solid fa-list"></i></button></a>--}}
+{{--                                        <a href='{{ route('evolucoes.grafico', $atendimento->id) }}'><button type='button'--}}
+{{--                                                                                                           class='btn btn-sm btn-info' title="Gráficos"><i class="fa-solid fa-chart-simple"></i></button></a>--}}
+{{--                                        <a href=' route('editproduto', $produto->id) '><button type='button'--}}
+{{--                                                                                                      class='btn btn-sm btn-success' title="Dar Alta"><i class="fa-solid fa-circle-up"></i></button></a>--}}
+{{--                                    </td>--}}
+{{--                            @endforeach--}}
+{{--                            </tbody>--}}
+{{--                        </div>--}}
+{{--                    </table>--}}
+
+                    <!-- Fim da Tabela de Atendimentos -->
                     @if ($atendimentos->isEmpty())
                         <p style="text-align: center;"> Não existe pacientes em atendimento</p>
                     @endif
@@ -113,29 +398,83 @@
 @push('listAtendimentosJs')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const containers = document.querySelectorAll('.tempo-espera-container');
+            // Contador para pacientes sem atendimento
+            document.querySelectorAll('.tempo-espera-container').forEach(container => {
+                const registroTime = new Date(container.dataset.registro).getTime();
 
-            function atualizarTodosTempos() {
-                const agora = new Date();
+                function updateTimer() {
+                    const now = new Date().getTime();
+                    const diff = now - registroTime;
 
-                containers.forEach(container => {
-                    const dataRegistroStr = container.getAttribute('data-registro');
-                    const dataRegistro = new Date(dataRegistroStr);
-                    const tempoElement = container.querySelector('.tempo-espera');
+                    const hours = Math.floor(diff / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-                    const diff = Math.floor((agora - dataRegistro) / 1000);
-                    const horas = Math.floor(diff / 3600);
-                    const minutos = Math.floor((diff % 3600) / 60);
-                    const segundos = diff % 60;
+                    container.querySelector('.tempo-espera').textContent =
+                        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
 
-                    tempoElement.textContent =
-                        `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
-                });
-            }
+                updateTimer();
+                setInterval(updateTimer, 1000);
+            });
 
-            // Iniciar imediatamente e atualizar a cada segundo
-            atualizarTodosTempos();
-            setInterval(atualizarTodosTempos, 1000);
+            // Contador regressivo para próximas verificações
+            document.querySelectorAll('.proxima-verificacao-container').forEach(container => {
+                const registroTime = new Date(container.dataset.registro).getTime();
+                const tempoVerificacao = parseInt(container.dataset.tempo);
+
+                function updateCountdown() {
+                    const now = new Date().getTime();
+                    const diff = registroTime + tempoVerificacao - now;
+
+                    if (diff <= 0) {
+                        container.querySelector('.tempo-restante').textContent = "00:00:00";
+                        container.querySelector('.tempo-restante').classList.add('text-danger');
+                        container.querySelector('small').textContent = "Verificação necessária!";
+                        return;
+                    }
+
+                    const hours = Math.floor(diff / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    container.querySelector('.tempo-restante').textContent =
+                        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                    // Muda para amarelo quando faltar menos de 10 minutos
+                    if (diff < 10 * 60 * 1000) {
+                        container.querySelector('.tempo-restante').classList.add('text-warning');
+                    }
+                }
+
+                updateCountdown();
+                setInterval(updateCountdown, 1000);
+            });
         });
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const containers = document.querySelectorAll('.tempo-espera-container');
+        //
+        //     function atualizarTodosTempos() {
+        //         const agora = new Date();
+        //
+        //         containers.forEach(container => {
+        //             const dataRegistroStr = container.getAttribute('data-registro');
+        //             const dataRegistro = new Date(dataRegistroStr);
+        //             const tempoElement = container.querySelector('.tempo-espera');
+        //
+        //             const diff = Math.floor((agora - dataRegistro) / 1000);
+        //             const horas = Math.floor(diff / 3600);
+        //             const minutos = Math.floor((diff % 3600) / 60);
+        //             const segundos = diff % 60;
+        //
+        //             tempoElement.textContent =
+        //                 `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+        //         });
+        //     }
+        //
+        //     // Iniciar imediatamente e atualizar a cada segundo
+        //     atualizarTodosTempos();
+        //     setInterval(atualizarTodosTempos, 1000);
+        // });
     </script>
 @endpush

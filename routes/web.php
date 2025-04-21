@@ -11,9 +11,6 @@ use App\Http\Controllers\EvolucaoController;
 use Illuminate\Support\Facades\Route;
 
 
-
-
-
 Route::controller(AuthController::class)->group(function (){
     Route::get('/login', 'index')->name('login.index');
     Route::post('/login', 'store')->name('login.store');
@@ -25,9 +22,9 @@ Route::controller(AuthController::class)->group(function (){
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/', function () {
-        return view('index');
-    })->name('index');
+//    Route::get('/', function () {
+//        return view('index');
+//    })->name('index');
 
     Route::get('/sobremim', function () {
         return view('layouts.sobreMim');
@@ -49,6 +46,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/evolucao/{id}/relatorio', 'relatorio')->name('evolucao.relatorio');
         route::get('/evolucao/{id}/pdf', 'gerarPdf')->name('evolucao.pdf');
         route::get('/evolucao/{id}/ultima-evolucao', 'ultimaEvolucao')->name('evolucao.ultima');
+        route::get('/evolucao/{id}/listar-evolucoes', 'listarEvolucoes')->name('evolucao.listar');
+        // Rota para exibir a view com o gráfico
+        Route::get('/atendimentos/{atendimento_id}', 'mostrarGrafico')->name('evolucoes.grafico');
+        //Rota Principal do Sistema
+        Route::get('/', 'viewPrincipal')->name('index');
     });
 
     Route::controller(ProfissionalController::class)->group(function (){
