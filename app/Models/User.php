@@ -83,4 +83,19 @@ class User extends Authenticatable
             ];
         });
     }
+
+    public function isProfissional()
+    {
+        return $this->role === 'profissional';
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->role === 'superadmin';
+    }
 }

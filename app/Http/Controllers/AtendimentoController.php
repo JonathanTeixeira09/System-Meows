@@ -54,18 +54,31 @@ class AtendimentoController extends Controller
         $atendimentos = Atendimento::with(['paciente', 'entradaUser.profissional', 'evolucoes' => function($query) {
             $query->latest()->limit(1); // Pega apenas a última evolução
         }])->get();
-//        dd($atendimentos);
 
-//        // Atendimentos em aberto (sem data de alta) com relacionamentos
-//        $atendimentos = Atendimento::with(['paciente', 'entradaUser'])
-//            ->whereNull('data_alta')
-//            ->orderBy('data_entrada', 'desc')
-//            ->orderBy('hora_entrada', 'desc')
-//            ->get();
         return view('admin.atendimentos.listarAtendimentos', [
             'atendimentos' => $atendimentos,
         ]);
     }
 
+    public function altaPaciente($pacienteId)
+    {
+        $atendimento = Atendimento::where('paciente_id', $pacienteId)
+            ->whereNull('data_alta')
+            ->first();
+
+        if ($atendimento) {
+            $now = now()->setTimezone('America/Sao_Paulo');
+            $atendimento->update([
+                'data_alta' => $now->toDateString(),
+                'hora_alta' => $now->toTimeString(),
+                'alta_user_id' => auth()->id()
+            ]);
+            flash('Alta do paciente realizada com sucesso!')->success();
+        } else {
+            flash('Paciente não encontrado ou já recebeu alta.')->error();
+        }
+
+        return redirect()->route('listarAtendimentos.index');
+    }
 
 }

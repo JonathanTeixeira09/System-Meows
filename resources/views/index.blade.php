@@ -2,7 +2,8 @@
 
 @section('title', 'Seja Bem-vindo ao sistema MEOWS ')
 @section('conteudo')
-
+    @auth
+        @if(auth()->user()->isProfissional() || auth()->user()->isSuperAdmin())
     <!-- Content Row -->
     @include('layouts.cadsStatus')
 
@@ -25,17 +26,6 @@
                         <div class="chart-pie">
                             <canvas id="deterioracaoChart"></canvas>
                         </div>
-{{--                        <div class="mt-4 text-center small">--}}
-{{--                            <span class="mr-2">--}}
-{{--                                <i class="fas fa-circle text-danger"></i> Risco alto--}}
-{{--                            </span>--}}
-{{--                                    <span class="mr-2">--}}
-{{--                                <i class="fas fa-circle text-warning"></i> Moderado--}}
-{{--                            </span>--}}
-{{--                            <span class="mr-2">--}}
-{{--                                <i class="fas fa-circle text-success"></i> Baixo risco--}}
-{{--                            </span>--}}
-{{--                        </div>--}}
                     </div>
                 </div>
             </div>
@@ -74,7 +64,25 @@
         </div>
 
     </div>
-
+        @endif
+    @endauth
+    @auth
+        @if(auth()->user()->isAdmin())
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div
+                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Painel do Profissional</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                Teste
+            </div>
+        </div>
+    </div>
+        @endif
+    @endauth
 @endsection
 
 @push('chartsIndexJS')

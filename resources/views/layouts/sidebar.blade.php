@@ -17,10 +17,11 @@
             <i class="fa-regular fa-hospital fa-fw"></i>
             <span>Dashboard</span></a>
     </li>
-
     <!-- Divider -->
     <hr class="sidebar-divider">
 
+    @auth
+        @if(auth()->user() && (auth()->user()->isProfissional() || auth()->user()->isSuperAdmin()))
     <!-- Heading -->
     <div class="sidebar-heading">
         Paciente
@@ -67,12 +68,14 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider">
-
+       @endif
+    @endauth
     <!-- Heading -->
     <div class="sidebar-heading">
         Configurações
     </div>
-
+    @auth
+        @if(auth()->user()->isAdmin() || auth()->user()->isSuperAdmin())
     <!-- Nav Item - Usuários Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
@@ -88,6 +91,10 @@
             </div>
         </div>
     </li>
+       @endif
+    @endauth
+    @auth
+        @if(auth()->user()->isProfissional() || auth()->user()->isSuperAdmin())
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEquipe" aria-expanded="true" aria-controls="collapseEquipe">
             <i class="fas fa-fw fa-user-md"></i>
@@ -126,7 +133,8 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider">
-
+       @endif
+    @endauth
     <!-- Nav Item - Sobre Mim -->
     <li class="nav-item">
         <a class="nav-link" href="{{route('sobremim.index')}}">
@@ -136,12 +144,11 @@
     </li>
 
     <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+{{--    <hr class="sidebar-divider d-none d-md-block">--}}
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
-
 
 </ul>

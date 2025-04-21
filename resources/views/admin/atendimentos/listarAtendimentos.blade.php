@@ -319,7 +319,7 @@
 {{--                                                                                                           class='btn btn-sm btn-info' title="Evoluções"><i class="fa-solid fa-list"></i></button></a>--}}
                                         <a href='{{ route('evolucoes.grafico', $atendimento->id) }}'><button type='button'
                                                                                                              class='btn btn-sm btn-info' title="Gráficos"><i class="fa-solid fa-chart-simple"></i></button></a>
-                                        <a href='{{--route('editproduto', $produto->id) --}}'><button type='button'
+                                        <a href='{{route('altaPaciente.index', $atendimento->id) }}'><button type='button'
                                                                                                class='btn btn-sm btn-success' title="Dar Alta"><i class="fa-solid fa-circle-up"></i></button></a>
                                     </td>
                                 </tr>

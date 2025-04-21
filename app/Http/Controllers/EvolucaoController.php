@@ -263,8 +263,8 @@ class EvolucaoController extends Controller
             ->setOption('margin-left', '20mm')
             ->setOption('margin-right', '20mm');
 
-//        return $pdf->download('evolucao_'.$evolucao->atendimento->paciente->nome.'_'.now()->format('d-m-Y').'.pdf');
-        return $pdf->stream('evolucao_'.$evolucao->atendimento->paciente->nome.'_'.now()->format('d-m-Y').'.pdf');
+//        return $pdf->stream('evolucao_'.$evolucao->atendimento->paciente->nome.'_'.now()->format('d-m-Y').'.pdf');
+        return $pdf->download('evolucao_'.$evolucao->atendimento->paciente->nome.'_'.now()->format('d-m-Y').'.pdf');
     }
 
     public function ultimaEvolucao($id)
@@ -367,42 +367,6 @@ class EvolucaoController extends Controller
 
     public function viewPrincipal()
     {
-//        // Dados para os cards
-//        $totalAtendimentos = Atendimento::count();
-//        $totalAltas = Atendimento::whereNotNull('data_alta')->count();
-//        $totalInternados = Atendimento::whereNull('data_alta')
-//                            ->whereHas('evolucoes')
-//                            ->count();
-//        $pacientesNaoAtendidos = Atendimento::whereDoesntHave('evolucoes')
-//                                ->whereNull('data_alta')
-//                                ->count();
-//
-//        // Dados para o gráfico de status
-//        $statusAtendimentos = [
-//            'Com Alta' => $totalAltas,
-//            'Internados' => $totalInternados,
-//            'Não Atendidos' => $pacientesNaoAtendidos
-//        ];
-//
-//        // Consulta corrigida para o gráfico por mês
-//        $evolucoesPorMes = Evolucao::selectRaw('MONTH(created_at) as mes, COUNT(*) as total')
-//            ->groupBy('mes')
-//            ->orderBy('mes')
-//            ->get()
-//            ->pluck('total', 'mes');
-//
-//        // Preenche os meses faltantes com zero
-//        $dadosCompletos = [];
-//        for ($mes = 1; $mes <= 12; $mes++) {
-//            $dadosCompletos[$mes] = $evolucoesPorMes->has($mes) ? $evolucoesPorMes[$mes] : 0;
-//        }
-//
-//        // Nomes dos meses para os rótulos
-//        $nomesMeses = [
-//            1 => 'Jan', 2 => 'Fev', 3 => 'Mar', 4 => 'Abr',
-//            5 => 'Mai', 6 => 'Jun', 7 => 'Jul', 8 => 'Ago',
-//            9 => 'Set', 10 => 'Out', 11 => 'Nov', 12 => 'Dez'
-//        ];
         // Dados existentes
         $totalAtendimentos = Atendimento::count();
         $totalAltas = Atendimento::whereNotNull('data_alta')->count();
@@ -470,15 +434,6 @@ class EvolucaoController extends Controller
             'dadosCompletos',
             'chartDeterioracao'
         ));
-//        return view('index', [
-//            'totalAtendimentos' => $totalAtendimentos,
-//            'totalAltas' => $totalAltas,
-//            'totalInternados' => $totalInternados,
-//            'pacientesNaoAtendidos' => $pacientesNaoAtendidos,
-//            'dadosGrafico' => $dadosCompletos,
-//            'statusAtendimentos' => $statusAtendimentos,
-//            'nomesMeses' => $nomesMeses
-//        ]);
 
     }
 

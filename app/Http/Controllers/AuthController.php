@@ -37,7 +37,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-             // Armazena o caminho da thumbnail do usuário na sessão
+            // Armazena o caminho da thumbnail do usuário na sessão
             session([
                 'user_thumbnail' => Auth::user()->profissional->thumbnail,
                 'user_name' => Auth::user()->profissional->nome,
@@ -52,7 +52,9 @@ class AuthController extends Controller
 
     }
 
-
+    /**
+     * Logout the user
+     */
     public function destroy(Request $request)
     {
         Auth::logout();
@@ -64,7 +66,9 @@ class AuthController extends Controller
         return redirect()->route('login.index');
     }
 
-
+    /**
+     * Show the form for creating a new resource.
+     */
     public function createUser(Request $request)
     {
         // Busca profissionais que NÃO possuem usuário vinculado

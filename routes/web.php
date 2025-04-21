@@ -9,6 +9,7 @@ use App\Http\Controllers\AtendimentoController;
 use App\Http\Controllers\FormacaoProfissionalController;
 use App\Http\Controllers\EvolucaoController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckRole;
 
 
 Route::controller(AuthController::class)->group(function (){
@@ -17,18 +18,16 @@ Route::controller(AuthController::class)->group(function (){
     Route::get('/logout', 'destroy')->name('logout');
     Route::get('/register', 'createUser')->name('register.index')->middleware('auth');
     Route::post('/register', 'storeUser')->name('register.store')->middleware('auth');
-    Route::get('/listarusuarios', 'listarUser')->name('listarusuarios.index')->middleware('auth');
+    Route::get('/listarusuarios', 'listarUser')->name('listarusuarios.index')->middleware('auth')->middleware('role:superadmin,admin');
 });
 
-Route::middleware('auth')->group(function () {
+Route::get('/sobremim', function () {
+    return view('layouts.sobreMim');
+})->name('sobremim.index');
 
-//    Route::get('/', function () {
-//        return view('index');
-//    })->name('index');
+Route::get('/',[EvolucaoController::class,'viewPrincipal'])->name('index')->middleware('auth', 'role:superadmin,profissional,admin');
 
-    Route::get('/sobremim', function () {
-        return view('layouts.sobreMim');
-    })->name('sobremim.index');
+Route::middleware('auth', 'role:superadmin,profissional')->group(function () {
 
     Route::controller(PacienteController::class)->group(function (){
         Route::get('/cadastrarpaciente','index')->name('cadastrarpaciente.index');
@@ -50,7 +49,7 @@ Route::middleware('auth')->group(function () {
         // Rota para exibir a view com o gráfico
         Route::get('/atendimentos/{atendimento_id}', 'mostrarGrafico')->name('evolucoes.grafico');
         //Rota Principal do Sistema
-        Route::get('/', 'viewPrincipal')->name('index');
+//        Route::get('/', 'viewPrincipal')->name('index');
     });
 
     Route::controller(ProfissionalController::class)->group(function (){
@@ -89,8 +88,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/iniciarAtendimento','index')->name('iniciarAtendimento.index');
         Route::post('/iniciarAtendimento','store')->name('iniciarAtendimento.store');
         Route::get('/listarAtendimentos','list')->name('listarAtendimentos.index');
+        Route::get('/altaPaciente/{atendimento_id}','altaPaciente')->name('altaPaciente.index');
     });
-//    Route::resource('atendimentos', AtendimentoController::class);
+
 });
 
 Route::get('/debug-auth', function() {
