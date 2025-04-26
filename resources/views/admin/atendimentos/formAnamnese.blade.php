@@ -43,7 +43,10 @@
                                     <select class="form-select" name="local_id">
                                         <option selected>Selecione</option>
                                         @foreach($locals as $local)
-                                            <option value="{{ $local->id }}" {{ old('$local_id') == $local->id ? 'selected' : '' }}>{{ $local->nome }}</option>
+{{--                                            <option value="{{ $local->id }}" {{ old('$local_id') == $local->id ? 'selected' : '' }}>{{ $local->nome }}</option>--}}
+                                            <option value="{{ $local->id }}" {{ $ultimo_local == $local->id ? 'selected' : '' }}>
+                                                {{ $local->nome }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>

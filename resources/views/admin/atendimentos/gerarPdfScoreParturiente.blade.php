@@ -446,24 +446,24 @@
 <div style="margin: 5px 0;">
     <h5 style="color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px;">Grau de Deterioração</h5>
     <div class="deterioration-box bg-@php
-        if ($evolucao->grauDeterioracao == 0) {
+        if ($evolucao->grauDeterioracao >= 0 && $evolucao->grauDeterioracao <= 2) {
             echo 'primary';
-        } elseif ($evolucao->grauDeterioracao >= 1 && $evolucao->grauDeterioracao <= 3) {
+        } elseif ($evolucao->grauDeterioracao >= 3 && $evolucao->grauDeterioracao <= 4) {
             echo 'success';
-        } elseif ($evolucao->grauDeterioracao >= 4 && $evolucao->grauDeterioracao <= 5) {
+        } elseif ($evolucao->grauDeterioracao >= 5 && $evolucao->grauDeterioracao <= 6) {
             echo 'warning';
-        } elseif ($evolucao->grauDeterioracao >= 6) {
+        } elseif ($evolucao->grauDeterioracao >= 7) {
             echo 'danger';
         }
     @endphp">
         @php
-            if ($evolucao->grauDeterioracao == 0) {
+            if ($evolucao->grauDeterioracao >= 0 && $evolucao->grauDeterioracao <= 2) {
                 $avaliacao = 'Não há risco de deterioração';
-            } elseif ($evolucao->grauDeterioracao >= 1 && $evolucao->grauDeterioracao <= 3) {
+            } elseif ($evolucao->grauDeterioracao >= 3 && $evolucao->grauDeterioracao <= 4) {
                 $avaliacao = 'Baixo risco de deterioração';
-            } elseif ($evolucao->grauDeterioracao >= 4 && $evolucao->grauDeterioracao <= 5) {
+            } elseif ($evolucao->grauDeterioracao >= 5 && $evolucao->grauDeterioracao <= 6) {
                 $avaliacao = 'Risco moderado de deterioração';
-            } elseif ($evolucao->grauDeterioracao >= 6) {
+            } elseif ($evolucao->grauDeterioracao >= 7) {
                 $avaliacao = 'ALTO RISCO DE DETERIORAÇÃO';
             }
         @endphp

@@ -96,6 +96,7 @@
                                             <h11 class="text-danger">*</h11>
                                         </label>
                                         <input type="text" class="form-control @error('cpf') is-invalid @enderror" id="cpf" name="cpf" value="{{ old('cpf') }}">
+                                        <div class="form-text">Apenas números</div>
                                         <div class="invalid-feedback">
                                             @error('cpf')
                                                 {{ $message }}

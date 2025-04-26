@@ -10,13 +10,16 @@ class AtendimentoController extends Controller
 {
     public function index()
     {
-//        // Carrega atendimentos com relacionamentos
         $atendimentos = Atendimento::with(['paciente', 'entradaUser', 'altaUser'])
-            ->latest() // Opcional: ordena do mais recente para o mais antigo
+            ->latest()
             ->get();
 
-        // Carrega todos os pacientes ordenados por nome para o campo de busca
-        $pacientes = Paciente::orderBy('nome')->get();
+        // Carrega apenas pacientes sem atendimento ativo, ordenados por nome
+        $pacientes = Paciente::whereDoesntHave('atendimentos', function($query) {
+            $query->whereNull('data_alta');
+        })
+            ->orderBy('nome')
+            ->get();
 
         // Retorna a view com inicio dos atendimentos a pacientes
         return view(('admin.atendimentos.formIniciarAtendimento'), ['pacientes' => $pacientes, 'atendimentos' => $atendimentos]);
@@ -26,14 +29,25 @@ class AtendimentoController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'paciente_id' => 'required|exists:pacientes,id|unique:atendimentos,paciente_id,NULL,id,data_alta,NULL',
-        ],
-        [
-            'paciente_id.required' => 'Obrigatório selecionar uma paciente.',
-            'paciente_id.exists' => 'O paciente selecionado não existe.',
-            'paciente_id.unique' => 'O paciente já está em atendimento.',
-        ]);
+            'paciente_id' => [
+                'required',
+                'exists:pacientes,id',
+                function ($attribute, $value, $fail) {
+                    // Verifica se existe atendimento em aberto para o paciente
+                    $atendimentoAtivo = Atendimento::where('paciente_id', $value)
+                        ->whereNull('data_alta')
+                        ->exists();
 
+                    if ($atendimentoAtivo) {
+                        $fail('O paciente já está em atendimento.');
+                    }
+                }
+            ],
+        ],
+            [
+                'paciente_id.required' => 'Obrigatório selecionar uma paciente.',
+                'paciente_id.exists' => 'O paciente selecionado não existe.',
+            ]);
 
         $now = now()->setTimezone('America/Sao_Paulo');
 
@@ -45,24 +59,35 @@ class AtendimentoController extends Controller
 
         Atendimento::create($data);
 
-        flash('Atendimento iniciodo com sucesso!')->success();
+        flash('Atendimento iniciado com sucesso!')->success();
         return redirect()->route('listarAtendimentos.index');
+
     }
 
-    public function list()
+    public function list(Request $request)
     {
-        $atendimentos = Atendimento::with(['paciente', 'entradaUser.profissional', 'evolucoes' => function($query) {
-            $query->latest()->limit(1); // Pega apenas a última evolução
-        }])->get();
+        $atendimentos = Atendimento::with([
+            'paciente',
+            'entradaUser.profissional',
+            'evolucoes' => function($query) {
+                $query->latest()
+                    ->limit(1)
+                    ->with('local'); // Carrega o relacionamento local da evolução
+            }
+        ])
+            ->whereNull('data_alta')
+            ->get();
+
 
         return view('admin.atendimentos.listarAtendimentos', [
             'atendimentos' => $atendimentos,
         ]);
     }
 
-    public function altaPaciente($pacienteId)
+    public function altaPaciente($atendimento_id)
     {
-        $atendimento = Atendimento::where('paciente_id', $pacienteId)
+        // Verifica se o atendimento existe e se não tem data de alta
+        $atendimento = Atendimento::where('id', $atendimento_id)
             ->whereNull('data_alta')
             ->first();
 
@@ -70,7 +95,7 @@ class AtendimentoController extends Controller
             $now = now()->setTimezone('America/Sao_Paulo');
             $atendimento->update([
                 'data_alta' => $now->toDateString(),
-                'hora_alta' => $now->toTimeString(),
+                'hora_saida' => $now->toTimeString(),
                 'alta_user_id' => auth()->id()
             ]);
             flash('Alta do paciente realizada com sucesso!')->success();

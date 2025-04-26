@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Evolucao;
 use App\Models\Atendimento;
 use App\Models\Local;
+use Illuminate\Support\Facades\Cache;
 
 class EvolucaoController extends Controller
 {
@@ -16,14 +17,28 @@ class EvolucaoController extends Controller
      */
     public function index(Atendimento $atendimento)
     {
-        $atendimento->load('paciente'); // Carrega o relacionamento com paciente
-        $local = Local::All();
+//        $atendimento->load('paciente'); // Carrega o relacionamento com paciente
+//        $local = Local::All();
+        // Carrega o relacionamento com paciente e as evoluções (ordenadas por data decrescente)
+        $atendimento->load(['paciente', 'evolucoes' => function($query) {
+            $query->orderBy('created_at', 'desc');
+        }]);
+
+        $locals = Local::all();
+
+        // Verifica se existem evoluções anteriores
+        $ultimoLocal = null;
+        if ($atendimento->evolucoes->isNotEmpty()) {
+            // Pega o local da última evolução
+            $ultimoLocal = $atendimento->evolucoes->first()->local_id;
+        }
 
         return view('admin.atendimentos.formAnamnese', [
             'atendimento' => $atendimento,
             'nome_paciente' => $atendimento->paciente->nome,
             'atendimento_id' => $atendimento->id,
-            'locals' => $local,
+            'locals' => $locals,
+            'ultimo_local' => $ultimoLocal // Passa o ID do último local usado
         ]);
     }
     /**
@@ -304,9 +319,6 @@ class EvolucaoController extends Controller
     // Mostra a view com o gráfico
     public function mostrarGrafico($atendimento_id)
     {
-//        $evolucoes = Evolucao::where('atendimento_id', $atendimento_id, 'atendimento.paciente')
-//            ->orderBy('created_at')
-//            ->get();
         // Busca as evoluções + nome do paciente (com eager loading)
         $evolucoes = Evolucao::with(['atendimento.paciente'])
             ->where('atendimento_id', $atendimento_id)
@@ -365,18 +377,146 @@ class EvolucaoController extends Controller
         });
     }
 
-    public function viewPrincipal()
+//    public function viewPrincipal(Request $request)
+//    {
+//        // Obter o filtro do request ou usar 'hoje' como padrão
+//        $filtro = $request->input('periodo', 'hoje');
+//
+//        // Configurar as datas com base no filtro
+//        $filtroData = $this->getFiltroDatas($filtro);
+//
+//        // Consultas com filtro temporal
+//        $totalAtendimentos = Atendimento::whereBetween('created_at', [$filtroData['inicio'], $filtroData['fim']])->count();
+//
+//        $totalAltas = Atendimento::whereNotNull('data_alta')
+//            ->whereBetween('data_alta', [$filtroData['inicio'], $filtroData['fim']])->count();
+//
+//        $totalInternados = Atendimento::whereNull('data_alta')
+//            ->join('evolucaos', 'atendimentos.id', '=', 'evolucaos.atendimento_id')
+//            ->whereBetween('evolucaos.created_at', [$filtroData['inicio'], $filtroData['fim']])
+//            ->distinct('atendimentos.id')
+//            ->count('atendimentos.id');
+//
+//        $pacientesNaoAtendidos = Atendimento::whereDoesntHave('evolucoes')
+//            ->whereNull('data_alta')
+//            ->whereBetween('created_at', [$filtroData['inicio'], $filtroData['fim']])
+//            ->count();
+//
+//        // Gráfico por mês (mantido como está ou pode adaptar)
+//        $evolucoesPorMes = Evolucao::selectRaw('MONTH(created_at) as mes, COUNT(*) as total')
+//            ->whereBetween('created_at', [$filtroData['inicio'], $filtroData['fim']])
+//            ->groupBy('mes')
+//            ->orderBy('mes')
+//            ->get()
+//            ->pluck('total', 'mes');
+//
+//
+//        // Preenche meses faltantes
+//        $dadosCompletos = [];
+//        for ($mes = 1; $mes <= 12; $mes++) {
+//            $dadosCompletos[$mes] = $evolucoesPorMes->has($mes) ? $evolucoesPorMes[$mes] : 0;
+//        }
+//
+//        // Novo gráfico de deterioração
+//        $deterioracaoData = Atendimento::with('ultimaEvolucao')
+//            ->selectRaw('
+//        CASE
+//            WHEN evolucaos.grauDeterioracao IS NULL THEN "Sem avaliação"
+//            WHEN evolucaos.grauDeterioracao BETWEEN 0 AND 2 THEN "Sem risco"
+//            WHEN evolucaos.grauDeterioracao BETWEEN 3 AND 4 THEN "Baixo risco"
+//            WHEN evolucaos.grauDeterioracao BETWEEN 5 AND 6 THEN "Risco moderado"
+//            ELSE "Risco alto"
+//        END as status,
+//        COUNT(*) as total
+//    ')
+//            ->leftJoin('evolucaos', function($join) {
+//                $join->on('atendimentos.id', '=', 'evolucaos.atendimento_id')
+//                    ->whereRaw('evolucaos.id = (
+//                SELECT id FROM evolucaos
+//                WHERE atendimento_id = atendimentos.id
+//                ORDER BY created_at DESC
+//                LIMIT 1
+//            )');
+//            })
+//            ->whereNull('data_alta') // Filtra apenas atendimentos sem alta
+//            ->groupBy('status')
+//            ->orderByRaw('
+//        CASE status
+//            WHEN "Risco alto" THEN 1
+//            WHEN "Risco moderado" THEN 2
+//            WHEN "Baixo risco" THEN 3
+//            WHEN "Sem risco" THEN 4
+//            ELSE 5
+//        END
+//    ')
+//            ->get();
+//
+//        $chartDeterioracao = [
+//            'labels' => $deterioracaoData->pluck('status'),
+//            'data' => $deterioracaoData->pluck('total'),
+//            'cores' => ['#e74a3b', '#f6c23e',  '#4e73df', '#1cc88a', '#e0e0e0']
+//        ];
+//        return view('index', compact(
+//            'totalAtendimentos',
+//            'totalAltas',
+//            'totalInternados',
+//            'pacientesNaoAtendidos',
+//            'dadosCompletos',
+//            'chartDeterioracao',
+//            'filtro' // Passa o filtro atual para a view
+//        ));
+//
+//    }
+
+    private function getFiltroDatas($filtro)
     {
-        // Dados existentes
-        $totalAtendimentos = Atendimento::count();
-        $totalAltas = Atendimento::whereNotNull('data_alta')->count();
-        $totalInternados = Atendimento::whereNull('data_alta')->count();
+        return match($filtro) {
+            'hoje' => [
+                'inicio' => now()->startOfDay(),
+                'fim' => now()->endOfDay()
+            ],
+            'semana' => [
+                'inicio' => now()->startOfWeek(),
+                'fim' => now()->endOfWeek()
+            ],
+            'mes' => [
+                'inicio' => now()->startOfMonth(),
+                'fim' => now()->endOfMonth()
+            ],
+            default => [
+                'inicio' => now()->subDays(30),
+                'fim' => now()
+            ]
+        };
+    }
+
+    //teste de classificação de risco
+    public function viewPrincipal(Request $request)
+    {
+        // Obter o filtro do request ou usar 'hoje' como padrão
+        $filtro = $request->input('periodo', 'hoje');
+
+        // Configurar as datas com base no filtro
+        $filtroData = $this->getFiltroDatas($filtro);
+
+        // Consultas principais (mantidas como estão)
+        $totalAtendimentos = Atendimento::whereBetween('created_at', [$filtroData['inicio'], $filtroData['fim']])->count();
+        $totalAltas = Atendimento::whereNotNull('data_alta')->whereBetween('data_alta', [$filtroData['inicio'], $filtroData['fim']])->count();
+
+        $totalInternados = Atendimento::whereNull('data_alta')
+            ->join('evolucaos', 'atendimentos.id', '=', 'evolucaos.atendimento_id')
+            ->whereBetween('evolucaos.created_at', [$filtroData['inicio'], $filtroData['fim']])
+            ->distinct('atendimentos.id')
+            ->count('atendimentos.id');
+
         $pacientesNaoAtendidos = Atendimento::whereDoesntHave('evolucoes')
             ->whereNull('data_alta')
+            ->whereBetween('created_at', [$filtroData['inicio'], $filtroData['fim']])
             ->count();
 
-        // Gráfico por mês (existente)
+        // Gráfico por mês
         $evolucoesPorMes = Evolucao::selectRaw('MONTH(created_at) as mes, COUNT(*) as total')
+            ->whereBetween('created_at', [$filtroData['inicio'], $filtroData['fim']])
             ->groupBy('mes')
             ->orderBy('mes')
             ->get()
@@ -388,53 +528,136 @@ class EvolucaoController extends Controller
             $dadosCompletos[$mes] = $evolucoesPorMes->has($mes) ? $evolucoesPorMes[$mes] : 0;
         }
 
-        // Novo gráfico de deterioração
+        // Gráfico de deterioração
         $deterioracaoData = Atendimento::with('ultimaEvolucao')
             ->selectRaw('
-        CASE
-            WHEN evolucaos.grauDeterioracao IS NULL THEN "Sem avaliação"
-            WHEN evolucaos.grauDeterioracao BETWEEN 0 AND 2 THEN "Sem risco"
-            WHEN evolucaos.grauDeterioracao BETWEEN 3 AND 4 THEN "Baixo risco"
-            WHEN evolucaos.grauDeterioracao BETWEEN 5 AND 6 THEN "Risco moderado"
-            ELSE "Risco alto"
-        END as status,
-        COUNT(*) as total
-    ')
+            CASE
+                WHEN evolucaos.grauDeterioracao IS NULL THEN "Sem avaliação"
+                WHEN evolucaos.grauDeterioracao BETWEEN 0 AND 2 THEN "Sem risco"
+                WHEN evolucaos.grauDeterioracao BETWEEN 3 AND 4 THEN "Baixo risco"
+                WHEN evolucaos.grauDeterioracao BETWEEN 5 AND 6 THEN "Risco moderado"
+                ELSE "Risco alto"
+            END as status,
+            COUNT(*) as total
+        ')
             ->leftJoin('evolucaos', function($join) {
                 $join->on('atendimentos.id', '=', 'evolucaos.atendimento_id')
                     ->whereRaw('evolucaos.id = (
-                 SELECT id FROM evolucaos
-                 WHERE atendimento_id = atendimentos.id
-                 ORDER BY created_at DESC
-                 LIMIT 1
-             )');
+                    SELECT id FROM evolucaos
+                    WHERE atendimento_id = atendimentos.id
+                    ORDER BY created_at DESC
+                    LIMIT 1
+                )');
             })
+            ->whereNull('data_alta')
             ->groupBy('status')
             ->orderByRaw('
-        CASE status
-            WHEN "Risco alto" THEN 1
-            WHEN "Risco moderado" THEN 2
-            WHEN "Baixo risco" THEN 3
-            WHEN "Sem risco" THEN 4
-            ELSE 5
-        END
-    ')
+            CASE status
+                WHEN "Risco alto" THEN 1
+                WHEN "Risco moderado" THEN 2
+                WHEN "Baixo risco" THEN 3
+                WHEN "Sem risco" THEN 4
+                ELSE 5
+            END
+        ')
             ->get();
 
         $chartDeterioracao = [
             'labels' => $deterioracaoData->pluck('status'),
             'data' => $deterioracaoData->pluck('total'),
-            'cores' => ['#e74a3b', '#f6c23e',  '#4e73df', '#1cc88a', '#e0e0e0']
+            'cores' => ['#e74a3b', '#f6c23e', '#4e73df', '#1cc88a', '#e0e0e0']
         ];
+
+
+
+        // Consulta para atendimentos ativos (sem alta) - SEM FILTRO DE DATA
+        $atendimentos = Atendimento::with([
+            'paciente',
+            'ultimaEvolucao',
+            'entradaUser.profissional'
+        ])
+            ->whereNull('data_alta')
+//            ->whereBetween('created_at', [$filtroData['inicio'], $filtroData['fim']])
+            ->get()
+            ->map(function ($atendimento) {
+                $atendimento->load('evolucoes'); // Carrega todas evoluções
+                $atendimento->statusInfo = $atendimento->determinarStatus();
+                return $atendimento;
+            });
+
+        // Classificar atendimentos por tipo
+        $pacientesSemAvaliacao = $atendimentos->filter(function ($atendimento) {
+            return $atendimento->evolucoes->isEmpty();
+        });
+
+        $pacientesIntervencao = $atendimentos->filter(function ($atendimento) {
+            return $atendimento->ultimaEvolucao &&
+                $atendimento->ultimaEvolucao->grauDeterioracao >= 7;
+        });
+
+        $pacientesAtrasados = $atendimentos->filter(function ($atendimento) {
+            return $atendimento->tempoAtrasoVerificacao() > 0;
+        });
+
+
         return view('index', compact(
             'totalAtendimentos',
             'totalAltas',
             'totalInternados',
             'pacientesNaoAtendidos',
             'dadosCompletos',
-            'chartDeterioracao'
+            'chartDeterioracao',
+            'pacientesAtrasados', // Novo dado
+            'pacientesSemAvaliacao',
+            'pacientesIntervencao',
+            'filtro'
         ));
-
     }
+
+
+    //fim
+    private function classificarRisco($grau)
+    {
+        return match(true) {
+            $grau === null => 'Sem avaliação',
+            $grau >= 7 => 'Risco alto',
+            $grau >= 5 => 'Risco moderado',
+            $grau >= 3 => 'Baixo risco',
+            $grau >= 0 => 'Sem risco',
+            default => 'Sem avaliação'
+        };
+    }
+
+    private function formatarTempo($minutos)
+    {
+        if ($minutos >= 1440) return round($minutos/1440) . ' dias';
+        if ($minutos >= 60) return round($minutos/60) . ' horas';
+        return $minutos . ' minutos';
+    }
+
+    //Já era do anterior
+//    private function getFiltroDatas($filtro)
+//    {
+//        $now = now();
+//
+//        switch ($filtro) {
+//            case 'semana':
+//                return [
+//                    'inicio' => $now->copy()->startOfWeek(),
+//                    'fim' => $now->copy()->endOfWeek()
+//                ];
+//            case 'mes':
+//                return [
+//                    'inicio' => $now->copy()->startOfMonth(),
+//                    'fim' => $now->copy()->endOfMonth()
+//                ];
+//            case 'hoje':
+//            default:
+//                return [
+//                    'inicio' => $now->copy()->startOfDay(),
+//                    'fim' => $now->copy()->endOfDay()
+//                ];
+//        }
+//    }
 
 }

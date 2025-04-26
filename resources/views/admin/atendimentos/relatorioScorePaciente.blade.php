@@ -6,9 +6,14 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h5 class="m-0 font-weight-bold text-primary">Relatório de Evolução</h5>
-                <a href="{{ route('evolucao.pdf', $evolucao->id) }}" class="btn btn-sm btn-danger">
-                    <i class="fas fa-file-pdf"></i> Gerar PDF
-                </a>
+                <div class="d-flex">
+                    <a href="{{route('listarAtendimentos.index')}}" class="btn btn-sm btn-secondary mr-2">
+                        <i class="fas fa-arrow-left"></i> Voltar
+                    </a>
+                    <a href="{{ route('evolucao.pdf', $evolucao->id) }}" class="btn btn-sm btn-danger">
+                        <i class="fas fa-file-pdf"></i> Gerar PDF
+                    </a>
+                </div>
             </div>
 
             <div class="card-body">
@@ -343,27 +348,27 @@
                         <h5>Grau de Deterioração</h5>
                         <div class="p-3 rounded
                             @php
-                                if ($evolucao->grauDeterioracao == 0) {
+                                if ($evolucao->grauDeterioracao >= 0 && $evolucao->grauDeterioracao <= 2) {
                                     echo 'bg-primary text-white'; // Azul - Sem risco
-                                } elseif ($evolucao->grauDeterioracao >= 1 && $evolucao->grauDeterioracao <= 3) {
+                                } elseif ($evolucao->grauDeterioracao >= 3 && $evolucao->grauDeterioracao <= 4) {
                                     echo 'bg-success text-white'; // Verde - Baixo risco
-                                } elseif ($evolucao->grauDeterioracao >= 4 && $evolucao->grauDeterioracao <= 5) {
+                                } elseif ($evolucao->grauDeterioracao >= 5 && $evolucao->grauDeterioracao <= 6) {
                                     echo 'bg-warning text-dark'; // Amarelo - Risco moderado
-                                } elseif ($evolucao->grauDeterioracao >= 6) {
+                                } elseif ($evolucao->grauDeterioracao >= 7) {
                                     echo 'bg-danger text-white'; // Vermelho - Alto risco
                                 }
                             @endphp">
                             @php
-                                if ($evolucao->grauDeterioracao == 0) {
+                                if ($evolucao->grauDeterioracao >= 0 && $evolucao->grauDeterioracao <= 2) {
                                     $avaliacao = 'Não há risco de deterioração';
 //                                    $icon = '✓';
-                                } elseif ($evolucao->grauDeterioracao >= 1 && $evolucao->grauDeterioracao <= 3) {
+                                } elseif ($evolucao->grauDeterioracao >= 3 && $evolucao->grauDeterioracao <= 4) {
                                     $avaliacao = 'Baixo risco de deterioração';
 //                                    $icon = '⚠️';
-                                } elseif ($evolucao->grauDeterioracao >= 4 && $evolucao->grauDeterioracao <= 5) {
+                                } elseif ($evolucao->grauDeterioracao >= 5 && $evolucao->grauDeterioracao <= 6) {
                                     $avaliacao = 'Risco moderado de deterioração';
 //                                    $icon = '⚠️⚠️';
-                                } elseif ($evolucao->grauDeterioracao >= 6) {
+                                } elseif ($evolucao->grauDeterioracao >= 7) {
                                     $avaliacao = 'ALTO RISCO DE DETERIORAÇÃO';
 //                                    $icon = '❗❗❗';
                                 }

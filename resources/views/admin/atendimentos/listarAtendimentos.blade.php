@@ -219,7 +219,80 @@
                 }
             }
 
+            /* Estilo específico apenas para INTERVENÇÃO IMEDIATA */
+            .alerta-critico .blinking {
+                color: #fff !important;
+                font-weight: bold;
+                text-shadow:
+                    -1px -1px 0 #fff,
+                    1px -1px 0 #fff,
+                    -1px 1px 0 #fff,
+                    1px 1px 0 #fff,
+                    0 0 8px rgba(255,255,255,0.8);
+                animation: critical-blink 0.8s infinite;
+                padding: 2px 5px;
+                border-radius: 4px;
+                display: inline-block;
+            }
+
+            /* Versão com text-stroke para navegadores modernos */
+            @supports (-webkit-text-stroke: 1px white) or (text-stroke: 1px white) {
+                .alerta-critico .blinking {
+                    -webkit-text-stroke: 1px white;
+                    text-stroke: 1px white;
+                    text-shadow: none;
+                }
+            }
+
+            /* Animação específica para o caso crítico */
+            @keyframes critical-blink {
+                0%, 100% {
+                    opacity: 1;
+                    background-color: rgba(255, 255, 255, 0.2);
+                }
+                50% {
+                    opacity: 0.7;
+                    background-color: rgba(255, 255, 255, 0.3);
+                }
+            }
+
+            /* Mantém os outros estilos de blinking como estavam */
+            .blinking:not(.alerta-critico .blinking) {
+                animation: blink-animation 1s steps(2, start) infinite;
+                -webkit-animation: blink-animation 1s steps(2, start) infinite;
+                color: #dc3545 !important;
+                font-weight: bold;
+            }
+
+            @keyframes blink-animation {
+                to { visibility: hidden; }
+            }
+
+            /* Estilo específico para o alerta crítico */
+            .alerta-critico {
+                text-align: center;
+            }
+
+            .alerta-critico h5 {
+                display: inline-block;
+                background-color: rgba(255, 255, 255, 0.2);
+                padding: 3px 7px;
+                border-radius: 4px;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+
+            /* Estilo para o tempo em atraso */
+            .text-overdue {
+                color: #dc3545;
+                font-weight: bold;
+            }
+
         </style>
+        <script>
+            setInterval(function () {
+                location.reload();
+            }, 30000); // 30000 milissegundos = 30 segundos
+        </script>
     @endpush
 
 
@@ -240,11 +313,12 @@
                             <tr style='text-align:left;'>
                                 <th>Foto</th>
                                 <th>Nome</th>
-                                <th>Data de Entrada</th>
-                                <th>Hora de Entrada</th>
+{{--                                <th>Data de Entrada</th>--}}
+{{--                                <th>Hora de Entrada</th>--}}
                                 <th>Nome do Profissional</th>
                                 <th>Status</th>
                                 <th>Tempo</th>
+                                <th>Local</th>
                                 <th style='text-align:right;'>Ações</th>
                             </tr>
                             </thead>
@@ -282,11 +356,16 @@
 
                                 <tr class="{{ $rowClass }}">
                                     <td data-title='Foto'>
-                                        <img class="img-profile rounded-circle" src="storage/{{ $atendimento->paciente->thumbnail }}" style="width: 60px; height: 60px; object-fit: cover;">
+                                        <img class="img-profile rounded-circle" src="storage/{{ $atendimento->paciente->thumbnail }}" style="width: 50px; height: 50px; object-fit: cover;">
                                     </td>
-                                    <td data-title='Nome'>{{ $atendimento->paciente->nome }}</td>
-                                    <td data-title='Data de Entrada'>{{ date('d/m/Y', strtotime($atendimento->data_entrada)) }}</td>
-                                    <td data-title='Hora de Entrada'>{{ $atendimento->hora_entrada }}</td>
+                                    <td data-title='Nome'>
+                                        <div>
+                                            <strong>{{ $atendimento->paciente->nome }}</strong><br>
+                                            <small>Entrada: {{ $atendimento->created_at->format('d/m/Y H:i:s') }}</small>
+                                        </div>{{-- $atendimento->paciente->nome --}}
+                                    </td>
+{{--                                    <td data-title='Data de Entrada'>{{ date('d/m/Y', strtotime($atendimento->data_entrada)) }}</td>--}}
+{{--                                    <td data-title='Hora de Entrada'>{{ $atendimento->hora_entrada }}</td>--}}
                                     <td data-title='Nome do Profissional'>{{ $atendimento->entradaUser->profissional->nome }}</td>
                                     <td data-title='Status'>
                         <span class="badge {{ $grauDeterioracao === null ? 'bg-secondary' : ($grauDeterioracao >= 7 ? 'bg-danger' : ($grauDeterioracao >= 5 ? 'bg-warning' : ($grauDeterioracao >= 3 ? 'bg-success' : 'bg-primary'))) }}">
@@ -297,9 +376,12 @@
                                         @if($grauDeterioracao === null)
                                             <div class="tempo-espera-container" data-registro="{{ $atendimento->created_at->format('Y-m-d H:i:s') }}">
                                                 <h5 class="tempo-espera text-danger display-6">00:00:00</h5>
+                                                <small>Em espera</small>
                                             </div>
                                         @elseif($grauDeterioracao >= 7)
-                                            <span class="text-white"><strong>INTERVENÇÃO IMEDIATA</strong></span>
+                                            <div class="alerta-critico">
+                                                <h5 class="blinking"><strong>INTERVENÇÃO IMEDIATA</strong></h5>
+                                            </div>
                                         @else
                                             <div class="proxima-verificacao-container"
                                                  data-tempo="{{ $tempoProximaVerificacao }}"
@@ -309,6 +391,7 @@
                                             </div>
                                         @endif
                                     </td>
+                                    <td data-title='Local'>{{ $atendimento->evolucoes->first()->local->nome ?? 'Não informado' }}</td>
                                     <td data-title="Ações" class="coluna-acoes" style='text-align:right; background: #FFFFFF'>
                                         <!-- Seus botões de ação aqui -->
                                         <a href='{{route('incluirEvolucao', $atendimento->id) }}'><button type='button' class='btn btn-sm btn-warning' title="Incluir Anamnese"><i class="fa-solid fa-pen-to-square"></i></button></a>
@@ -327,59 +410,6 @@
                             </tbody>
                         </div>
                     </table>
-{{--                    <table class="table table-striped table-md">--}}
-{{--                        <div class="table-responsive">--}}
-{{--                            <thead>--}}
-{{--                            <tr style='text-align:left;'>--}}
-{{--                                <th>Foto</th>--}}
-{{--                                <th>Nome</th>--}}
-{{--                                <th>Data de Entrada</th>--}}
-{{--                                <th>Hora de Entrada</th>--}}
-{{--                                <th>Nome do Profissional</th>--}}
-{{--                                <th>Status</th>--}}
-{{--                                <th>Tempo de Espera</th>--}}
-{{--                                <th style='text-align:right;'>Ações</th>--}}
-{{--                            </tr>--}}
-{{--                            </thead>--}}
-{{--                            <tbody style='text-align:left;'>--}}
-{{--                            @foreach ($atendimentos as $atendimento)--}}
-{{--                                <tr>--}}
-{{--                                    <td data-title='Foto'><img class="img-profile rounded-circle" src="storage/{{ $atendimento->paciente->thumbnail }}" style="width: 60px; height: 60px; object-fit: cover; object-position: center center; /* Foco no centro */"></td>--}}
-{{--                                    <td data-title='Nome '>{{ $atendimento->paciente->nome }}</td>--}}
-{{--                                    <td data-title='Data de Entrada'>{{ date('d/m/Y', strtotime($atendimento->data_entrada)) }}</td>--}}
-{{--                                    <td data-title='Hora de Entrada'>{{ $atendimento->hora_entrada }}</td>--}}
-{{--                                    <td data-title='Nome do Profissional'>{{ $atendimento->entradaUser->profissional->nome }}</td>--}}
-{{--                                    <td data-title='Status'><span class="badge bg-danger text-white">Aguardando Atendimento</span>--}}
-{{--                                        @if ($atendimento->status == 'Em Atendimento')--}}
-{{--                                            <span class="badge bg-primary">{{ $atendimento->status }}</span>--}}
-{{--                                        @elseif ($atendimento->status == 'Finalizado')--}}
-{{--                                            <span class="badge bg-success">{{ $atendimento->status }}</span>--}}
-{{--                                        @else--}}
-{{--                                            <span class="badge bg-danger">{{ $atendimento->status }}</span>--}}
-{{--                                        @endif--}}
-{{--                                    </td>--}}
-{{--                                    <td data-title="Tempo de Espera">--}}
-{{--                                        <div class="tempo-espera-container" data-registro="{{ $atendimento->created_at->format('Y-m-d H:i:s') }}">--}}
-{{--                                            <h5 class="tempo-espera text-danger display-6">00:00:00</h5>--}}
-{{--                                        </div>--}}
-{{--                                    </td>--}}
-{{--                                    <td data-title="Ações" style='text-align:right;'>--}}
-{{--                                        <a href='{{route('incluirEvolucao', $atendimento->id) }}'><button type='button'--}}
-{{--                                                                                                       class='btn btn-sm btn-warning' title="Incluir Anamnese"><i class="fa-solid fa-pen-to-square"></i></button></a>--}}
-{{--                                        <a href='{{ route('evolucao.ultima', $atendimento->id) }}'><button type='button'--}}
-{{--                                                                                                       class='btn btn-sm btn-primary' title="Visualizar evolução"><i class="fa-solid fa-eye"></i></button></a>--}}
-
-{{--                                        <a href='{{ route('evolucao.listar', $atendimento->id) }}'><button type='button'--}}
-{{--                                                                                                       class='btn btn-sm btn-info' title="Evoluções"><i class="fa-solid fa-list"></i></button></a>--}}
-{{--                                        <a href='{{ route('evolucoes.grafico', $atendimento->id) }}'><button type='button'--}}
-{{--                                                                                                           class='btn btn-sm btn-info' title="Gráficos"><i class="fa-solid fa-chart-simple"></i></button></a>--}}
-{{--                                        <a href=' route('editproduto', $produto->id) '><button type='button'--}}
-{{--                                                                                                      class='btn btn-sm btn-success' title="Dar Alta"><i class="fa-solid fa-circle-up"></i></button></a>--}}
-{{--                                    </td>--}}
-{{--                            @endforeach--}}
-{{--                            </tbody>--}}
-{{--                        </div>--}}
-{{--                    </table>--}}
 
                     <!-- Fim da Tabela de Atendimentos -->
                     @if ($atendimentos->isEmpty())
@@ -398,83 +428,190 @@
 @push('listAtendimentosJs')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Contador para pacientes sem atendimento
+            // Contador para pacientes sem atendimento (progressivo)
             document.querySelectorAll('.tempo-espera-container').forEach(container => {
                 const registroTime = new Date(container.dataset.registro).getTime();
-
-                function updateTimer() {
-                    const now = new Date().getTime();
-                    const diff = now - registroTime;
-
-                    const hours = Math.floor(diff / (1000 * 60 * 60));
-                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-                    container.querySelector('.tempo-espera').textContent =
-                        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                }
-
-                updateTimer();
-                setInterval(updateTimer, 1000);
+                updateProgressTimer(container, registroTime);
             });
 
             // Contador regressivo para próximas verificações
             document.querySelectorAll('.proxima-verificacao-container').forEach(container => {
                 const registroTime = new Date(container.dataset.registro).getTime();
                 const tempoVerificacao = parseInt(container.dataset.tempo);
-
-                function updateCountdown() {
-                    const now = new Date().getTime();
-                    const diff = registroTime + tempoVerificacao - now;
-
-                    if (diff <= 0) {
-                        container.querySelector('.tempo-restante').textContent = "00:00:00";
-                        container.querySelector('.tempo-restante').classList.add('text-danger');
-                        container.querySelector('small').textContent = "Verificação necessária!";
-                        return;
-                    }
-
-                    const hours = Math.floor(diff / (1000 * 60 * 60));
-                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-                    container.querySelector('.tempo-restante').textContent =
-                        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-                    // Muda para amarelo quando faltar menos de 10 minutos
-                    if (diff < 10 * 60 * 1000) {
-                        container.querySelector('.tempo-restante').classList.add('text-warning');
-                    }
-                }
-
-                updateCountdown();
-                setInterval(updateCountdown, 1000);
+                setupCountdownTimer(container, registroTime, tempoVerificacao);
             });
         });
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const containers = document.querySelectorAll('.tempo-espera-container');
-        //
-        //     function atualizarTodosTempos() {
-        //         const agora = new Date();
-        //
-        //         containers.forEach(container => {
-        //             const dataRegistroStr = container.getAttribute('data-registro');
-        //             const dataRegistro = new Date(dataRegistroStr);
-        //             const tempoElement = container.querySelector('.tempo-espera');
-        //
-        //             const diff = Math.floor((agora - dataRegistro) / 1000);
-        //             const horas = Math.floor(diff / 3600);
-        //             const minutos = Math.floor((diff % 3600) / 60);
-        //             const segundos = diff % 60;
-        //
-        //             tempoElement.textContent =
-        //                 `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
-        //         });
-        //     }
-        //
-        //     // Iniciar imediatamente e atualizar a cada segundo
-        //     atualizarTodosTempos();
-        //     setInterval(atualizarTodosTempos, 1000);
-        // });
+
+        function updateProgressTimer(container, startTime) {
+            function update() {
+                const now = new Date().getTime();
+                const diff = now - startTime;
+
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                container.querySelector('.tempo-espera').textContent =
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+
+            update();
+            setInterval(update, 1000);
+        }
+
+        function setupCountdownTimer(container, startTime, duration) {
+            const timerElement = container.querySelector('.tempo-restante');
+            const labelElement = container.querySelector('small');
+            let progressTimerInterval = null;
+            let blinkInterval = null;
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const endTime = startTime + duration;
+                let diff = endTime - now;
+
+                // Timer expirado - inicia contador progressivo
+                if (diff <= 0) {
+                    clearInterval(countdownInterval);
+
+                    // Remove qualquer classe de cor existente
+                    timerElement.classList.remove('text-warning', 'text-danger');
+
+                    // Adiciona efeito de piscar
+                    timerElement.classList.add('blinking');
+
+                    // Toca alerta sonoro (implemente conforme sua necessidade)
+                    playAlertSound();
+
+                    // Inicia contador progressivo
+                    const overdueStartTime = endTime;
+                    progressTimerInterval = setInterval(() => {
+                        const overdueDiff = new Date().getTime() - overdueStartTime;
+                        const hours = Math.floor(overdueDiff / (1000 * 60 * 60));
+                        const minutes = Math.floor((overdueDiff % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((overdueDiff % (1000 * 60)) / 1000);
+
+                        timerElement.textContent =
+                            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                        timerElement.classList.add('text-danger');
+                        labelElement.textContent = "Verificar Paciente URGENTE!";
+                    }, 1000);
+
+                    return;
+                }
+
+                // Atualiza contador regressivo
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                timerElement.textContent =
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                // Muda para amarelo quando faltar menos de 10 minutos
+                if (diff < 10 * 60 * 1000) {
+                    timerElement.classList.add('text-warning');
+                    timerElement.classList.remove('text-danger');
+                }
+
+                // Muda para vermelho quando faltar menos de 2 minutos
+                if (diff < 2 * 60 * 1000) {
+                    timerElement.classList.remove('text-warning');
+                    timerElement.classList.add('text-danger');
+                }
+            }
+
+            // Inicia o contador regressivo
+            let countdownInterval = setInterval(updateCountdown, 1000);
+            updateCountdown(); // Chamada inicial
+
+            // Função para alerta sonoro (implementação básica)
+            function playAlertSound() {
+                // Implemente com seu sistema de notificação sonora preferido
+                console.log("ALERTA: Verificação atrasada!");
+                // Exemplo: new Audio('/sounds/alert.mp3').play();
+            }
+        }
+
+    </script>
+    // Atualiza a tabela a cada 30 segundos
+    <script>
+        // Variável para controlar o tempo de atualização
+        let intervaloAtualizacao = 30000; // 30 segundos
+        let timerAtualizacao;
+
+        // Função principal de atualização
+        function atualizarAtendimentos(showNotification = false) {
+            $.ajax({
+                url: "{{ route('listarAtendimentos.index') }}?_partial=1&_=" + new Date().getTime(),
+                type: "GET",
+                dataType: "html",
+                beforeSend: function() {
+                    if(showNotification) {
+                        mostrarNotificacao('Atualizando dados...', 'info');
+                    }
+                },
+                success: function(data) {
+                    // Atualiza a tabela
+                    const $novaTabela = $(data).find('.table-responsive').first();
+                    if($novaTabela.length) {
+                        $('.table-responsive').html($novaTabela.html());
+                    }
+
+                    // Atualiza contadores
+                    const $novosContadores = $(data).find('.card-counter').first();
+                    if($novosContadores.length) {
+                        $('.card-counter').html($novosContadores.html());
+                    }
+
+                    // Atualiza hora da última atualização
+                    $('#ultima-atualizacao').text(new Date().toLocaleTimeString());
+
+                    if(showNotification) {
+                        mostrarNotificacao('Dados atualizados com sucesso!', 'success');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    if(showNotification) {
+                        mostrarNotificacao('Erro ao atualizar: ' + error, 'error');
+                    }
+                    console.error("Erro na atualização:", status, error);
+                },
+                complete: function() {
+                    // Reinicia o timer após cada atualização
+                    reiniciarTimer();
+                }
+            });
+        }
+
+        // Função para mostrar notificações
+        function mostrarNotificacao(mensagem, tipo = 'info') {
+            // Implemente sua notificação preferida (Toastr, SweetAlert, etc)
+            console.log(`[${tipo}] ${mensagem}`);
+            // Exemplo com Toastr:
+            // toastr[tipo](mensagem);
+        }
+
+        // Função para reiniciar o timer
+        function reiniciarTimer() {
+            clearTimeout(timerAtualizacao);
+            timerAtualizacao = setTimeout(atualizarAtendimentos, intervaloAtualizacao);
+        }
+
+        // Inicialização quando o DOM estiver pronto
+        $(document).ready(function() {
+            // Primeira atualização
+            atualizarAtendimentos();
+
+            // Atualiza quando a janela ganha foco
+            $(window).on('focus', function() {
+                atualizarAtendimentos(true);
+            });
+
+            // Botão manual de atualização
+            $('#btn-atualizar').on('click', function() {
+                atualizarAtendimentos(true);
+            });
+        });
     </script>
 @endpush

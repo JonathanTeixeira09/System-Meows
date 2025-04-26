@@ -150,4 +150,9 @@ class Paciente extends Model
             return null;
         }
     }
+
+    public function atendimentos()
+    {
+        return $this->hasMany(Atendimento::class);
+    }
 }

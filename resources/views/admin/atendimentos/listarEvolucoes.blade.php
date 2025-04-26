@@ -54,7 +54,7 @@
                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Evolução dos Sinais Vitais de {{ $nomePaciente }}</h6>
                 <div>
-                    <a href="{{ route('listarAtendimentos.index') }}" class="btn btn-sm btn-secondary">
+                    <a href="javascript:history.back()" class="btn btn-sm btn-secondary">
                         <i class="fas fa-arrow-left"></i> Voltar
                     </a>
                 </div>
@@ -167,6 +167,7 @@
                         label: 'SO (%)',
                         data: @json($so),
                         borderColor: '#EC4899',
+{{--                        borderColor: @json($so.map(val => val < 95 ? '#EF4444' : '#10B981')), // Vermelho se < 95%--}}
                         backgroundColor: 'rgba(236, 72, 153, 0.1)',
                         borderDash: [5, 5],
                     }
