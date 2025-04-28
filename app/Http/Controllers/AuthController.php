@@ -122,4 +122,46 @@ class AuthController extends Controller
         return view('auth.listarUser', ['title' => 'Listar Usuários', 'users' => $users]);
     }
 
+    public function editUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $profissional = Profissional::whereDoesntHave('user')->get();
+        return view('auth.editUser', ['title' => 'Editando Usuário', 'users' => $user, 'profissional' => $profissional]);
+    }
+
+    public function updateUser(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+            'nome_profissional' => 'required',
+            'permissao' => 'required|in:admin,profissional,superadmin'
+        ], [
+            'email.required' => 'Esse campo de email é obrigatório',
+            'email.email' => 'Esse campo tem que ter um email válido',
+            'email.unique' => 'Esse email já está cadastrado',
+            'password.required' => 'Esse campo de password é obrigatório',
+            'password.min' => 'A senha deve ter pelo menos 8 caracteres',
+            'password.confirmed' => 'As senhas não conferem',
+            'nome_profissional.required' => 'O nome do profissional é obrigatório',
+            'permissao.required' => 'A permissão é obrigatória',
+            'permissao.in' => 'A permissão deve ser admin, profissional ou superadmin'
+        ]);
+
+        // Verifica se o usuário está autenticado e se o ID do usuário autenticado é igual ao ID do usuário a ser atualizado
+        if (Auth::check() && Auth::user()->id == $request->id) {
+            // Se o usuário estiver autenticado e for o mesmo que está sendo editado, atualize a sessão
+            session([
+                'user_thumbnail' => Auth::user()->profissional->thumbnail,
+                'user_name' => Auth::user()->profissional->nome,
+            ]);
+        }
+
+        User::findOrFail($request->id)->update($validated);
+
+
+        flash('Usuário alterado com sucesso')->success();
+        return redirect()->route('listarusuarios.index');
+    }
+
 }

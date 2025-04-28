@@ -19,12 +19,15 @@ Route::controller(AuthController::class)->group(function (){
     Route::get('/register', 'createUser')->name('register.index')->middleware('auth');
     Route::post('/register', 'storeUser')->name('register.store')->middleware('auth');
     Route::get('/listarusuarios', 'listarUser')->name('listarusuarios.index')->middleware('auth')->middleware('role:superadmin,admin');
+    Route::get('/editarusuario/{id}/', 'editUser')->name('editarusuario.index')->middleware('auth')->middleware('role:superadmin,admin');
+    Route::post('/editarusuario/{id}/', 'updateUser')->name('editarusuario.update')->middleware('auth')->middleware('role:superadmin,admin');
 });
 
 Route::get('/sobremim', function () {
     return view('layouts.sobreMim');
 })->name('sobremim.index');
 
+// Rota para exibir a view Principal com o gráfico
 Route::get('/',[EvolucaoController::class,'viewPrincipal'])->name('index')->middleware('auth', 'role:superadmin,profissional,admin');
 
 Route::middleware('auth', 'role:superadmin,profissional')->group(function () {

@@ -62,9 +62,9 @@
                                     <td data-title='Cargo'>{{ $user->role }}</td>
                                     <td data-title='Status'>{{ $user->status }}</td>
                                     <td data-title="Ações" style='text-align:right;'>
-                                        <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
+                                        <a href='{{-- route('editarusuario.index', $user->id) --}}'><button type='button'
                                                                                                        class='btn btn-sm btn-primary'><i class="fa-solid fa-eye"></i></button></a>
-                                        <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
+                                        <a href='{{ route('editarusuario.index', $user->id) }}'><button type='button'
                                                                                                        class='btn btn-sm btn-warning'><i class="fa-solid fa-pen-to-square"></i></button></a>
 
                                         <form action="{{-- route('excluirprodutoestoque', $produto->id) --}}" method="post"
