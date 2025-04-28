@@ -23,7 +23,7 @@ class ProfissionalSeeder extends Seeder
             'cargo_id' => 1, // Supondo que o cargo de Administrador tem ID 2
             'conselho' => 'CRM',
             'registro' => '123456',
-            'thumbnail' => 'user-admin.jpg',
+            'thumbnail' => 'profissionais/user-admin.jpg',
             'rqe' => '123456',
         ]);
     }

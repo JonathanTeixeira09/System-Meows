@@ -34,6 +34,14 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
+        // Verifica se o usuário está ativo
+        $user = User::where('email', $credentials['email'])->first();
+        if ($user && $user->status !== 'Ativo') {
+            return back()->withErrors([
+                'errorLogin' => 'Usuário inativo. Entre em contato com o administrador.',
+            ])->onlyInput('errorLogin');
+        }
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
@@ -113,6 +121,11 @@ class AuthController extends Controller
         return redirect()->route('register.index');
     }
 
+    /** 
+     * Listando os Usuários 
+     *  
+     */
+    
     public function listarUser()
     {
         $users = User::select('users.*')
@@ -122,6 +135,9 @@ class AuthController extends Controller
         return view('auth.listarUser', ['title' => 'Listar Usuários', 'users' => $users]);
     }
 
+    /**
+     * Exibe o formulário para edição do recurso especificado.
+     */
     public function editUser(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -129,6 +145,9 @@ class AuthController extends Controller
         return view('auth.editUser', ['title' => 'Editando Usuário', 'users' => $user, 'profissional' => $profissional]);
     }
 
+    /**
+     * Atualiza o recurso especificado no armazenamento.
+     */
     public function updateUser(Request $request)
     {
         $validated = $request->validate([
@@ -147,6 +166,7 @@ class AuthController extends Controller
             'permissao.required' => 'A permissão é obrigatória',
             'permissao.in' => 'A permissão deve ser admin, profissional ou superadmin'
         ]);
+        $validated['status'] = 'Ativo';
 
         // Verifica se o usuário está autenticado e se o ID do usuário autenticado é igual ao ID do usuário a ser atualizado
         if (Auth::check() && Auth::user()->id == $request->id) {
@@ -162,6 +182,36 @@ class AuthController extends Controller
 
         flash('Usuário alterado com sucesso')->success();
         return redirect()->route('listarusuarios.index');
+    }
+
+    /**
+     * Desativa o usuário
+     */
+    public function disable(User $user)
+    {
+        // Verifica se o usuário alvo é o mesmo que está logado
+        if (auth()->id() === $user->id) {
+            flash('Você não pode desativar sua própria conta')->error();
+            return redirect()->back();
+        }
+
+        try {
+            $user->status = 'inativo';
+            $saved = $user->save();
+
+            if (!$saved) {
+                flash('Falha ao desativar o usuário')->error();
+                return redirect()->back();
+            }
+
+            flash('Usuário desativado com sucesso')->success();
+            return redirect()->back();
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Erro: ' . $e->getMessage());
+        }
+
     }
 
 }

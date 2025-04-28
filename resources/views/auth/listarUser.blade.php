@@ -3,7 +3,7 @@
 @section('title', 'Listar Usuários')
 @section('conteudo')
     <style>
-        @media (max-width: 767px) {
+        @media (max-width: 1000px) {
             .table thead {
                 display: none;
             }
@@ -49,30 +49,33 @@
                             <tr style='text-align:left;'>
                                 <th>Thumbnail</th>
                                 <th>Nome</th>
+                                <th>Email</th>
                                 <th>Permissão</th>
                                 <th>Status</th>
-                                <th style='text-align:right;'>Ações</th>
+                                <th>Cargo</th>
+                                <th style='text-align:center;'>Ações</th>
                             </tr>
                             </thead>
                             <tbody style='text-align:left;'>
                             @foreach ($users as $user)
                                 <tr>
-                                    <td data-title='Foto'><img class="img-profile rounded-circle" src="storage/{{ $user->profissional->thumbnail }}" style="width: 60px; height: 60px; object-fit: cover; object-position: center center;"></td>
+                                    <td data-title='Foto'><img class="img-profile rounded-circle" src="storage/{{ $user->profissional->thumbnail }}" style="width: 50px; height: 50px; object-fit: cover; object-position: center center;"></td>
                                     <td class='fw-bold'>{{ $user->profissional->nome }}</td>
+                                    <td data-title='Email'>{{ $user->email }}</td>
                                     <td data-title='Cargo'>{{ $user->role }}</td>
                                     <td data-title='Status'>{{ $user->status }}</td>
-                                    <td data-title="Ações" style='text-align:right;'>
-                                        <a href='{{-- route('editarusuario.index', $user->id) --}}'><button type='button'
-                                                                                                       class='btn btn-sm btn-primary'><i class="fa-solid fa-eye"></i></button></a>
-                                        <a href='{{ route('editarusuario.index', $user->id) }}'><button type='button'
-                                                                                                       class='btn btn-sm btn-warning'><i class="fa-solid fa-pen-to-square"></i></button></a>
-
-                                        <form action="{{-- route('excluirprodutoestoque', $produto->id) --}}" method="post"
-                                              style="display:inline-block;">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-sm btn-danger" value="excluir"><i class="fa-solid fa-trash"></i></button>
-                                        </form>
+                                    <td data-title='Cargo'>{{ $user->profissional->cargo->nome }}</td>
+                                    <td data-title="Ações">
+                                        <div class="d-flex align-items-center justify-content-center gap-1">
+                                            <a href='{{-- route('editarusuario.index', $user->id) --}}' class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i> Visualizar</a>
+                                            <a href='{{ route('editarusuario.index', $user->id) }}' class="btn btn-sm btn-warning"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+    {{--                                        <a href='{{ route('users.disable', $user->id) }}'><button type='button' class='btn btn-sm btn-danger'><i class="fa-solid fa-user-large-slash"></i> Desabilitar</button></a>--}}
+                                            <form action="{{ route('users.disable', $user) }}" method="POST" class="m-0">
+                                                @csrf
+                                                @method('PATCH')  <!-- Converte o POST em PATCH -->
+                                                <button type='submit' class='btn btn-sm btn-danger'><i class="fa-solid fa-user-large-slash"></i> Desabilitar</button></a>
+                                            </form>
+                                        </div>
                                     </td>
                             @endforeach
                             </tbody>
