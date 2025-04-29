@@ -75,10 +75,11 @@
     </style>
 
 
-    @auth
-        @if(auth()->user()->isProfissional() || auth()->user()->isSuperAdmin())
+
     <!-- Content Row -->
     @include('layouts.cadsStatus')
+    @auth
+        @if(auth()->user()->isProfissional() || auth()->user()->isSuperAdmin())
 
     <!-- Content Row -->
 

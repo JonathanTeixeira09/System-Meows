@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Evolucao;
 use App\Models\Atendimento;
 use App\Models\Local;
+use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 
 class EvolucaoController extends Controller
@@ -219,19 +220,8 @@ class EvolucaoController extends Controller
         $evolucao->user_id = auth()->id();
         $evolucao->save();
 
-//        if ($scoresTotal == 0){
-//            $avaliacao = 'Não há risco de deterioração';
-//        } elseif ($scoresTotal >= 1 && $scoresTotal <= 3){
-//            $avaliacao = 'Baixo risco de deterioração';
-//        } elseif ($scoresTotal >= 4 && $scoresTotal <= 5){
-//            $avaliacao = 'Risco moderado de deterioração';
-//        } elseif ($scoresTotal >= 6){
-//            $avaliacao = 'Risco alto de deterioração';
-//        }
-
-//        dd('fc: ' . $fc, 'fr: ' . $fr, 'pas: ' . $pas, 'pad: ' . $pad, 'temp: ' . $temp, 'so: ' . $so, 'avaliacao: ' . $avaliacao, 'pontuacaoTotal: ' . $scoresTotal, 'local: ' . $local_id);
-        // Redireciona para a página de listagem de atendimentos com uma mensagem de sucesso
-        return redirect()->route('evolucao.relatorio', $evolucao->id)->with('success', 'Anamnese da Paciente cadastrada com sucesso!');
+        flash('Anamnese da Paciente cadastrada com sucesso!')->success();
+        return redirect()->route('evolucao.relatorio', $evolucao->id);
 
     }
 
@@ -377,97 +367,6 @@ class EvolucaoController extends Controller
         });
     }
 
-//    public function viewPrincipal(Request $request)
-//    {
-//        // Obter o filtro do request ou usar 'hoje' como padrão
-//        $filtro = $request->input('periodo', 'hoje');
-//
-//        // Configurar as datas com base no filtro
-//        $filtroData = $this->getFiltroDatas($filtro);
-//
-//        // Consultas com filtro temporal
-//        $totalAtendimentos = Atendimento::whereBetween('created_at', [$filtroData['inicio'], $filtroData['fim']])->count();
-//
-//        $totalAltas = Atendimento::whereNotNull('data_alta')
-//            ->whereBetween('data_alta', [$filtroData['inicio'], $filtroData['fim']])->count();
-//
-//        $totalInternados = Atendimento::whereNull('data_alta')
-//            ->join('evolucaos', 'atendimentos.id', '=', 'evolucaos.atendimento_id')
-//            ->whereBetween('evolucaos.created_at', [$filtroData['inicio'], $filtroData['fim']])
-//            ->distinct('atendimentos.id')
-//            ->count('atendimentos.id');
-//
-//        $pacientesNaoAtendidos = Atendimento::whereDoesntHave('evolucoes')
-//            ->whereNull('data_alta')
-//            ->whereBetween('created_at', [$filtroData['inicio'], $filtroData['fim']])
-//            ->count();
-//
-//        // Gráfico por mês (mantido como está ou pode adaptar)
-//        $evolucoesPorMes = Evolucao::selectRaw('MONTH(created_at) as mes, COUNT(*) as total')
-//            ->whereBetween('created_at', [$filtroData['inicio'], $filtroData['fim']])
-//            ->groupBy('mes')
-//            ->orderBy('mes')
-//            ->get()
-//            ->pluck('total', 'mes');
-//
-//
-//        // Preenche meses faltantes
-//        $dadosCompletos = [];
-//        for ($mes = 1; $mes <= 12; $mes++) {
-//            $dadosCompletos[$mes] = $evolucoesPorMes->has($mes) ? $evolucoesPorMes[$mes] : 0;
-//        }
-//
-//        // Novo gráfico de deterioração
-//        $deterioracaoData = Atendimento::with('ultimaEvolucao')
-//            ->selectRaw('
-//        CASE
-//            WHEN evolucaos.grauDeterioracao IS NULL THEN "Sem avaliação"
-//            WHEN evolucaos.grauDeterioracao BETWEEN 0 AND 2 THEN "Sem risco"
-//            WHEN evolucaos.grauDeterioracao BETWEEN 3 AND 4 THEN "Baixo risco"
-//            WHEN evolucaos.grauDeterioracao BETWEEN 5 AND 6 THEN "Risco moderado"
-//            ELSE "Risco alto"
-//        END as status,
-//        COUNT(*) as total
-//    ')
-//            ->leftJoin('evolucaos', function($join) {
-//                $join->on('atendimentos.id', '=', 'evolucaos.atendimento_id')
-//                    ->whereRaw('evolucaos.id = (
-//                SELECT id FROM evolucaos
-//                WHERE atendimento_id = atendimentos.id
-//                ORDER BY created_at DESC
-//                LIMIT 1
-//            )');
-//            })
-//            ->whereNull('data_alta') // Filtra apenas atendimentos sem alta
-//            ->groupBy('status')
-//            ->orderByRaw('
-//        CASE status
-//            WHEN "Risco alto" THEN 1
-//            WHEN "Risco moderado" THEN 2
-//            WHEN "Baixo risco" THEN 3
-//            WHEN "Sem risco" THEN 4
-//            ELSE 5
-//        END
-//    ')
-//            ->get();
-//
-//        $chartDeterioracao = [
-//            'labels' => $deterioracaoData->pluck('status'),
-//            'data' => $deterioracaoData->pluck('total'),
-//            'cores' => ['#e74a3b', '#f6c23e',  '#4e73df', '#1cc88a', '#e0e0e0']
-//        ];
-//        return view('index', compact(
-//            'totalAtendimentos',
-//            'totalAltas',
-//            'totalInternados',
-//            'pacientesNaoAtendidos',
-//            'dadosCompletos',
-//            'chartDeterioracao',
-//            'filtro' // Passa o filtro atual para a view
-//        ));
-//
-//    }
-
     private function getFiltroDatas($filtro)
     {
         return match($filtro) {
@@ -502,6 +401,11 @@ class EvolucaoController extends Controller
         // Consultas principais (mantidas como estão)
         $totalAtendimentos = Atendimento::whereBetween('created_at', [$filtroData['inicio'], $filtroData['fim']])->count();
         $totalAltas = Atendimento::whereNotNull('data_alta')->whereBetween('data_alta', [$filtroData['inicio'], $filtroData['fim']])->count();
+
+        // Total de Usuários Ativos
+        $totalUsersAtivos = User::where('status', 'ativo')->count();
+        // Total de Usuários Inativos
+        $totalUsersInativos = User::where('status', 'inativo')->count();
 
         $totalInternados = Atendimento::whereNull('data_alta')
             ->join('evolucaos', 'atendimentos.id', '=', 'evolucaos.atendimento_id')
@@ -610,7 +514,9 @@ class EvolucaoController extends Controller
             'pacientesAtrasados', // Novo dado
             'pacientesSemAvaliacao',
             'pacientesIntervencao',
-            'filtro'
+            'filtro',
+            'totalUsersAtivos', // Novo dado
+            'totalUsersInativos', // Novo dado
         ));
     }
 

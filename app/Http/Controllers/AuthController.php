@@ -20,7 +20,9 @@ class AuthController extends Controller
         return view('auth.login', ['title' => 'Login']);
     }
 
-
+    /**
+     * Save the user in the database
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -121,11 +123,10 @@ class AuthController extends Controller
         return redirect()->route('register.index');
     }
 
-    /** 
-     * Listando os Usuários 
-     *  
+    /**
+     * Listando os Usuários
+     *
      */
-    
     public function listarUser()
     {
         $users = User::select('users.*')
@@ -167,6 +168,7 @@ class AuthController extends Controller
             'permissao.in' => 'A permissão deve ser admin, profissional ou superadmin'
         ]);
         $validated['status'] = 'Ativo';
+        $validated['role'] = $request->permissao;
 
         // Verifica se o usuário está autenticado e se o ID do usuário autenticado é igual ao ID do usuário a ser atualizado
         if (Auth::check() && Auth::user()->id == $request->id) {
