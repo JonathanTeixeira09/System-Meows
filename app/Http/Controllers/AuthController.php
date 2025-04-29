@@ -216,4 +216,37 @@ class AuthController extends Controller
 
     }
 
+    /**
+     * Funcão para ativar o usuário
+     */
+    public function enable(User $user)
+    {
+        // Verifica se o usuário alvo é o mesmo que está logado
+        if (auth()->id() === $user->id) {
+            flash('Você não pode ativar sua própria conta')->error();
+            return redirect()->back();
+        }
+
+        try {
+            $user->status = 'Ativo';
+            $saved = $user->save();
+
+            if (!$saved) {
+                flash('Falha ao ativar o usuário')->error();
+                return redirect()->back();
+            }
+
+            flash('Usuário ativado com sucesso')->success();
+            return redirect()->back();
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Erro: ' . $e->getMessage());
+        }
+    }
+
+    public function show(User $user)
+    {
+        return view('auth.showUser', ['user' => $user]);
+    }
 }

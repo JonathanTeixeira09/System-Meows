@@ -17,6 +17,9 @@ class Atendimento extends Model
         'entrada_user_id',
         'alta_user_id'
     ];
+    protected $casts = [
+        'data_alta' => 'datetime', // Converte automaticamente para Carbon
+    ];
 
     // Relacionamento com Paciente
     public function paciente()

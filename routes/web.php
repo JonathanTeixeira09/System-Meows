@@ -22,6 +22,8 @@ Route::controller(AuthController::class)->group(function (){
     Route::get('/editarusuario/{id}/', 'editUser')->name('editarusuario.index')->middleware('auth')->middleware('role:superadmin,admin');
     Route::post('/editarusuario/{id}/', 'updateUser')->name('editarusuario.update')->middleware('auth')->middleware('role:superadmin,admin');
     Route::patch('/users/{user}/disable', 'disable')->name('users.disable')->middleware('auth')->middleware('role:superadmin,admin');
+    Route::patch('/users/{user}/enable', 'enable')->name('users.enable')->middleware('auth')->middleware('role:superadmin,admin');
+    Route::get('/user/{user}', 'show')->name('user.show')->middleware('auth')->middleware('role:superadmin,admin');
 });
 
 Route::get('/sobremim', function () {

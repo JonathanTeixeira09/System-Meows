@@ -35,7 +35,7 @@
                                             name="paciente_nome"
                                             id="pacienteInput"
                                             placeholder="Digite o nome"
-                                            autocomplete="off"
+                                            autocomplete="on"
                                             value="{{-- old('paciente_nome') --}}"
                                         >
                                         <datalist id="pacientes-list">

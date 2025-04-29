@@ -29,6 +29,13 @@
                 display: block;
                 font-weight: bold;
             }
+
+        }
+        .vertical-center-table td,
+        .vertical-center-table th {
+            vertical-align: middle;
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
         }
     </style>
 
@@ -43,7 +50,7 @@
             <div class="card-body">
                 <div class="chart-area">
 
-                    <table class="table table-striped table-md">
+                    <table class="table table-striped table-md vertical-center-table">
                         <div class="table-responsive">
                             <thead>
                             <tr style='text-align:left;'>
@@ -67,14 +74,24 @@
                                     <td data-title='Cargo'>{{ $user->profissional->cargo->nome }}</td>
                                     <td data-title="Ações">
                                         <div class="d-flex align-items-center justify-content-center gap-1">
-                                            <a href='{{-- route('editarusuario.index', $user->id) --}}' class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i> Visualizar</a>
+                                            <a href='{{ route('user.show', $user->id) }}' class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i> Visualizar</a>
                                             <a href='{{ route('editarusuario.index', $user->id) }}' class="btn btn-sm btn-warning"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
     {{--                                        <a href='{{ route('users.disable', $user->id) }}'><button type='button' class='btn btn-sm btn-danger'><i class="fa-solid fa-user-large-slash"></i> Desabilitar</button></a>--}}
-                                            <form action="{{ route('users.disable', $user) }}" method="POST" class="m-0">
-                                                @csrf
-                                                @method('PATCH')  <!-- Converte o POST em PATCH -->
-                                                <button type='submit' class='btn btn-sm btn-danger'><i class="fa-solid fa-user-large-slash"></i> Desabilitar</button></a>
-                                            </form>
+                                            @if($user->status === 'Ativo')
+                                                <form action="{{ route('users.disable', $user) }}" method="POST" class="m-0">
+                                                    @csrf
+                                                    @method('PATCH')  <!-- Converte o POST em PATCH -->
+                                                    <button type='submit' class='btn btn-sm btn-danger' onclick="return confirm('Tem certeza que deseja desativar este usuário?')"><i class="fa-solid fa-user-large-slash"></i> Desabilitar</button></a>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('users.enable', $user->id) }}" method="POST" class="m-0">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="btn btn-sm btn-success">
+                                                        <i class="fas fa-user-check"></i> Ativar
+                                                    </button>
+                                                </form>
+                                            @endif
                                         </div>
                                     </td>
                             @endforeach

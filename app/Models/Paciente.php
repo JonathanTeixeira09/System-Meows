@@ -155,4 +155,9 @@ class Paciente extends Model
     {
         return $this->hasMany(Atendimento::class);
     }
+
+    public function ultimoAtendimento()
+    {
+        return $this->hasOne(Atendimento::class)->latestOfMany();
+    }
 }

@@ -64,6 +64,14 @@
             background-color: #0dcaf0;
             color: #000;
         }
+
+        .vertical-center-table td,
+        .vertical-center-table th {
+            vertical-align: middle;
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
     </style>
 
     <div class="col-xl-12 col-lg-12">
@@ -77,7 +85,7 @@
             <div class="card-body">
                 <div class="chart-area">
 
-                    <table class="table table-striped table-md">
+                    <table class="table table-striped vertical-center-table">
                         <div class="table-responsive">
                             <thead>
                             <tr style='text-align:left;'>
@@ -86,15 +94,16 @@
                                 <th>Data de Nascimento</th>
                                 <th>Data de Gestação</th>
                                 <th>Tempo de Gestação</th>
+                                <th>Última Consulta</th>
                                 <th style='text-align:right;'>Ações</th>
                             </tr>
                             </thead>
                             <tbody style='text-align:left;'>
                             @foreach ($pacientes as $paciente)
-                                <tr>
-                                    <td data-title='Foto'><img class="img-profile rounded-circle" src="storage/{{ $paciente->thumbnail }}" style="width: 60px; height: 60px; object-fit: cover; object-position: center center; /* Foco no centro */"></td>
+                                <tr class="align-middle">
+                                    <td data-title='Foto'><img class="img-profile rounded-circle" src="storage/{{ $paciente->thumbnail }}" style="width: 40px; height: 40px; object-fit: cover; object-position: center center; /* Foco no centro */"></td>
                                     <td class='fw-bold'>{{ $paciente->nome }}</td>
-                                    <td data-title='Data de Nascimento'>{{ date('d/m/Y', strtotime($paciente->dataNascimento)) }}</td>
+                                    <td data-title='Data de Nascimento'>{{ date('d/m/Y', strtotime($paciente->data_nascimento)) }}</td>
                                     <td data-title='Data de Gestação'>{{ date('d/m/Y', strtotime($paciente->data_gestacao)) }}</td>
                                     <td data-title='Tempo de Gestação'>
                                         @php $gestacao = $paciente->formatarTempoGestacao(); @endphp
@@ -102,18 +111,17 @@
                                             {{ $gestacao['texto'] }}
                                         </span>
                                     </td>
+                                    <td data-title='Última Consulta'>
+                                        @if($paciente->ultimoAtendimento && $paciente->ultimoAtendimento->data_alta)
+                                            {{ $paciente->ultimoAtendimento->data_alta->format('d/m/Y')}}
+                                        @else
+                                            <span class="badge bg-danger">Sem consultas</span>
+                                        @endif
                                     <td data-title="Ações" style='text-align:right;'>
                                         <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
-                                                                                                      class='btn btn-sm btn-primary'><i class="fa-solid fa-eye"></i></button></a>
+                                                                                                      class='btn btn-sm btn-primary' title="Visualizar"><i class="fa-solid fa-eye"></i> Visualizar</button></a>
                                         <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
-                                                                                                       class='btn btn-sm btn-warning'><i class="fa-solid fa-pen-to-square"></i></button></a>
-
-                                        <form action="{{-- route('excluirprodutoestoque', $produto->id) --}}" method="post"
-                                              style="display:inline-block;">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-sm btn-danger" value="excluir"><i class="fa-solid fa-trash"></i></button>
-                                        </form>
+                                                                                                       class='btn btn-sm btn-warning' title="Editar"><i class="fa-solid fa-pen-to-square"></i> Editar</button></a>
                                     </td>
                             @endforeach
                             </tbody>

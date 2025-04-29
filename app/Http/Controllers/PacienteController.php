@@ -46,7 +46,6 @@ class PacienteController extends Controller
             'data_gestacao.required' => 'A data de gestação da paciente é obrigatória.',
         ]);
 
-
         // Verifica se a opção de excluir a foto foi marcada
         if ($request->has('deletar_foto') && $request->deletar_foto) {
             $thumbnail = 'pacientes/paciente.png'; // Caminho da imagem padrão
@@ -182,7 +181,11 @@ class PacienteController extends Controller
 
     public function listarPaciente()
     {
-        $pacientes = Paciente::orderBy('nome')->paginate(5);
+        $pacientes = Paciente::with(['ultimoAtendimento' => function($query) {
+            $query->latest();
+        }])
+            ->orderBy('nome')
+            ->paginate(5); // Altere o número conforme necessário
 
         return view('admin.paciente.listarPaciente', ['title' => 'Listando Pacientes', 'pacientes' => $pacientes]);
     }
