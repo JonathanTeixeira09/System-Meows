@@ -25,7 +25,7 @@ class EvolucaoController extends Controller
             $query->orderBy('created_at', 'desc');
         }]);
 
-        $locals = Local::all();
+        $locals = Local::all()->sortBy('nome'); // Ordena os locais pelo nome
 
         // Verifica se existem evoluções anteriores
         $ultimoLocal = null;

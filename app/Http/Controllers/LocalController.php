@@ -25,10 +25,12 @@ class LocalController extends Controller
     {
         $validated = $request->validate([
             'nome' => 'required|string|max:255|unique:locals,nome',
+            'descricao' => 'nullable|string|max:255'
         ], [
             'nome.required' => 'O campo nome é obrigatório',
             'nome.max' => 'O nome não pode ter mais que 255 caracteres',
-            'nome.unique' => 'Este local já está cadastrado'
+            'nome.unique' => 'Este local já está cadastrado',
+            'descricao.max' => 'A descrição não pode ter mais que 255 caracteres'
         ]);
 
         Local::create($request->all());
@@ -45,11 +47,35 @@ class LocalController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        $local = Local::findOrFail($id);
+        $locals = Local::orderby('nome')->get();
+        return view('admin.administrativo.createLocal', compact('local', 'locals'));
+    }
+
+    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Local $local)
+    public function update(Request $request, $id)
     {
-        //
+        $local = Local::findOrFail($id);
+
+        $validated = $request->validate([
+            'nome' => 'required|string|max:255|unique:locals,nome,'.$local->id,
+            'descricao' => 'nullable|string|max:255'
+        ], [
+            'nome.required' => 'O campo nome é obrigatório',
+            'nome.max' => 'O nome não pode ter mais que 255 caracteres',
+            'nome.unique' => 'Este local já está cadastrado',
+            'descricao.max' => 'A descrição não pode ter mais que 255 caracteres'
+        ]);
+
+        $local->update($request->all());
+        flash('Local atualizado com sucesso!')->success();
+        return redirect()->route('cadastrarLocal.index');
     }
 
     /**

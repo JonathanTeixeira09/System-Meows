@@ -86,7 +86,8 @@ Route::middleware('auth', 'role:superadmin,profissional')->group(function () {
         Route::get('/cadastrarLocal','index')->name('cadastrarLocal.index');
         Route::post('/cadastrarLocal','store')->name('cadastrarLocal.store');
         Route::get('/listarLocal','listarLocal')->name('listarLocal.index');
-        Route::get('/editarLocal','index')->name('editarLocal.index');
+        Route::get('/editarLocal/{id}','edit')->name('editarLocal.index');
+        Route::put('/editarLocal/{id}','update')->name('editarLocal.update');
         Route::get('/excluirLocal','index')->name('excluirLocal.index');
     });
 
