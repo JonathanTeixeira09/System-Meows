@@ -54,8 +54,6 @@ Route::middleware('auth', 'role:superadmin,profissional')->group(function () {
         route::get('/evolucao/{id}/listar-evolucoes', 'listarEvolucoes')->name('evolucao.listar');
         // Rota para exibir a view com o gráfico
         Route::get('/atendimentos/{atendimento_id}', 'mostrarGrafico')->name('evolucoes.grafico');
-        //Rota Principal do Sistema
-//        Route::get('/', 'viewPrincipal')->name('index');
     });
 
     Route::controller(ProfissionalController::class)->group(function (){
@@ -70,16 +68,18 @@ Route::middleware('auth', 'role:superadmin,profissional')->group(function () {
         Route::get('/cadastrarCargo','index')->name('cadastrarCargo.index');
         Route::post('/cadastrarCargo','store')->name('cadastrarCargo.store');
         Route::get('/listarCargo','listarCargo')->name('listarCargo.index');
-        Route::get('/editarCargo','index')->name('editarCargo.index');
-        Route::get('/excluirCargo','index')->name('excluirCargo.index');
+        Route::get('/editarCargo/{id}','edit')->name('editarCargo.edit');
+        Route::put('/editarCargo/{id}','update')->name('editarCargo.update');
+        Route::delete('/excluirCargo/{id}','destroy')->name('excluirCargo.destroy');
     });
 
     Route::controller(FormacaoProfissionalController::class)->group(function (){
         Route::get('/cadastrarFormacao','index')->name('cadastrarFormacao.index');
         Route::post('/cadastrarFormacao','store')->name('cadastrarFormacao.store');
         Route::get('/listarFormacao','listarFormacao')->name('listarFormacao.index');
-        Route::get('/editarFormacao','index')->name('editarFormacao.index');
-        Route::get('/excluirFormacao','index')->name('excluirFormacao.index');
+        Route::get('/editarFormacao/{id}','edit')->name('editarFormacao.edit');
+        Route::put('/editarFormacao/{id}','update')->name('editarFormacao.update');
+        Route::delete('/excluirFormacao{id}','destroy')->name('excluirFormacao.destroy');
     });
 
     Route::controller(LocalController::class)->group(function (){
@@ -88,7 +88,7 @@ Route::middleware('auth', 'role:superadmin,profissional')->group(function () {
         Route::get('/listarLocal','listarLocal')->name('listarLocal.index');
         Route::get('/editarLocal/{id}','edit')->name('editarLocal.index');
         Route::put('/editarLocal/{id}','update')->name('editarLocal.update');
-        Route::get('/excluirLocal','index')->name('excluirLocal.index');
+        Route::delete('/excluirLocal/{id}','destroy')->name('excluirLocal.index');
     });
 
     Route::controller(AtendimentoController::class)->group(function (){

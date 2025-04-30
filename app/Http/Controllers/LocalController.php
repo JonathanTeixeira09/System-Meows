@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Local;
 use Illuminate\Http\Request;
+use App\Models\Evolucao;
 
 
 class LocalController extends Controller
@@ -81,8 +82,28 @@ class LocalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Local $local)
+    public function destroy($id)
     {
-        //
+        $local = Local::findOrFail($id);
+
+        // Verifica se o local está sendo usado em alguma tabela relacionada
+        $emUso = false;
+        $mensagem = '';
+
+        // Exemplo: verificar se há agendamentos usando este local
+        if ($local->evolucaos()->count() > 0) {
+            $emUso = true;
+            $mensagem = 'Este local possui agendamentos vinculados.';
+        }
+
+        if ($emUso) {
+            flash($mensagem . ' Não é possível excluir.')->error();
+            return redirect()->route('cadastrarLocal.index');
+        }
+
+        // Se não estiver em uso, procede com a exclusão
+        $local->delete();
+        flash('Local removido com sucesso!')->success();
+        return redirect()->route('cadastrarLocal.index');
     }
 }
