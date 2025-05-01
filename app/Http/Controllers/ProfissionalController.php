@@ -134,12 +134,12 @@ class ProfissionalController extends Controller
 
         // Tratamento da foto
         if ($request->has('deletar_foto') && $request->deletar_foto) {
-            $data['thumbnail'] = 'profissionais/user-admin.jpg'; // Foto padrão
+            $thumbnail = 'profissionais/user-admin.jpg'; // Foto padrão
         } elseif ($request->hasFile('thumbnail')) {
             $path = $request->file('thumbnail')->store('profissionais', 'public');
-            $data['thumbnail'] = $path;
+            $thumbnail = $path;
         } elseif (!isset($data['thumbnail'])) {
-            $data['thumbnail'] = 'profissionais/user-admin.jpg'; // Foto padrão se nenhuma for enviada
+            $thumbnail = 'profissionais/user-admin.jpg'; // Foto padrão se nenhuma for enviada
         }
 
         $profissional->update([
