@@ -291,25 +291,6 @@
 @endsection
 
 @push('photoPacienteJs')
-{{--<script>--}}
-{{--    function loadFile(event) {--}}
-{{--        var output = document.getElementById('foto_thumbnail');--}}
-{{--        output.src = URL.createObjectURL(event.target.files[0]);--}}
-{{--        output.onload = function() {--}}
-{{--            URL.revokeObjectURL(output.src) // free memory--}}
-{{--        }--}}
-{{--    }--}}
-
-{{--    function deletePhoto() {--}}
-{{--        var checkbox = document.getElementById('deletar_foto');--}}
-{{--        var output = document.getElementById('foto_thumbnail');--}}
-{{--        if (checkbox.checked) {--}}
-{{--            output.src = '{{ asset('img/logo/paciente.png') }}'; // Imagem padrão--}}
-{{--            document.getElementById('upload_foto').value = ''; // Limpa o campo de upload--}}
-{{--        }--}}
-{{--    }--}}
-{{--</script>--}}
-
 <script>
     // Variáveis globais para a webcam
     let stream = null;

@@ -60,8 +60,10 @@ Route::middleware('auth', 'role:superadmin,profissional')->group(function () {
         Route::get('/cadastrarprofissional','index')->name('cadastroprofissional.index');
         Route::post('/cadastrarprofissional','store')->name('cadastroprofissional.store');
         Route::get('/listarprofissional','listarprofissional')->name('listarprofissional.index');
-        Route::get('/editarprofissional','index')->name('editarprofissional.index');
-        Route::get('/excluirprofissional','index')->name('excluirprofissional.index');
+        Route::get('/editarprofissional/{id}','edit')->name('editarprofissional.edit');
+        Route::put('/editarprofissional/{id}','update')->name('editarprofissional.update');
+        Route::get('/desabilitarprofissional/{id}','inativar')->name('inativarprofissional');
+        Route::get('/habilitarprofissional/{id}','ativar')->name('ativarprofissional');
     });
 
     Route::controller(CargoController::class)->group(function (){

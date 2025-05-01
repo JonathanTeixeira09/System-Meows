@@ -30,6 +30,10 @@ class Profissional extends Model
         'rqe',
     ];
 
+    protected $casts = [
+        'dataNascimento' => 'datetime',
+    ];
+
     /**
      * Obtenha o cargo que possui o Profissional
      *
