@@ -16,3 +16,10 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+# Ignora tudo dentro dessas pastas:
+storage/app/public/profissionais/*
+storage/app/public/pacientes/*
+
+# MAS mantém os arquivos padrão:
+!storage/app/public/profissionais/user-admin.jpg
+!storage/app/public/pacientes/paciente.png
