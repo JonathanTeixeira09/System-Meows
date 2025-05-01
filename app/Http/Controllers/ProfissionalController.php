@@ -174,6 +174,7 @@ class ProfissionalController extends Controller
             $thumbnail = 'profissionais/user-admin.jpg'; // Foto padrão se nenhuma for enviada
         }
 
+//        dd($request->all());
         Profissional::create([
             'nome' => $request->nome,
             'sexo' => $request->sexo,
