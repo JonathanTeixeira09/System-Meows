@@ -64,6 +64,9 @@ Route::middleware('auth', 'role:superadmin,profissional')->group(function () {
         Route::put('/editarprofissional/{id}','update')->name('editarprofissional.update');
         Route::get('/desabilitarprofissional/{id}','inativar')->name('inativarprofissional');
         Route::get('/habilitarprofissional/{id}','ativar')->name('ativarprofissional');
+//        Route::get('/listarprofissionalinativos','listarInativos')->name('listarprofissionalinativos.index');
+//        Route::get('/excluirprofissional/{id}','destroy')->name('excluirprofissional.destroy');
+        Route::get('/profissional/{id}','show')->name('profissional.show');
     });
 
     Route::controller(CargoController::class)->group(function (){

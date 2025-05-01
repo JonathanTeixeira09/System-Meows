@@ -9,7 +9,8 @@
     <meta name="description" content="@yield('title')">
     <meta name="author" content="Jonathan Teixeira">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{ URL::to('img/logo/logo-site.ico') }}">
+    <link rel="icon" type="image/png" href="{{ asset('img/logo/logo.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/logo/logo-site.ico') }}">
     <title> @yield('title')</title>
 
     <!-- bootstrap.min.css CSS -->

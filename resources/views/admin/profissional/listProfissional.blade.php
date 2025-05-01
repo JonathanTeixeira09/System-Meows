@@ -3,7 +3,7 @@
 @section('title', 'Listar Profissionais')
 @section('conteudo')
 <style>
-        @media (max-width: 767px) {
+        @media (max-width: 1380px) {
             .table thead {
                 display: none;
             }
@@ -74,18 +74,18 @@
                                         <td data-title='Cargo'>{{ $profissional->cargo->nome }}</td>
                                         <td data-title='Data de Nascimento'>{{ date('d/m/Y', strtotime($profissional->dataNascimento)) }}</td>
                                         <td data-title='Status'>{{ $profissional->status }}</td>
-                                        <td data-title="Ações" style='text-align:right;'>
-                                            <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
-                                                                                                           class='btn btn-sm btn-primary'><i class="fa-solid fa-eye"></i> Visualizar</button></a>
-                                            <a href='{{ route('editarprofissional.edit', $profissional->id)}}'><button type='button'
-                                                                                                           class='btn btn-sm btn-warning'><i class="fa-solid fa-pen-to-square"></i> Editar</button></a>
+                                        <td data-title="Ações">
+                                            <div class="gap-1" style="display: flex; justify-content: flex-end">
+                                                <a href='{{ route('profissional.show', $profissional->id) }}' class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i> Visualizar</a>
+                                                <a href='{{ route('editarprofissional.edit', $profissional->id)}}' class='btn btn-sm btn-warning'><i class="fa-solid fa-pen-to-square"></i> Editar</a>
 
-                                            <form action="{{-- route('excluirprodutoestoque', $produto->id) --}}" method="post"
-                                                  style="display:inline-block;">
-                                                @csrf
-                                                @method('delete')
-                                                <button type="submit" class="btn btn-sm btn-danger" value="excluir"><i class="fa-solid fa-user-slash"></i> Desabilitar</button>
-                                            </form>
+                                                <form action="{{-- route('excluirprodutoestoque', $produto->id) --}}" method="post"
+                                                      style="display:inline-block;">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" class="btn btn-sm btn-danger" value="excluir"><i class="fa-solid fa-user-slash"></i> Desabilitar</button>
+                                                </form>
+                                            </div>
                                         </td>
                                 @endforeach
                                         </tbody>

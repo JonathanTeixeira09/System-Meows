@@ -3,7 +3,7 @@
 @section('title', 'Listar Usuários')
 @section('conteudo')
     <style>
-        @media (max-width: 1000px) {
+        @media (max-width: 1290px) {
             .table thead {
                 display: none;
             }
@@ -73,10 +73,9 @@
                                     <td data-title='Status'>{{ $user->status }}</td>
                                     <td data-title='Cargo'>{{ $user->profissional->cargo->nome }}</td>
                                     <td data-title="Ações">
-                                        <div class="d-flex align-items-center justify-content-center gap-1">
+                                        <div class="gap-1" style="display: flex; justify-content: flex-end"><!-- d-flex -->
                                             <a href='{{ route('user.show', $user->id) }}' class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i> Visualizar</a>
                                             <a href='{{ route('editarusuario.index', $user->id) }}' class="btn btn-sm btn-warning"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
-    {{--                                        <a href='{{ route('users.disable', $user->id) }}'><button type='button' class='btn btn-sm btn-danger'><i class="fa-solid fa-user-large-slash"></i> Desabilitar</button></a>--}}
                                             @if($user->status === 'Ativo')
                                                 <form action="{{ route('users.disable', $user) }}" method="POST" class="m-0">
                                                     @csrf

@@ -4,7 +4,6 @@
 @section('conteudo')
     <div class="col-xl-12 col-lg-12">
         <div class="card shadow mb-4">
-{{--            <div class="col-md-12">--}}
                 <div class="card">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         <h5 class="m-0 font-weight-bold text-primary">Informações do Usuário: {{$user->profissional->nome}}</h5>

@@ -126,7 +126,7 @@
             </td>
             <td style="text-align: right;">
                 <img src="{{ public_path('img/logo/logo.png') }}" alt="Logo" style="height: 50px;">
-                <p>MEOWS DIGI</p>
+                <p>MEOWS DIGITAL</p>
             </td>
         </tr>
     </table>
@@ -491,7 +491,7 @@
 
 <!-- Rodapé -->
 <div class="footer">
-    <p>Meows Digi - Sistema de Gestão Clínica</p>
+    <p>Meows Digital - Sistema de Gestão Clínica</p>
     <p>Relatório gerado automaticamente em {{ now()->format('d/m/Y H:i') }}</p>
 </div>
 </body>

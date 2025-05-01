@@ -7,15 +7,12 @@
     <meta name="author" content="Jonathan">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" href="{{ URL::to('img/logo/logo-site.ico') }}">
+    <link rel="icon" type="image/png" href="{{ asset('img/logo/logo.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/logo/logo-site.ico') }}">
     <title> @yield('title')</title>
 
     <link rel="stylesheet" type="text/css" href="{{ URL::to('css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::to('css/sign-in.css') }}">
-
-    <!-- Styles CSS -->
-{{--    <link rel="stylesheet" type="text/css" href="{{ URL::to('css/style.css') }}">--}}
-
 
     <style>
         @media (min-width: 768px) {
@@ -61,7 +58,7 @@
             <div class="alert alert-danger messageBox" role="alert">
                 {{ session('error') ?? $errors->first('errorLogin') }}
             </div>
-        @endif       
+        @endif
 
         <div class="form-floating">
             <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email"
