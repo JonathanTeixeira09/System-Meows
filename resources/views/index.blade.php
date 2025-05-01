@@ -75,7 +75,6 @@
     </style>
 
 
-
     <!-- Content Row -->
     @include('layouts.cadsStatus')
     @auth
@@ -344,8 +343,6 @@
 @endsection
 
 @push('chartsIndexJS')
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Scripts dos Gráficos -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -425,51 +422,6 @@
         });
     </script>
     <script>
-        // Função para carregar pacientes com verificações atrasadas
-        // function carregarPacientesAtrasados() {
-        //     $.ajax({
-        //         url: '/atendimentos/verificacoes-atrasadas',
-        //         type: 'GET',
-        //         success: function(data) {
-        //             $('#atrasos-count').text(data.length);
-        //
-        //             if(data.length > 0) {
-        //                 let html = '';
-        //                 data.forEach(paciente => {
-        //                     html += `
-        //             <div class="d-flex align-items-center justify-content-between mb-2 p-2 bg-light rounded border-left-danger border-left-3">
-        //                 <div class="d-flex align-items-center">
-        //                     <img src="storage/${paciente.thumbnail}" class="rounded-circle mr-3" width="40" height="40">
-        //                     <div>
-        //                         <div class="font-weight-bold">${paciente.nome}</div>
-        //                         <small class="text-danger">
-        //                             <i class="fas fa-clock"></i> ${paciente.tempo_atraso}
-        //                         </small>
-        //                     </div>
-        //                 </div>
-        //                 <a href="/incluirEvolucao/${paciente.id}" class="btn btn-sm btn-danger" title="Realizar verificação">
-        //                     <i class="fas fa-user-md"></i>
-        //                 </a>
-        //             </div>`;
-        //                 });
-        //                 $('#lista-atrasos').html(html);
-        //             } else {
-        //                 $('#lista-atrasos').html('<p class="text-center text-muted">Nenhuma verificação atrasada no momento</p>');
-        //             }
-        //         },
-        //         error: function() {
-        //             $('#lista-atrasos').html('<p class="text-center text-danger">Erro ao carregar verificações atrasadas</p>');
-        //         }
-        //     });
-        // }
-        //
-        // // Atualizar a cada 30 segundos
-        // setInterval(carregarPacientesAtrasados, 30000);
-        //
-        // // Carregar imediatamente ao abrir a página
-        // $(document).ready(function() {
-        //     carregarPacientesAtrasados();
-        // });
         document.addEventListener('DOMContentLoaded', function() {
             // Cronômetro progressivo para pacientes sem avaliação
             document.querySelectorAll('.tempo-espera-container').forEach(container => {
