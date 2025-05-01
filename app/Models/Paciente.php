@@ -37,6 +37,11 @@ class Paciente extends Model
         'observacoes',
     ];
 
+    protected $casts = [
+        'data_nascimento' => 'datetime',
+        'data_gestacao' => 'datetime',
+    ];
+
     /**
      * Gera o código do prontuário automaticamente antes de criar
      * Código Único (Ex: "PR-ABC123")

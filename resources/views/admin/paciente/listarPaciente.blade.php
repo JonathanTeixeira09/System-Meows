@@ -118,9 +118,9 @@
                                             <span class="badge bg-danger">Sem consultas</span>
                                         @endif
                                     <td data-title="Ações" style='text-align:right;'>
-                                        <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
+                                        <a href='{{ route('paciente.show', $paciente->id) }}'><button type='button'
                                                                                                       class='btn btn-sm btn-primary' title="Visualizar"><i class="fa-solid fa-eye"></i> Visualizar</button></a>
-                                        <a href='{{-- route('editproduto', $produto->id) --}}'><button type='button'
+                                        <a href='{{ route('editarpaciente.edit', $paciente->id) }}'><button type='button'
                                                                                                        class='btn btn-sm btn-warning' title="Editar"><i class="fa-solid fa-pen-to-square"></i> Editar</button></a>
                                     </td>
                             @endforeach

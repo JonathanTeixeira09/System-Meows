@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\Paciente;
-use Illuminate\Support\Facedes\Storage;
 
 class PacienteController extends Controller
 {
@@ -118,7 +118,8 @@ class PacienteController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $paciente = Paciente::findOrFail($id);
+        return view('admin.paciente.showPaciente', compact('paciente'));
     }
 
     /**
@@ -126,7 +127,8 @@ class PacienteController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $paciente = Paciente::findOrFail($id);
+        return view('admin.paciente.editPaciente', compact('paciente'));
     }
 
     /**
@@ -134,7 +136,70 @@ class PacienteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $paciente = Paciente::findOrFail($id);
+
+        $validated = $request->validate([
+            'nome' => 'required|string|max:255',
+            'data_nascimento' => 'required|date',
+            'cpf' => 'required|string|size:11',
+            'data_gestacao' => 'required|date',
+        ], [
+                'nome.required' => 'O nome da paciente é obrigatório.',
+                'data_nascimento.required' => 'A data de nascimento da paciente é obrigatória.',
+                'cpf.required' => 'O CPF da paciente é obrigatório.',
+                'data_gestacao.required' => 'A data de gestação da paciente é obrigatória.',
+        ]);
+
+
+        $codigoProntuario = $paciente->codigo_prontuario;
+
+        // Processar foto
+        if ($request->hasFile('thumbnail')) {
+            // Remove a foto antiga se existir
+            if ($paciente->thumbnail && $paciente->thumbnail !== 'pacientes/paciente.png') {
+                Storage::disk('public')->delete($paciente->thumbnail);
+            }
+            $path = $request->file('thumbnail')->store('pacientes', 'public');
+            $thumbnail = $path;
+        } elseif ($request->has('deletar_foto') && $request->deletar_foto) {
+            // Remove a foto antiga se existir
+            if ($paciente->thumbnail && $paciente->thumbnail !== 'pacientes/paciente.png') {
+                Storage::disk('public')->delete($paciente->thumbnail);
+            }
+            $thumbnail = 'pacientes/paciente.png';
+        } else {
+            // Mantém a foto existente
+            $thumbnail = $paciente->thumbnail;
+        }
+
+        $paciente->update([
+            'codigo_prontuario' => $codigoProntuario,
+            'thumbnail' => $thumbnail,
+            'nome' => $validated['nome'],
+            'data_nascimento' => $validated['data_nascimento'],
+            'cpf' => $validated['cpf'],
+            'data_gestacao' => $validated['data_gestacao'],
+            'nome_mae' => $request->nome_mae,
+            'nome_pai' => $request->nome_pai,
+            'rg' => $request->rg,
+            'cns' => $request->cns,
+            'cep' => $request->cep,
+            'uf' => $request->uf,
+            'cidade' => $request->cidade,
+            'bairro' => $request->bairro,
+            'logradouro' => $request->logradouro,
+            'numero' => $request->numero,
+            'complemento' => $request->complemento,
+            'email' => $request->email,
+            'celular' => $request->celular,
+            'celular2' => $request->celular2,
+            'telefone_fixo' => $request->telefone_fixo,
+            'observacoes' => $request->observacoes,
+            'sexo' => $request->sexo ?? 'Feminino'
+        ]);
+
+        flash('Paciente atualizado com sucesso!')->success();
+        return redirect()->route('listarpaciente.index');
     }
 
     /**

@@ -9,7 +9,6 @@ use App\Http\Controllers\AtendimentoController;
 use App\Http\Controllers\FormacaoProfissionalController;
 use App\Http\Controllers\EvolucaoController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\CheckRole;
 
 
 Route::controller(AuthController::class)->group(function (){
@@ -39,9 +38,11 @@ Route::middleware('auth', 'role:superadmin,profissional')->group(function () {
         Route::get('/cadastrarpaciente','index')->name('cadastrarpaciente.index');
         Route::post('/cadastrarpaciente','store')->name('cadastrarpaciente.store');
         Route::get('/listarpaciente','listarpaciente')->name('listarpaciente.index');
-        Route::get('/editarpaciente','index')->name('editarpaciente.index');
+        Route::get('/editarpaciente/{id}','edit')->name('editarpaciente.edit');
         Route::get('/excluirpaciente','index')->name('excluirpaciente.index');
         Route::get('/buscar-cep/{cep}', 'buscarCep')->name('buscar.cep');
+        Route::put('/editarpaciente/{id}','update')->name('editarpaciente.update');
+        Route::get('/paciente/{paciente}','show')->name('paciente.show');
     });
 
 

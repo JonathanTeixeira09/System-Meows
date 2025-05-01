@@ -120,7 +120,7 @@ class AuthController extends Controller
 
         // Redireciona para a página de login com uma mensagem de sucesso
         flash('Usuário criado com sucesso!')->success();
-        return redirect()->route('register.index');
+        return redirect()->route('listarusuarios.index');
     }
 
     /**
