@@ -5,7 +5,7 @@
         <div class="sidebar-brand-icon">
             <img src="{{ URL::to('img/logo/logo.png') }}" alt="logo" width="50" height="50">
         </div>
-        <div class="sidebar-brand-text mx-2">MEOWS DIGI</div>
+        <div class="sidebar-brand-text">MEOWS DIGITAL</div>
     </a>
 
     <!-- Divider -->
