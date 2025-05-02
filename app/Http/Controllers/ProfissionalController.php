@@ -89,9 +89,9 @@ class ProfissionalController extends Controller
     /**
      * Exibe o formulário de edição de profissional
      */
-    public function edit($id)
+    public function edit($hashid)
     {
-        $profissional = Profissional::findOrFail($id);
+        $profissional = Profissional::findByHashid($hashid);
         $cargos = Cargo::orderBy('nome')->get();
         $formacoes = FormacaoProfissional::orderBy('nome')->get();
 
@@ -105,9 +105,9 @@ class ProfissionalController extends Controller
     /**
      * Atualiza os dados de um profissional
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $hashid)
     {
-        $profissional = Profissional::findOrFail($id);
+        $profissional = Profissional::findByHashid($hashid);
 
         $request->validate([
             'nome' => 'required',
@@ -176,9 +176,9 @@ class ProfissionalController extends Controller
     /**
      * Altera o status do profissional para Inativo
      */
-    public function inativar($id)
+    public function inativar($hashid)
     {
-        $profissional = Profissional::findOrFail($id);
+        $profissional = Profissional::findByHashid($hashid);
         $profissional->update(['status' => 'Inativo']);
 
         flash('Profissional inativado com sucesso')->success();
@@ -188,9 +188,9 @@ class ProfissionalController extends Controller
     /**
      * Altera o status do profissional para Ativo
      */
-    public function ativar($id)
+    public function ativar($hashid)
     {
-        $profissional = Profissional::findOrFail($id);
+        $profissional = Profissional::findByHashid($hashid);
         $profissional->update(['status' => 'Ativo']);
 
         flash('Profissional ativado com sucesso')->success();
@@ -214,9 +214,9 @@ class ProfissionalController extends Controller
     /**
      * Exibe os detalhes do profissional
      */
-    public function show($id)
+    public function show($hashid)
     {
-        $profissional = Profissional::findOrFail($id);
+        $profissional = Profissional::findByHashid($hashid);
         return view('admin.profissional.showProfissional', [
             'profissional' => $profissional
         ]);

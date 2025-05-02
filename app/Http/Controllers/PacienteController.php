@@ -116,27 +116,35 @@ class PacienteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($hashid)
     {
-        $paciente = Paciente::findOrFail($id);
+        $paciente = Paciente::findByHashid($hashid);
         return view('admin.paciente.showPaciente', compact('paciente'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($hashid)
     {
-        $paciente = Paciente::findOrFail($id);
+        $paciente = Paciente::findByHashid($hashid);
+        if (!$paciente) {
+            flash('Paciente não encontrado.')->error();
+            return redirect()->route('listarpaciente.index');
+        }
         return view('admin.paciente.editPaciente', compact('paciente'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $hashid)
     {
-        $paciente = Paciente::findOrFail($id);
+        $paciente = Paciente::findByHashid($hashid);
+        if (!$paciente) {
+            flash('Paciente não encontrado.')->error();
+            return redirect()->route('listarpaciente.index');
+        }
 
         $validated = $request->validate([
             'nome' => 'required|string|max:255',
@@ -205,7 +213,7 @@ class PacienteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Paciente $paciente)
     {
         //
     }

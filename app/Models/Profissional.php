@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasHashid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Profissional extends Model
 {
     use HasFactory;
+    use HasHashid;
 
     /**
      * Os atributos que são atribuíveis em massa.

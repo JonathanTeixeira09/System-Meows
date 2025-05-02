@@ -17,7 +17,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Detalhes do Profissional</h5>
                     <div>
-                        <a href="{{ route('editarprofissional.edit', $profissional->id) }}" class="btn btn-light btn-sm">
+                        <a href="{{ route('editarprofissional.edit', $profissional->hashid) }}" class="btn btn-light btn-sm">
                             <i class="fas fa-edit"></i> Editar
                         </a>
                         <a href="{{ route('listarprofissional.index') }}" class="btn btn-light btn-sm">

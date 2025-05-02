@@ -76,10 +76,10 @@
                                         <td data-title='Status'>{{ $profissional->status }}</td>
                                         <td data-title="Ações">
                                             <div class="gap-1" style="display: flex; justify-content: flex-end">
-                                                <a href='{{ route('profissional.show', $profissional->id) }}' class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i> Visualizar</a>
-                                                <a href='{{ route('editarprofissional.edit', $profissional->id)}}' class='btn btn-sm btn-warning'><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                                                <a href='{{ route('profissional.show', $profissional->hashid) }}' class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i> Visualizar</a>
+                                                <a href='{{ route('editarprofissional.edit', $profissional->hashid)}}' class='btn btn-sm btn-warning'><i class="fa-solid fa-pen-to-square"></i> Editar</a>
 
-                                                <form action="{{-- route('excluirprodutoestoque', $produto->id) --}}" method="post"
+                                                <form action="{{-- route('excluirprodutoestoque', $produto->hashid) --}}" method="post"
                                                       style="display:inline-block;">
                                                     @csrf
                                                     @method('delete')

@@ -13,7 +13,7 @@
         <div class="card-body">
             <div class="chart-area">
                 <!-- Formulario -->
-                <form class="row g-3" action="{{ route('editarpaciente.update', $paciente->id) }}" method="POST" enctype="multipart/form-data">
+                <form class="row g-3" action="{{ route('editarpaciente.update', $paciente->hashid) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 

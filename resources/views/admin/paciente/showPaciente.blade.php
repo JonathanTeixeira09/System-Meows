@@ -7,7 +7,7 @@
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-primary text-white">
                 <h6 class="m-0 font-weight-bold">Detalhes do Paciente: {{ $paciente->nome }}</h6>
                 <div>
-                    <a href="{{ route('editarpaciente.edit', $paciente->id) }}" class="btn btn-sm btn-light">
+                    <a href="{{ route('editarpaciente.edit', $paciente->hashid) }}" class="btn btn-sm btn-light">
                         <i class="fas fa-edit"></i> Editar
                     </a>
                     <a href="{{ route('listarpaciente.index') }}" class="btn btn-sm btn-light">

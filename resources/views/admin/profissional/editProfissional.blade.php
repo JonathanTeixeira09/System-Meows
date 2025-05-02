@@ -16,7 +16,7 @@
             <div class="card-body">
                 <div class="chart-area">
                     <!-- Formulario -->
-                    <form class="row g-3" action="{{ isset($profissional) ? route('profissionais.update', $profissional->id) : route('profissionais.store') }}" method="POST" enctype="multipart/form-data">
+                    <form class="row g-3" action="{{ isset($profissional) ? route('profissionais.update', $profissional->hashid) : route('profissionais.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @if(isset($profissional))
                             @method('PUT')

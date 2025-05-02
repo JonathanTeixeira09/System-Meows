@@ -5,11 +5,13 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasHashid;
 
 
 class Paciente extends Model
 {
     use HasFactory;
+    use HasHashid;
 
     protected $fillable = [
         'thumbnail',
