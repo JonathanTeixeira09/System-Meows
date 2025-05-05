@@ -197,7 +197,7 @@ class AuthController extends Controller
         }
 
         try {
-            $user->status = 'inativo';
+            $user->status = 'Inativo';
             $saved = $user->save();
 
             if (!$saved) {
