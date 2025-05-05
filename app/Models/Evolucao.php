@@ -2,12 +2,20 @@
 
 namespace App\Models;
 
+use App\Traits\HasHashid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Evolucao extends Model
 {
     use HasFactory;
+    use HasHashid;
+
+    /**
+     * Os atributos que são atribuíveis em massa.
+     *
+     * @var array
+     */
     protected $fillable = [
         'atendimento_id',
         'fr',
@@ -35,6 +43,17 @@ class Evolucao extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function avaliacao()
+    {
+        return $this->hasOne(Avaliacao::class);
+    }
+
+
+    // Busca por hashid
+
+
+
 
 
 }

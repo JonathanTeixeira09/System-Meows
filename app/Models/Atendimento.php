@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasHashid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Atendimento extends Model
 {
     use HasFactory;
+    use HasHashid;
     protected $fillable = [
         'paciente_id',
         'data_entrada',
@@ -42,11 +44,6 @@ class Atendimento extends Model
         return $this->hasMany(Evolucao::class, 'atendimento_id');
     }
 
-//    public function ultimaEvolucao()
-//    {
-//        return $this->hasOne(Evolucao::class, 'atendimento_id')
-//            ->latestOfMany();
-//    }
     public function ultimaEvolucao()
     {
         return $this->hasOne(Evolucao::class)->latestOfMany();
@@ -131,6 +128,18 @@ class Atendimento extends Model
         $tempoDecorrido = now()->getTimestamp() - $ultimaEvolucaoTime;
 
         return max(0, $tempoDecorrido - $tempoLimite);
+    }
+
+    public static function findByHashid(string $hashid)
+    {
+        $hashids = new Hashids(config('app.key'), 12);
+        $decoded = $hashids->decode($hashid);
+
+        if (empty($decoded)) {
+            return null;
+        }
+
+        return self::find($decoded[0]);
     }
 
 }

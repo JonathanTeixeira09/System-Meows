@@ -6,10 +6,23 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h5 class="m-0 font-weight-bold text-primary">Relatório de Evolução</h5>
+{{--                <div class="d-flex">--}}
+{{--                    <a href="{{route('listarAtendimentos.index')}}" class="btn btn-sm btn-secondary mr-2">--}}
+{{--                        <i class="fas fa-arrow-left"></i> Voltar--}}
+{{--                    </a>--}}
+{{--                    <a href="{{ route('evolucao.pdf', $evolucao->id) }}" class="btn btn-sm btn-danger">--}}
+{{--                        <i class="fas fa-file-pdf"></i> Gerar PDF--}}
+{{--                    </a>--}}
+{{--                </div>--}}
                 <div class="d-flex">
                     <a href="{{route('listarAtendimentos.index')}}" class="btn btn-sm btn-secondary mr-2">
                         <i class="fas fa-arrow-left"></i> Voltar
                     </a>
+{{--                    @if(!$evolucao->avaliacao)--}}
+{{--                        <button id="btnAvaliar" class="btn btn-sm btn-success mr-2">--}}
+{{--                            <i class="fas fa-clipboard-check"></i> Avaliar--}}
+{{--                        </button>--}}
+{{--                    @endif--}}
                     <a href="{{ route('evolucao.pdf', $evolucao->id) }}" class="btn btn-sm btn-danger">
                         <i class="fas fa-file-pdf"></i> Gerar PDF
                     </a>
@@ -390,10 +403,134 @@
             </div>
         </div>
 
+        <!-- Seção de Avaliação -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center bg-primary text-white">
+                <h6 class="m-0 font-weight-bold">
+                    <i class="fas fa-clipboard-check"></i> Avaliação Clínica
+                </h6>
+                @if(!$evolucao->avaliacao)
+                    <button id="btnMostrarForm" class="btn btn-sm btn-success">
+                        <i class="fas fa-plus"></i> Adicionar Avaliação
+                    </button>
+                @endif
+            </div>
+
+            <div class="card-body">
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <!-- Visualização da Avaliação -->
+                <div id="avaliacaoView" style="{{ $evolucao->avaliacao ? 'display:block' : 'display:none' }}">
+                    @if($evolucao->avaliacao)
+                        <div class="form-group">
+                            <label><strong>Avaliação:</strong></label>
+                            <div class="p-3 bg-light rounded">
+                                {!! nl2br(e($evolucao->avaliacao->avaliacao)) !!}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label><strong>Prescrição:</strong></label>
+                            <div class="p-3 bg-light rounded">
+                                {!! nl2br(e($evolucao->avaliacao->conduta)) !!}
+                            </div>
+                        </div>
+
+                        <div class="text-right">
+                            <button id="btnEditarAvaliacao" class="btn btn-warning">
+                                <i class="fas fa-edit"></i> Editar Avaliação
+                            </button>
+                        </div>
+                    @else
+                        <p class="text-muted">Nenhuma avaliação registrada ainda.</p>
+                    @endif
+                </div>
+
+                <!-- Formulário de Avaliação - SEMPRE VISÍVEL (mas oculto inicialmente) -->
+                <div id="avaliacaoForm" style="display: none;">
+                    <form method="POST" action="{{ route('avaliacoes.store', $evolucao->id) }}">
+                        @csrf
+                        @if($evolucao->avaliacao)
+                            <input type="hidden" name="avaliacao_id" value="{{ $evolucao->avaliacao->id }}">
+                        @endif
+
+                        <div class="form-group">
+                            <label for="textoAvaliacao">Avaliação Clínica <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="textoAvaliacao" name="avaliacao" rows="5" required>{{ $evolucao->avaliacao->avaliacao ?? old('avaliacao') }}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="textoConduta">Prescrição <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="textoConduta" name="conduta" rows="5" required>{{ $evolucao->avaliacao->conduta ?? old('conduta') }}</textarea>
+                        </div>
+
+                        <div class="text-right">
+                            <button type="button" id="btnCancelar" class="btn btn-secondary mr-2">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> {{ $evolucao->avaliacao ? 'Atualizar' : 'Salvar' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div class="text-center mb-4">
             <a href="{{ route('evolucao.pdf', $evolucao->id) }}" class="btn btn-lg btn-danger">
                 <i class="fas fa-file-pdf"></i> Baixar Relatório em PDF
             </a>
         </div>
     </div>
+    @push('avaliacaoJS')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const btnMostrarForm = document.getElementById('btnMostrarForm');
+                const btnEditar = document.getElementById('btnEditarAvaliacao');
+                const btnCancelar = document.getElementById('btnCancelar');
+                const avaliacaoView = document.getElementById('avaliacaoView');
+                const avaliacaoForm = document.getElementById('avaliacaoForm');
+
+                // Configuração inicial
+                @if(!$evolucao->avaliacao)
+                    avaliacaoForm.style.display = 'none';
+                avaliacaoView.style.display = 'block';
+                @else
+                    avaliacaoForm.style.display = 'none';
+                avaliacaoView.style.display = 'block';
+                @endif
+
+                // Mostrar formulário para nova avaliação
+                if(btnMostrarForm) {
+                    btnMostrarForm.addEventListener('click', function() {
+                        avaliacaoView.style.display = 'none';
+                        avaliacaoForm.style.display = 'block';
+                        this.style.display = 'none';
+                    });
+                }
+
+                // Mostrar formulário para edição
+                if(btnEditar) {
+                    btnEditar.addEventListener('click', function() {
+                        avaliacaoView.style.display = 'none';
+                        avaliacaoForm.style.display = 'block';
+                    });
+                }
+
+                // Cancelar edição/criação
+                if(btnCancelar) {
+                    btnCancelar.addEventListener('click', function() {
+                        avaliacaoForm.style.display = 'none';
+                        avaliacaoView.style.display = 'block';
+                        if(btnMostrarForm) btnMostrarForm.style.display = 'block';
+                    });
+                }
+            });
+        </script>
+    @endpush
 @endsection

@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Avaliacao;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Hashids\Hashids;
 use Illuminate\Http\Request;
 use App\Models\Evolucao;
 use App\Models\Atendimento;
 use App\Models\Local;
 use App\Models\User;
-use Illuminate\Support\Facades\Cache;
+
 
 class EvolucaoController extends Controller
 {
@@ -18,8 +20,6 @@ class EvolucaoController extends Controller
      */
     public function index(Atendimento $atendimento)
     {
-//        $atendimento->load('paciente'); // Carrega o relacionamento com paciente
-//        $local = Local::All();
         // Carrega o relacionamento com paciente e as evoluções (ordenadas por data decrescente)
         $atendimento->load(['paciente', 'evolucoes' => function($query) {
             $query->orderBy('created_at', 'desc');
@@ -227,7 +227,7 @@ class EvolucaoController extends Controller
 
     public function relatorio($id)
     {
-        $evolucao = Evolucao::with(['atendimento.paciente', 'local', 'user'])
+        $evolucao = Evolucao::with(['atendimento.paciente', 'local', 'user','avaliacao'])
             ->whereHas('atendimento') // Só traz se tiver atendimento relacionado
             ->findOrFail($id);
         $evolucao->atendimento->paciente->idade = Carbon::parse($evolucao->atendimento->paciente->data_nascimento)->age;
@@ -268,8 +268,8 @@ class EvolucaoController extends Controller
             ->setOption('margin-left', '20mm')
             ->setOption('margin-right', '20mm');
 
-//        return $pdf->stream('evolucao_'.$evolucao->atendimento->paciente->nome.'_'.now()->format('d-m-Y').'.pdf');
-        return $pdf->download('evolucao_'.$evolucao->atendimento->paciente->nome.'_'.now()->format('d-m-Y').'.pdf');
+//        return $pdf->download('evolucao_'.$evolucao->atendimento->paciente->nome.'_'.now()->format('d-m-Y').'.pdf');
+        return $pdf->download('evolucao_'.$evolucao->atendimento->paciente->nome.'_'.$evolucao->created_at->format('dmY_H-i').'.pdf');
     }
 
     public function ultimaEvolucao($id)
@@ -278,6 +278,8 @@ class EvolucaoController extends Controller
             ->where('atendimento_id', $id)  // Filtra pelo ID do atendimento
             ->latest('created_at')  // Ordena pela data de criação (mais recente primeiro)
             ->first();  // Pega o primeiro registro (que será o mais recente)
+
+
         $evolucao->atendimento->paciente->idade = Carbon::parse($evolucao->atendimento->paciente->data_nascimento)->age;
         $evolucao->grauDeterioracao;
         if (!$evolucao) {
@@ -541,29 +543,34 @@ class EvolucaoController extends Controller
         return $minutos . ' minutos';
     }
 
-    //Já era do anterior
-//    private function getFiltroDatas($filtro)
-//    {
-//        $now = now();
-//
-//        switch ($filtro) {
-//            case 'semana':
-//                return [
-//                    'inicio' => $now->copy()->startOfWeek(),
-//                    'fim' => $now->copy()->endOfWeek()
-//                ];
-//            case 'mes':
-//                return [
-//                    'inicio' => $now->copy()->startOfMonth(),
-//                    'fim' => $now->copy()->endOfMonth()
-//                ];
-//            case 'hoje':
-//            default:
-//                return [
-//                    'inicio' => $now->copy()->startOfDay(),
-//                    'fim' => $now->copy()->endOfDay()
-//                ];
-//        }
-//    }
+    public function salvarAvaliacao(Request $request, $evolucaoId)
+    {
+        $request->validate([
+            'avaliacao' => 'required|string|min:10',
+            'conduta' => 'required|string|min:10',
+        ]);
 
+        $evolucao = Evolucao::findOrFail($evolucaoId);
+
+        if($request->has('avaliacao_id')) {
+            // Atualização
+            $avaliacao = Avaliacao::findOrFail($request->avaliacao_id);
+            $avaliacao->update([
+                'avaliacao' => $request->avaliacao,
+                'conduta' => $request->conduta
+            ]);
+        } else {
+            // Criação
+            Avaliacao::create([
+                'evolucao_id' => $evolucao->id,
+                'avaliacao' => $request->avaliacao,
+                'conduta' => $request->conduta,
+                'profissionals_id' => auth()->user()->profissional->id, // Adicione esta linha
+                'user_id' => auth()->id()
+            ]);
+        }
+
+        flash('Avaliação registrada com sucesso!')->success();
+        return redirect()->route('evolucao.relatorio', $evolucao->id);
+    }
 }

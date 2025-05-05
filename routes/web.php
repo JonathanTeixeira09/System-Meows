@@ -8,6 +8,7 @@ use App\Http\Controllers\LocalController;
 use App\Http\Controllers\AtendimentoController;
 use App\Http\Controllers\FormacaoProfissionalController;
 use App\Http\Controllers\EvolucaoController;
+use App\Http\Controllers\AvaliacaoController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -49,13 +50,15 @@ Route::middleware('auth', 'role:superadmin,profissional')->group(function () {
     Route::controller(EvolucaoController::class)->group(function (){
         Route::get('/incluirevolucao/{atendimento}','index')->name('incluirEvolucao');
         Route::post('/incluirEvolucao','store')->name('incluirEvolucao.store');
-        Route::get('/evolucao/{id}/relatorio', 'relatorio')->name('evolucao.relatorio');
+        Route::get('/evolucao/{$id}/relatorio', 'relatorio')->name('evolucao.relatorio');
         route::get('/evolucao/{id}/pdf', 'gerarPdf')->name('evolucao.pdf');
         route::get('/evolucao/{id}/ultima-evolucao', 'ultimaEvolucao')->name('evolucao.ultima');
         route::get('/evolucao/{id}/listar-evolucoes', 'listarEvolucoes')->name('evolucao.listar');
         // Rota para exibir a view com o gráfico
         Route::get('/atendimentos/{atendimento_id}', 'mostrarGrafico')->name('evolucoes.grafico');
+        Route::post('/avaliacao/{id}/avaliacao', 'salvarAvaliacao')->name('avaliacoes.store');
     });
+
 
     Route::controller(ProfissionalController::class)->group(function (){
         Route::get('/cadastrarprofissional','index')->name('cadastroprofissional.index');
