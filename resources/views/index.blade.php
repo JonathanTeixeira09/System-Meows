@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Seja Bem-vindo ao sistema MEOWS ')
+@section('title', 'Seja Bem-vindo ao sistema: ' . Auth::user()->profissional->nome . ' - ' . Auth::user()->profissional->cargo->nome)
+
 @section('conteudo')
     <script>
         setInterval(function () {

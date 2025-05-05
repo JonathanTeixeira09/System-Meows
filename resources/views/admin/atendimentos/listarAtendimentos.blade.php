@@ -534,7 +534,6 @@
         }
 
     </script>
-    // Atualiza a tabela a cada 30 segundos
     <script>
         // Variável para controlar o tempo de atualização
         let intervaloAtualizacao = 30000; // 30 segundos
