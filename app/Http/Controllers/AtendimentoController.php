@@ -8,6 +8,11 @@ use App\Models\Paciente;
 
 class AtendimentoController extends Controller
 {
+    /**
+     * Exibe a view para iniciar um novo atendimento.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         $atendimentos = Atendimento::with(['paciente', 'entradaUser', 'altaUser'])
@@ -26,6 +31,10 @@ class AtendimentoController extends Controller
 
     }
 
+    /**
+     * Armazena um novo atendimento.
+     *
+     */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -64,6 +73,11 @@ class AtendimentoController extends Controller
 
     }
 
+    /**
+     * Exibe a lista de atendimentos.
+     *
+     * @return \Illuminate\View\View
+     */
     public function list(Request $request)
     {
         $atendimentos = Atendimento::with([
@@ -84,6 +98,12 @@ class AtendimentoController extends Controller
         ]);
     }
 
+    /**
+     * Exibe a view para registrar a alta do paciente.
+     *
+     * @param int $atendimento_id
+     * @return \Illuminate\View\View
+     */
     public function altaPaciente($atendimento_id)
     {
         // Verifica se o atendimento existe e se não tem data de alta

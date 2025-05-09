@@ -16,7 +16,9 @@ use App\Models\User;
 class EvolucaoController extends Controller
 {
     /**
-     * Show the form for creating a new resource.
+     * Apresenta a view de cadastro de evolução.
+     * @param Atendimento $atendimento
+     * @return \Illuminate\View\View
      */
     public function index(Atendimento $atendimento)
     {
@@ -42,8 +44,11 @@ class EvolucaoController extends Controller
             'ultimo_local' => $ultimoLocal // Passa o ID do último local usado
         ]);
     }
+
     /**
-     * Store a newly created resource in storage.
+     * Armazena os dados da evolução.
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -225,6 +230,11 @@ class EvolucaoController extends Controller
 
     }
 
+    /**
+     * Mostra o relatório da evolução.
+     * @param int $id
+     * @return \Illuminate\View\View
+     */
     public function relatorio($id)
     {
         $evolucao = Evolucao::with(['atendimento.paciente', 'local', 'user','avaliacao'])
@@ -245,6 +255,11 @@ class EvolucaoController extends Controller
         return view('admin.atendimentos.relatorioScorePaciente', compact('evolucao', 'parametrosNormais'));
     }
 
+    /**
+     * Gera o PDF da evolução.
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
     public function gerarPdf($id)
     {
         $evolucao = Evolucao::with(['atendimento.paciente', 'local', 'user'])
@@ -272,6 +287,11 @@ class EvolucaoController extends Controller
         return $pdf->download('evolucao_'.$evolucao->atendimento->paciente->nome.'_'.$evolucao->created_at->format('dmY_H-i').'.pdf');
     }
 
+    /**
+     * Mostra a última evolução do atendimento.
+     * @param int $id
+     * @return \Illuminate\View\View
+     */
     public function ultimaEvolucao($id)
     {
         $evolucao = Evolucao::with(['atendimento.paciente', 'local', 'user'])
@@ -298,6 +318,11 @@ class EvolucaoController extends Controller
         return view('admin.atendimentos.relatorioScorePaciente', compact('evolucao', 'parametrosNormais'));
     }
 
+    /**
+     * Mostra a view com a lista de evoluções.
+     * @param int $id
+     * @return \Illuminate\View\View
+     */
     public function listarEvolucoes($id)
     {
         $evolucoes = Evolucao::with(['atendimento.paciente', 'local', 'user'])
@@ -513,17 +538,17 @@ class EvolucaoController extends Controller
             'pacientesNaoAtendidos',
             'dadosCompletos',
             'chartDeterioracao',
-            'pacientesAtrasados', // Novo dado
+            'pacientesAtrasados', 
             'pacientesSemAvaliacao',
             'pacientesIntervencao',
             'filtro',
-            'totalUsersAtivos', // Novo dado
-            'totalUsersInativos', // Novo dado
+            'totalUsersAtivos', 
+            'totalUsersInativos', 
         ));
     }
 
 
-    //fim
+    // Método de classificação de risco
     private function classificarRisco($grau)
     {
         return match(true) {
@@ -536,6 +561,9 @@ class EvolucaoController extends Controller
         };
     }
 
+    // Método para formatar o tempo
+    // Recebe o tempo em minutos e retorna uma string formatada
+    // Exemplo: 1440 minutos retorna "1 dia"
     private function formatarTempo($minutos)
     {
         if ($minutos >= 1440) return round($minutos/1440) . ' dias';
@@ -543,6 +571,13 @@ class EvolucaoController extends Controller
         return $minutos . ' minutos';
     }
 
+    /*
+     * Método para salvar a avaliação
+     * Recebe o ID da evolução e os dados da avaliação
+     * Se o ID da avaliação for passado, atualiza a avaliação existente
+     * Caso contrário, cria uma nova avaliação
+     * Retorna uma mensagem de sucesso e redireciona para o relatório da evolução
+     */
     public function salvarAvaliacao(Request $request, $evolucaoId)
     {
         $request->validate([

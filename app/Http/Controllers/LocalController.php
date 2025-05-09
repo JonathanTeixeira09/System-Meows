@@ -11,7 +11,7 @@ use App\Models\Evolucao;
 class LocalController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Index method to show the list of locals.
      */
     public function index()
     {

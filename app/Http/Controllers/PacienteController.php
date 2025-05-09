@@ -252,6 +252,9 @@ class PacienteController extends Controller
         }
     }
 
+    /**
+     * Exibe a lista de pacientes.
+     */
     public function listarPaciente()
     {
         $pacientes = Paciente::with(['ultimoAtendimento' => function($query) {
