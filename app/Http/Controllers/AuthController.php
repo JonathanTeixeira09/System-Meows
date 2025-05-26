@@ -80,9 +80,36 @@ class AuthController extends Controller
      */
     public function createUser(Request $request)
     {
+//        // Busca profissionais que NÃO possuem usuário vinculado
+//        $profissional = Profissional::whereDoesntHave('user')->get();
+//
+//        return view('auth.createUser', ['title' => 'Criar Usuário', 'profissional' => $profissional]);
         // Busca profissionais que NÃO possuem usuário vinculado
         $profissional = Profissional::whereDoesntHave('user')->get();
-        return view('auth.createUser', ['title' => 'Criar Usuário', 'profissional' => $profissional]);
+
+
+        // Verifica se existem profissionais cadastrados
+        $totalProfissionais = Profissional::count();
+
+
+        if ($totalProfissionais === 0) {
+            // Não existe nenhum profissional cadastrado
+            flash('Nenhum profissional cadastrado. Por favor, cadastre um profissional primeiro.')->warning();
+            // Redireciona para a rota de cadastro de profissional
+            return redirect()->route('cadastroprofissional.index');
+        }
+
+        if ($profissional->isEmpty()) {
+            // Todos os profissionais já têm usuários
+            flash('Todos os profissionais cadastrados já possuem usuários. Cadastre um novo profissional primeiro.')->info();
+            return redirect()->route('cadastroprofissional.index');
+        }
+
+        // Existem profissionais sem usuário - mostra a view para criar usuário
+        return view('auth.createUser', [
+            'title' => 'Criar Usuário',
+            'profissional' => $profissional
+        ]);
     }
 
     /**
