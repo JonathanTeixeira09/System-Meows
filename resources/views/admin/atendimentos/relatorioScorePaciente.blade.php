@@ -448,9 +448,9 @@
                         </div>
 
                         <div class="text-right">
-                            <button id="btnEditarAvaliacao" class="btn btn-warning">
-                                <i class="fas fa-edit"></i> Editar Avaliação
-                            </button>
+{{--                            <button id="btnEditarAvaliacao" class="btn btn-warning">--}}
+{{--                                <i class="fas fa-edit"></i> Editar Avaliação--}}
+{{--                            </button>--}}
                         </div>
                     @else
                         <p class="text-muted">Nenhuma avaliação registrada ainda.</p>
