@@ -109,8 +109,7 @@
         @endif
     @endauth
 
-    @auth
-        @if(auth()->user()->isProfissional() || auth()->user()->isSuperAdmin())
+
     <!-- Heading -->
     <div class="sidebar-heading">
         Adminstração
@@ -125,18 +124,25 @@
         <div id="collapseAdministrativo" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Administração:</h6>
+                @auth
+                    @if(auth()->user()->isAdmin() || auth()->user()->isSuperAdmin())
                 <a class="collapse-item" href="{{route('cadastrarCargo.index')}}">Cadastrar Cargo</a>
                 <a class="collapse-item" href="{{route('cadastrarFormacao.index')}}">Cadastrar Formação</a>
+                    @endif
+                @endauth
+                @auth
+                    @if(auth()->user()->isProfissional() || auth()->user()->isSuperAdmin())
                 <a class="collapse-item" href="{{route('cadastrarLocal.index')}}">Cadastrar Local</a>
-                <a class="collapse-item" href="#">Cadastrar Procedimentos <br>de Deterioração</a>
+                    @endif
+                @endauth
+{{--                <a class="collapse-item" href="#">Cadastrar Procedimentos <br>de Deterioração</a>--}}
             </div>
         </div>
     </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider">
-       @endif
-    @endauth
+
     <!-- Nav Item - Sobre Mim -->
     <li class="nav-item">
         <a class="nav-link" href="{{route('sobremim.index')}}">

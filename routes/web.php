@@ -33,18 +33,39 @@ Route::get('/sobremim', function () {
 // Rota para exibir a view Principal com o gráfico
 Route::get('/',[EvolucaoController::class,'viewPrincipal'])->name('index')->middleware('auth', 'role:superadmin,profissional,admin');
 
-Route::controller(ProfissionalController::class)->group(function (){
-    Route::get('/cadastrarprofissional','index')->name('cadastroprofissional.index');
-    Route::post('/cadastrarprofissional','store')->name('cadastroprofissional.store');
-    Route::get('/listarprofissional','listarprofissional')->name('listarprofissional.index');
-    Route::get('/editarprofissional/{hashid}','edit')->name('editarprofissional.edit');
-    Route::put('/editarprofissional/{hashid}','update')->name('editarprofissional.update');
-    Route::get('/desabilitarprofissional/{hashid}','inativar')->name('inativarprofissional');
-    Route::get('/habilitarprofissional/{hashid}','ativar')->name('ativarprofissional');
-//        Route::get('/listarprofissionalinativos','listarInativos')->name('listarprofissionalinativos.index');
-//        Route::get('/excluirprofissional/{hashid}','destroy')->name('excluirprofissional.destroy');
-    Route::get('/profissional/{hashid}','show')->name('profissional.show');
-})->middleware('auth', 'role:superadmin,admin');
+Route::middleware('auth', 'role:superadmin,admin')->group(function () {
+
+    Route::controller(ProfissionalController::class)->group(function () {
+        Route::get('/cadastrarprofissional', 'index')->name('cadastroprofissional.index');
+        Route::post('/cadastrarprofissional', 'store')->name('cadastroprofissional.store');
+        Route::get('/listarprofissional', 'listarprofissional')->name('listarprofissional.index');
+        Route::get('/editarprofissional/{hashid}', 'edit')->name('editarprofissional.edit');
+        Route::put('/editarprofissional/{hashid}', 'update')->name('editarprofissional.update');
+        Route::get('/desabilitarprofissional/{hashid}', 'inativar')->name('inativarprofissional');
+        Route::get('/habilitarprofissional/{hashid}', 'ativar')->name('ativarprofissional');
+        //        Route::get('/listarprofissionalinativos','listarInativos')->name('listarprofissionalinativos.index');
+        //        Route::get('/excluirprofissional/{hashid}','destroy')->name('excluirprofissional.destroy');
+        Route::get('/profissional/{hashid}', 'show')->name('profissional.show');
+    });
+
+    Route::controller(CargoController::class)->group(function () {
+        Route::get('/cadastrarCargo', 'index')->name('cadastrarCargo.index');
+        Route::post('/cadastrarCargo', 'store')->name('cadastrarCargo.store');
+        Route::get('/listarCargo', 'listarCargo')->name('listarCargo.index');
+        Route::get('/editarCargo/{id}', 'edit')->name('editarCargo.edit');
+        Route::put('/editarCargo/{id}', 'update')->name('editarCargo.update');
+        Route::delete('/excluirCargo/{id}', 'destroy')->name('excluirCargo.destroy');
+    });
+
+    Route::controller(FormacaoProfissionalController::class)->group(function () {
+        Route::get('/cadastrarFormacao', 'index')->name('cadastrarFormacao.index');
+        Route::post('/cadastrarFormacao', 'store')->name('cadastrarFormacao.store');
+        Route::get('/listarFormacao', 'listarFormacao')->name('listarFormacao.index');
+        Route::get('/editarFormacao/{id}', 'edit')->name('editarFormacao.edit');
+        Route::put('/editarFormacao/{id}', 'update')->name('editarFormacao.update');
+        Route::delete('/excluirFormacao{id}', 'destroy')->name('excluirFormacao.destroy');
+    });
+});
 
 Route::middleware('auth', 'role:superadmin,profissional')->group(function () {
 
@@ -72,24 +93,6 @@ Route::middleware('auth', 'role:superadmin,profissional')->group(function () {
         Route::post('/avaliacao/{id}/avaliacao', 'salvarAvaliacao')->name('avaliacoes.store');
     });
 
-
-    Route::controller(CargoController::class)->group(function (){
-        Route::get('/cadastrarCargo','index')->name('cadastrarCargo.index');
-        Route::post('/cadastrarCargo','store')->name('cadastrarCargo.store');
-        Route::get('/listarCargo','listarCargo')->name('listarCargo.index');
-        Route::get('/editarCargo/{id}','edit')->name('editarCargo.edit');
-        Route::put('/editarCargo/{id}','update')->name('editarCargo.update');
-        Route::delete('/excluirCargo/{id}','destroy')->name('excluirCargo.destroy');
-    });
-
-    Route::controller(FormacaoProfissionalController::class)->group(function (){
-        Route::get('/cadastrarFormacao','index')->name('cadastrarFormacao.index');
-        Route::post('/cadastrarFormacao','store')->name('cadastrarFormacao.store');
-        Route::get('/listarFormacao','listarFormacao')->name('listarFormacao.index');
-        Route::get('/editarFormacao/{id}','edit')->name('editarFormacao.edit');
-        Route::put('/editarFormacao/{id}','update')->name('editarFormacao.update');
-        Route::delete('/excluirFormacao{id}','destroy')->name('excluirFormacao.destroy');
-    });
 
     Route::controller(LocalController::class)->group(function (){
         Route::get('/cadastrarLocal','index')->name('cadastrarLocal.index');
