@@ -76,7 +76,6 @@ class AtendimentoController extends Controller
     /**
      * Exibe a lista de atendimentos.
      *
-     * @return \Illuminate\View\View
      */
     public function list(Request $request)
     {
@@ -101,8 +100,6 @@ class AtendimentoController extends Controller
     /**
      * Exibe a view para registrar a alta do paciente.
      *
-     * @param int $atendimento_id
-     * @return \Illuminate\View\View
      */
     public function altaPaciente($atendimento_id)
     {

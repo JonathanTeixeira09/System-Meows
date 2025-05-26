@@ -440,6 +440,13 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label><strong>Profissional:</strong></label>
+                            <div class="p-3 bg-light rounded">
+                                {!! nl2br(e($evolucao->user->profissional->nome .  " - ". $evolucao->user->profissional->cargo->nome)) !!}
+                            </div>
+                        </div>
+
                         <div class="text-right">
                             <button id="btnEditarAvaliacao" class="btn btn-warning">
                                 <i class="fas fa-edit"></i> Editar Avaliação

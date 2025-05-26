@@ -49,6 +49,9 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('local_id')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <!-- FREQUÊNCIA CARDÍACA -->

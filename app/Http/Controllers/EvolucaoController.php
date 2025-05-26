@@ -17,8 +17,6 @@ class EvolucaoController extends Controller
 {
     /**
      * Apresenta a view de cadastro de evolução.
-     * @param Atendimento $atendimento
-     * @return \Illuminate\View\View
      */
     public function index(Atendimento $atendimento)
     {
@@ -61,6 +59,7 @@ class EvolucaoController extends Controller
             'Temp' => 'required',
             'SO' => 'required',
             'obs' => 'nullable|string|max:10000',
+            'local_id' => 'required|exists:locals,id',
         ], [
             // Mensagens de erro personalizadas
             'fc.required' => 'Selecione uma opção para a frequência cardíaca.',
@@ -69,6 +68,7 @@ class EvolucaoController extends Controller
             'PAD.required' => 'Selecione uma opção para a pressão arterial diastólica.',
             'Temp.required' => 'Selecione uma opção para a temperatura.',
             'SO.required' => 'Selecione uma opção para a saturação de oxigênio.',
+            'local_id.required' => 'Selecione um local para a evolução.',
         ]);
 
         // Recebe os dados do formulário
@@ -538,12 +538,12 @@ class EvolucaoController extends Controller
             'pacientesNaoAtendidos',
             'dadosCompletos',
             'chartDeterioracao',
-            'pacientesAtrasados', 
+            'pacientesAtrasados',
             'pacientesSemAvaliacao',
             'pacientesIntervencao',
             'filtro',
-            'totalUsersAtivos', 
-            'totalUsersInativos', 
+            'totalUsersAtivos',
+            'totalUsersInativos',
         ));
     }
 
