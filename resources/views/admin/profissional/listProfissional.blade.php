@@ -79,12 +79,12 @@
                                                 <a href='{{ route('profissional.show', $profissional->hashid) }}' class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i> Visualizar</a>
                                                 <a href='{{ route('editarprofissional.edit', $profissional->hashid)}}' class='btn btn-sm btn-warning'><i class="fa-solid fa-pen-to-square"></i> Editar</a>
 
-                                                <form action="{{-- route('excluirprodutoestoque', $produto->hashid) --}}" method="post"
-                                                      style="display:inline-block;">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit" class="btn btn-sm btn-danger" value="excluir"><i class="fa-solid fa-user-slash"></i> Desabilitar</button>
-                                                </form>
+{{--                                                <form action="--}}{{-- route('excluirprodutoestoque', $produto->hashid) --}}{{--" method="post"--}}
+{{--                                                      style="display:inline-block;">--}}
+{{--                                                    @csrf--}}
+{{--                                                    @method('delete')--}}
+{{--                                                    <button type="submit" class="btn btn-sm btn-danger" value="excluir"><i class="fa-solid fa-user-slash"></i> Desabilitar</button>--}}
+{{--                                                </form>--}}
                                             </div>
                                         </td>
                                 @endforeach

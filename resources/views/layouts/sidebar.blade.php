@@ -70,12 +70,13 @@
     <hr class="sidebar-divider">
        @endif
     @endauth
+    @auth
+        @if(auth()->user()->isAdmin() || auth()->user()->isSuperAdmin())
     <!-- Heading -->
     <div class="sidebar-heading">
         Configurações
     </div>
-    @auth
-        @if(auth()->user()->isAdmin() || auth()->user()->isSuperAdmin())
+
     <!-- Nav Item - Usuários Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
@@ -91,10 +92,7 @@
             </div>
         </div>
     </li>
-       @endif
-    @endauth
-    @auth
-        @if(auth()->user()->isProfissional() || auth()->user()->isSuperAdmin())
+
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEquipe" aria-expanded="true" aria-controls="collapseEquipe">
             <i class="fas fa-fw fa-user-md"></i>
@@ -108,7 +106,11 @@
             </div>
         </div>
     </li>
+        @endif
+    @endauth
 
+    @auth
+        @if(auth()->user()->isProfissional() || auth()->user()->isSuperAdmin())
     <!-- Heading -->
     <div class="sidebar-heading">
         Adminstração

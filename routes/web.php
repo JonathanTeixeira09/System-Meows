@@ -33,6 +33,19 @@ Route::get('/sobremim', function () {
 // Rota para exibir a view Principal com o gráfico
 Route::get('/',[EvolucaoController::class,'viewPrincipal'])->name('index')->middleware('auth', 'role:superadmin,profissional,admin');
 
+Route::controller(ProfissionalController::class)->group(function (){
+    Route::get('/cadastrarprofissional','index')->name('cadastroprofissional.index');
+    Route::post('/cadastrarprofissional','store')->name('cadastroprofissional.store');
+    Route::get('/listarprofissional','listarprofissional')->name('listarprofissional.index');
+    Route::get('/editarprofissional/{hashid}','edit')->name('editarprofissional.edit');
+    Route::put('/editarprofissional/{hashid}','update')->name('editarprofissional.update');
+    Route::get('/desabilitarprofissional/{hashid}','inativar')->name('inativarprofissional');
+    Route::get('/habilitarprofissional/{hashid}','ativar')->name('ativarprofissional');
+//        Route::get('/listarprofissionalinativos','listarInativos')->name('listarprofissionalinativos.index');
+//        Route::get('/excluirprofissional/{hashid}','destroy')->name('excluirprofissional.destroy');
+    Route::get('/profissional/{hashid}','show')->name('profissional.show');
+})->middleware('auth', 'role:superadmin,admin');
+
 Route::middleware('auth', 'role:superadmin,profissional')->group(function () {
 
     Route::controller(PacienteController::class)->group(function (){
@@ -59,19 +72,6 @@ Route::middleware('auth', 'role:superadmin,profissional')->group(function () {
         Route::post('/avaliacao/{id}/avaliacao', 'salvarAvaliacao')->name('avaliacoes.store');
     });
 
-
-    Route::controller(ProfissionalController::class)->group(function (){
-        Route::get('/cadastrarprofissional','index')->name('cadastroprofissional.index');
-        Route::post('/cadastrarprofissional','store')->name('cadastroprofissional.store');
-        Route::get('/listarprofissional','listarprofissional')->name('listarprofissional.index');
-        Route::get('/editarprofissional/{hashid}','edit')->name('editarprofissional.edit');
-        Route::put('/editarprofissional/{hashid}','update')->name('editarprofissional.update');
-        Route::get('/desabilitarprofissional/{hashid}','inativar')->name('inativarprofissional');
-        Route::get('/habilitarprofissional/{hashid}','ativar')->name('ativarprofissional');
-//        Route::get('/listarprofissionalinativos','listarInativos')->name('listarprofissionalinativos.index');
-//        Route::get('/excluirprofissional/{hashid}','destroy')->name('excluirprofissional.destroy');
-        Route::get('/profissional/{hashid}','show')->name('profissional.show');
-    });
 
     Route::controller(CargoController::class)->group(function (){
         Route::get('/cadastrarCargo','index')->name('cadastrarCargo.index');
