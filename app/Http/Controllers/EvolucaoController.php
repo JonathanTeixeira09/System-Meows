@@ -294,18 +294,32 @@ class EvolucaoController extends Controller
      */
     public function ultimaEvolucao($id)
     {
+        // Primeiro verifica se existe o atendimento
+        $atendimento = Atendimento::find($id);
+
+        if (!$atendimento) {
+            flash('Atendimento não encontrado')->error();
+            return back();
+        }
+
         $evolucao = Evolucao::with(['atendimento.paciente', 'local', 'user'])
             ->where('atendimento_id', $id)  // Filtra pelo ID do atendimento
             ->latest('created_at')  // Ordena pela data de criação (mais recente primeiro)
             ->first();  // Pega o primeiro registro (que será o mais recente)
 
-
-        $evolucao->atendimento->paciente->idade = Carbon::parse($evolucao->atendimento->paciente->data_nascimento)->age;
-        $evolucao->grauDeterioracao;
         if (!$evolucao) {
-            return back()->with('error', 'Nenhuma evolução encontrada para este atendimento');
+            flash('Nenhuma evolução encontrada para este atendimento')->error();
+            return back();
         }
 
+        // Calcula a idade do paciente
+        $evolucao->atendimento->paciente->idade = Carbon::parse($evolucao->atendimento->paciente->data_nascimento)->age;
+
+        // Verifica se existe o método grauDeterioracao antes de chamar
+        if (method_exists($evolucao, 'grauDeterioracao')) {
+            $evolucao->grauDeterioracao;
+        }
+        // Parâmetros normais para comparação
         $parametrosNormais = [
             'fc' => ['min' => 60, 'max' => 99, 'label' => 'Frequência Cardíaca (bpm)'],
             'fr' => ['min' => 16, 'max' => 20, 'label' => 'Frequência Respiratória (rpm)'],
