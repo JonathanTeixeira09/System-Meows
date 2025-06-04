@@ -374,22 +374,91 @@
                             @php
                                 if ($evolucao->grauDeterioracao >= 0 && $evolucao->grauDeterioracao <= 2) {
                                     $avaliacao = 'Não há risco de deterioração';
-//                                    $icon = '✓';
+                                    $planoAcao = '
+                                        <ul>
+                                            <strong>Profissional de referência:</strong> Técnico de enfermagem<br>
+                                            <strong>Avaliação:</strong> manter o plano de vigilância e tratamento<br>
+                                            <strong>Plano de ação:</strong>
+                                            <li><strong>Se escore = 2:</strong> reavaliar a cada 4 horas</li>
+                                            <li><strong>Se repetir escore = 2 em 3 avaliações consecutivas:</strong> informar enfermeiro</li>
+                                            <li><strong>Se existir algum parâmetro verde ou amarelo:</strong> informar enfermeiro</li>
+                                            <li><strong>Se mudança no quadro clínico:</strong> refazer o escore</li>
+                                        </ul>';
                                 } elseif ($evolucao->grauDeterioracao >= 3 && $evolucao->grauDeterioracao <= 4) {
                                     $avaliacao = 'Baixo risco de deterioração';
-//                                    $icon = '⚠️';
+                                    $planoAcao = '
+                                        <ul>
+                                            <strong>Profissional de referência:</strong> Enfermeiro<br>
+                                            <strong>Avaliação:</strong> a cada 1 hora<br>
+                                            <strong>Plano de ação:</strong>
+                                            <li>Introduzir protocolo de abordagem preliminar</li>
+                                            <li><strong>Se escore = 2:</strong> reavaliar a cada 1 hora</li>
+                                            <li><strong>Se repetir escore = 4 em 3 avaliações consecutivas:</strong> informar obstetra</li>
+                                            <li><strong>Se existir algum parâmetro amarelo:</strong> informar enfermeiro</li>
+                                        </ul>';
                                 } elseif ($evolucao->grauDeterioracao >= 5 && $evolucao->grauDeterioracao <= 6) {
                                     $avaliacao = 'Risco moderado de deterioração';
-//                                    $icon = '⚠️⚠️';
+                                    $planoAcao = '
+                                        <ul>
+                                            <strong>Profissional de referência:</strong> Médico Obstetra<br>
+                                            <strong>Avaliação:</strong> a cada 30 minutos<br>
+                                            <strong>Plano de ação:</strong>
+                                            <li>Iniciar protocolo de abordagem preliminar ao paciente crítico</li>
+                                            <li>Considerar possibilidade de sepse</li>
+                                        </ul>';
                                 } elseif ($evolucao->grauDeterioracao >= 7) {
                                     $avaliacao = 'ALTO RISCO DE DETERIORAÇÃO';
-//                                    $icon = '❗❗❗';
+                                    $planoAcao = '
+                                        <ul>
+                                            <strong>Profissional de referência:</strong> Anestesista e Intensivista<br>
+                                            <strong>Avaliação:</strong> monitorização contínua<br>
+                                            <strong>Plano de ação:</strong>
+                                            <li>Considerar necessidade de transferência para unidade de terapia intensiva</li>
+                                            <li>Manter protocolo de abordagem para paciente crítico</li>
+                                            <li>Iniciar protocolos específicos</li>
+                                        </ul>';
                                 }
                             @endphp
-{{--                            <span class="fw-bold">{{ $icon }} {{ $avaliacao }}</span>--}}
-                            <span class="fw-bold"> {{ $avaliacao }}</span>
+
+                            <span class="fw-bold">{{ $avaliacao }}</span>
                             <span class="float-end">Score Total: {{ $evolucao->grauDeterioracao }}</span>
+
+                            <div class="mt-3">
+                                {!! $planoAcao !!}
+                            </div>
                         </div>
+{{--                        <div class="p-3 rounded--}}
+{{--                            @php--}}
+{{--                                if ($evolucao->grauDeterioracao >= 0 && $evolucao->grauDeterioracao <= 2) {--}}
+{{--                                    echo 'bg-primary text-white'; // Azul - Sem risco--}}
+{{--                                } elseif ($evolucao->grauDeterioracao >= 3 && $evolucao->grauDeterioracao <= 4) {--}}
+{{--                                    echo 'bg-success text-white'; // Verde - Baixo risco--}}
+{{--                                } elseif ($evolucao->grauDeterioracao >= 5 && $evolucao->grauDeterioracao <= 6) {--}}
+{{--                                    echo 'bg-warning text-dark'; // Amarelo - Risco moderado--}}
+{{--                                } elseif ($evolucao->grauDeterioracao >= 7) {--}}
+{{--                                    echo 'bg-danger text-white'; // Vermelho - Alto risco--}}
+{{--                                }--}}
+{{--                            @endphp">--}}
+{{--                            @php--}}
+{{--                                if ($evolucao->grauDeterioracao >= 0 && $evolucao->grauDeterioracao <= 2) {--}}
+{{--                                    $avaliacao = 'Não há risco de deterioração<br>--}}
+{{--                                                    <span class="text-muted ';--}}
+{{--//                                    $icon = '✓';--}}
+{{--                                } elseif ($evolucao->grauDeterioracao >= 3 && $evolucao->grauDeterioracao <= 4) {--}}
+{{--                                    $avaliacao = 'Baixo risco de deterioração';--}}
+{{--//                                    $icon = '⚠️';--}}
+{{--                                } elseif ($evolucao->grauDeterioracao >= 5 && $evolucao->grauDeterioracao <= 6) {--}}
+{{--                                    $avaliacao = 'Risco moderado de deterioração';--}}
+{{--//                                    $icon = '⚠️⚠️';--}}
+{{--                                } elseif ($evolucao->grauDeterioracao >= 7) {--}}
+{{--                                    $avaliacao = 'ALTO RISCO DE DETERIORAÇÃO';--}}
+{{--//                                    $icon = '❗❗❗';--}}
+{{--                                }--}}
+{{--                            @endphp--}}
+{{--                            <span class="fw-bold">{{ $icon }} {{ $avaliacao }}</span>--}}
+{{--                            <span class="fw-bold"> {{ $avaliacao }}</span>--}}
+{{--                            <span class="float-end">Score Total: {{ $evolucao->grauDeterioracao }}</span>--}}
+{{--                        </div>--}}
                     </div>
 
                     <!-- Observações -->

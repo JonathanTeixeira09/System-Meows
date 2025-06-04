@@ -6,13 +6,17 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-lg font-weight-bold text-white text-uppercase mb-3">
-                            0: Baixo risco de deterioração
+                            0 - 2: Baixo risco de deterioração
                         </div>
                         <div class="h9 mb-0 font-weight text-white">
                             <ul>
-                                <li>Monitoramento regular</li>
-                                <li>Registro dos sinais vitais a cada 2 horas</li>
-                                <li>Avaliação clínica frequente</li>
+                                <strong>Profissional de referência:</strong> Técnico de enfermagem<br>
+                                <strong>Avaliação:</strong> manter o plano de vigilância e tratamento<br>
+                                <strong>Plano de ação:</strong>
+                                <li><strong>Se escore = 2:</strong> reavaliar a cada 4 horas</li>
+                                <li><strong>Se repetir escore = 2 em 3 avaliações consecutivas:</strong> informar enfermeiro</li>
+                                <li><strong>Se existir algum parâmetro verde ou amarelo:</strong> informar enfermeiro</li>
+                                <li><strong>Se mudança no quadro clínico:</strong> refazer o escore</li>
                             </ul>
                         </div>
                     </div>
@@ -31,16 +35,17 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-lg font-weight-bold text-white text-uppercase mb-3">
-                            1 - 3: Baixo risco de deterioração
+                            3 - 4: Baixo risco de deterioração
                         </div>
                         <div class="h9 mb-0 font-weight text-white">
                             <ul>
-                                <li>Monitoramento frequente</li>
-                                <li>Registro dos sinais vitais a cada hora</li>
-                                <li>Avaliação clínica a cada hora</li>
-                                <li>Administração de oxigênio suplementar, se necessário</li>
-                                <li>Iniciar acesso venoso periférico</li>
-                                <li>Coleta de exames laboratoriais, se necessário</li>
+                                <strong>Profissional de referência:</strong> Enfermeiro<br>
+                                <strong>Avaliação:</strong> a cada 1 hora<br>
+                                <strong>Plano de ação:</strong>
+                                <li>Introduzir protocolo de abordagem preliminar</li>
+                                <li><strong>Se escore = 2:</strong> reavaliar a cada 1 hora</li>
+                                <li><strong>Se repetir escore = 4 em 3 avaliações consecutivas:</strong> informar obstetra</li>
+                                <li><strong>Se existir algum parâmetro amarelo:</strong> informar enfermeiro</li>
                             </ul>
                         </div>
                     </div>
@@ -59,18 +64,15 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-lg font-weight-bold text-white text-uppercase mb-3">
-                            ≥ 4 - 5: Risco moderado de deterioração
+                            5 - 6: Risco moderado de deterioração
                         </div>
                         <div class="h9 mb-1 font-weight text-white">
                             <ul>
-                                <li>Intervenções imediatas</li>
-                                <li>Monitoramento contínuo dos sinais vitais</li>
-                                <li>Avaliação clínica a cada 30 minutos</li>
-                                <li>Administração de oxigênio suplementar</li>
-                                <li>Acesso venoso periférico com duas vias</li>
-                                <li>Coleta de exames laboratoriais completos</li>
-                                <li>Iniciar fluidoterapia</li>
-                                <li>Avaliação por médico especialista em obstetrícia</li>
+                                <strong>Profissional de referência:</strong> Médico Obstetra<br>
+                                <strong>Avaliação:</strong> a cada 30 minutos<br>
+                                <strong>Plano de ação:</strong>
+                                <li>Iniciar protocolo de abordagem preliminar ao paciente crítico</li>
+                                <li>Considerar possibilidade de sepse</li>
                             </ul>
                         </div>
                     </div>
@@ -89,20 +91,18 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-lg font-weight-bold text-white text-uppercase mb-3">
-                            ≥ 6: Risco alto de deterioração
+                            ≥ 7: Risco alto de deterioração
                         </div>
                         <div class="row no-gutters align-items-center">
                             <div class="col-auto">
                                 <div class="h9 mb-0 mr-3 font-weight text-white">
                                     <ul>
-                                        <li>Transferência imediata para unidade de terapia intensiva obstétrica</li>
-                                        <li>Monitoramento contínuo dos sinais vitais</li>
-                                        <li>Suporte ventilatório, se necessário</li>
-                                        <li>Acesso venoso central</li>
-                                        <li>Coleta de exames laboratoriais completos</li>
-                                        <li>Fluidoterapia agressiva</li>
-                                        <li>Administração de medicamentos vasoativos, se necessário</li>
-                                        <li>Intervenções obstétricas, se necessário</li>
+                                        <strong>Profissional de referência:</strong> Anestesista e Intensivista<br>
+                                        <strong>Avaliação:</strong> monitorização contínua<br>
+                                        <strong>Plano de ação:</strong>
+                                        <li>Considerar necessidade de transferência para unidade de terapia intensiva</li>
+                                        <li>Manter protocolo de abordagem para paciente crítico</li>
+                                        <li>Iniciar protocolos específicos</li>
                                     </ul>
                                 </div>
                             </div>
