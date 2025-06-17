@@ -1,20 +1,61 @@
 # MEOWS Digital
 
-**MEOWS Digital (Modified Early Obstetric Warning System)** é um sistema de monitoramento clínico voltado para a saúde obstétrica, desenvolvido para identificar e sinalizar precocemente possíveis riscos à saúde de gestantes. O sistema utiliza um conjunto de parâmetros clínicos vitais, como frequência cardíaca, pressão arterial e temperatura, para avaliar a condição das pacientes e emitir alertas em caso de sinais de deterioração clínica.
+**MEOWS Digital (Modified Early Obstetric Warning System)** é uma solução web voltada ao monitoramento clínico de parturientes hospitalizadas. O sistema foi desenvolvido para identificar precocemente sinais de deterioração clínica, com base em parâmetros vitais, promovendo a segurança materna e contribuindo para a redução da mortalidade materna e neonatal.
 
-## Funcionalidades Principais
+## 📌 Descrição Geral
 
-- **Monitoramento Contínuo**: Integração com dispositivos médicos para a coleta contínua de sinais vitais.
-- **Avaliação de Risco Automatizada**: Cálculo automático do escore MEOWS para identificar rapidamente qualquer alteração no estado clínico.
-- **Alertas em Tempo Real**: Notificações automáticas para a equipe médica em caso de detecção de risco, possibilitando uma intervenção rápida.
-- **Interface Web Amigável**: Plataforma acessível para profissionais de saúde visualizarem o histórico e as tendências dos sinais vitais das pacientes.
-- **Personalização de Protocolos**: Ajuste dos parâmetros de alerta de acordo com as necessidades específicas de cada paciente ou protocolo institucional.
+O MEOWS Digital aplica o protocolo **MEOWS**, amplamente utilizado na obstetrícia, para avaliar o estado clínico de gestantes. Com base em um conjunto de parâmetros clínicos como:
 
-## Objetivo
+- Frequência cardíaca
+- Pressão arterial sistólica e diastólica
+- Temperatura corporal
+- Frequência respiratória
+- Saturação de oxigênio
+- Nível de consciência
 
-O MEOWS Digital foi criado para melhorar a segurança no cuidado obstétrico, garantindo que sinais precoces de complicações sejam detectados e tratados prontamente, reduzindo assim a mortalidade materna e neonatal.
+O sistema calcula automaticamente o escore de risco e gera alertas quando os valores estão fora da normalidade.
 
-## Como Contribuir
+---
 
-Contribuições são bem-vindas! Para começar, faça um fork do repositório e siga as diretrizes de contribuição disponíveis em [CONTRIBUTING.md](link_para_o_arquivo_contributing).
+## 🚀 Funcionalidades Principais
 
+- ✅ **Monitoramento Contínuo**: Integração com dispositivos médicos (se disponível) ou entrada manual de dados pelos profissionais de saúde.
+- ✅ **Avaliação de Risco Automatizada**: Cálculo automático do escore MEOWS.
+- ✅ **Alertas em Tempo Real**: Notificações instantâneas para a equipe de enfermagem e médicos responsáveis.
+- ✅ **Dashboard Clínico**: Painel com visão geral do status de todas as parturientes, incluindo atendimentos em andamento e casos com maior prioridade.
+- ✅ **Histórico de Análises**: Registro detalhado do histórico clínico de cada paciente.
+- ✅ **Configuração de Parâmetros**: Possibilidade de personalizar limites de alerta conforme protocolos institucionais.
+
+---
+
+## 🎯 Objetivo do Projeto
+
+Melhorar a qualidade e segurança no cuidado obstétrico hospitalar, proporcionando uma ferramenta digital que auxilie na detecção precoce de complicações clínicas em gestantes.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- **Front-end**: HTML5, CSS3, JavaScript, AJAX, jQuery, Bootstrap.
+- **Back-end**: PHP com o framework Laravel 11.
+- **Banco de Dados**: MySQL.
+
+---
+
+## 📥 Como Instalar o MEOWS Digital Localmente
+
+Siga os passos abaixo para clonar o projeto e configurá-lo em seu ambiente local:
+
+### Pré-requisitos:
+
+- PHP >= 8.x
+- Composer
+- MySQL
+- Servidor Apache ou outro servidor compatível (Exemplo: XAMPP, Laragon ou WAMP)
+
+---
+
+### Passo 1: Clonar o repositório
+
+```bash
+git clone https://github.com/SEU_USUARIO/meows-digital.git
