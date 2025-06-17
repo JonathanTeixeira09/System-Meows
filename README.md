@@ -58,4 +58,4 @@ Siga os passos abaixo para clonar o projeto e configurá-lo em seu ambiente loca
 ### Passo 1: Clonar o repositório
 
 ```bash
-git clone https://github.com/SEU_USUARIO/meows-digital.git
+https://github.com/JonathanTeixeira09/System-Meows.git
