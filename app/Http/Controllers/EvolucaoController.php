@@ -237,9 +237,13 @@ class EvolucaoController extends Controller
      */
     public function relatorio($id)
     {
-        $evolucao = Evolucao::with(['atendimento.paciente', 'local', 'user','avaliacao'])
-            ->whereHas('atendimento') // Só traz se tiver atendimento relacionado
-            ->findOrFail($id);
+        $evolucao = Evolucao::with([
+            'atendimento.paciente',
+            'local',
+            'user',
+            'avaliacao.profissional' // Carrega a avaliação e o profissional relacionado
+        ])->findOrFail($id);
+
         $evolucao->atendimento->paciente->idade = Carbon::parse($evolucao->atendimento->paciente->data_nascimento)->age;
 
         // Parâmetros normais para comparação
@@ -265,6 +269,7 @@ class EvolucaoController extends Controller
         $evolucao = Evolucao::with(['atendimento.paciente', 'local', 'user'])
             ->whereHas('atendimento') // Só traz se tiver atendimento relacionado
             ->findOrFail($id);
+
         $evolucao->atendimento->paciente->idade = Carbon::parse($evolucao->atendimento->paciente->data_nascimento)->age;
 
         $parametrosNormais = [
@@ -302,10 +307,15 @@ class EvolucaoController extends Controller
             return back();
         }
 
-        $evolucao = Evolucao::with(['atendimento.paciente', 'local', 'user'])
-            ->where('atendimento_id', $id)  // Filtra pelo ID do atendimento
-            ->latest('created_at')  // Ordena pela data de criação (mais recente primeiro)
-            ->first();  // Pega o primeiro registro (que será o mais recente)
+        $evolucao = Evolucao::with([
+            'atendimento.paciente',
+            'local',
+            'user',
+            'avaliacao.profissional' // Carrega a avaliação e o profissional relacionado
+        ])
+            ->where('atendimento_id', $id)
+            ->latest('created_at')
+            ->firstOrFail();
 
         if (!$evolucao) {
             flash('Nenhuma evolução encontrada para este atendimento')->error();
@@ -599,6 +609,7 @@ class EvolucaoController extends Controller
             'conduta' => 'required|string|min:10',
         ]);
 
+
         $evolucao = Evolucao::findOrFail($evolucaoId);
 
         if($request->has('avaliacao_id')) {
@@ -606,7 +617,8 @@ class EvolucaoController extends Controller
             $avaliacao = Avaliacao::findOrFail($request->avaliacao_id);
             $avaliacao->update([
                 'avaliacao' => $request->avaliacao,
-                'conduta' => $request->conduta
+                'conduta' => $request->conduta,
+                'profissionals_id' => auth()->user()->profissional->id // Adicione esta linha
             ]);
         } else {
             // Criação
@@ -615,7 +627,7 @@ class EvolucaoController extends Controller
                 'avaliacao' => $request->avaliacao,
                 'conduta' => $request->conduta,
                 'profissionals_id' => auth()->user()->profissional->id, // Adicione esta linha
-                'user_id' => auth()->id()
+//                'user_id' => auth()->id()
             ]);
         }
 
